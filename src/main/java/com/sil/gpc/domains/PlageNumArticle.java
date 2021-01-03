@@ -78,6 +78,7 @@ public class PlageNumArticle implements Serializable {
 		this.numFinPlage = numFinPlage;
 	}
 
+<<<<<<< HEAD
 	/**
 	 * @return the article
 	 */
@@ -134,6 +135,8 @@ public class PlageNumArticle implements Serializable {
 		this.ligneAppro = ligneAppro;
 	}
 
+=======
+>>>>>>> c39f13262875ac7fb34f78df13c23383b6c88aae
 	@Override
 	public int hashCode() {
 		final int prime = 31;

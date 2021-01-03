@@ -20,7 +20,8 @@ public class Immeuble implements Serializable{
 	private String codeIm;
 	private String localisationIm;
 	private boolean etatIm;
-	//Liaison avec QuartierRepository
+
+	//Liaison avec Quartier
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY,targetEntity = Quartier.class)
 	@JoinColumn(name="codeQuartier", referencedColumnName = "codeQuartier", nullable = false)
 	private Quartier quartier;
@@ -32,12 +33,11 @@ public class Immeuble implements Serializable{
 		
 		//Liaison  avec PrixImmeuble
 		@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,targetEntity = PrixImmeuble.class,mappedBy = "immeuble")
-		public List<PrixImmeuble> prixImmeuble;//*****************************Erreur, c'est prix Immeuble
+		public List<PrixImmeuble> prixImmeuble;
 	
 	public Immeuble() {
 		super();
 	}
-
 
 	public String getCodeIm() {
 		return codeIm;
@@ -63,14 +63,12 @@ public class Immeuble implements Serializable{
 		this.etatIm = etatIm;
 	}
 
-
 	/**
 	 * @return the quartier
 	 */
 	public Quartier getQuartier() {
 		return quartier;
 	}
-
 
 	/**
 	 * @param quartier the quartier to set
@@ -79,7 +77,6 @@ public class Immeuble implements Serializable{
 		this.quartier = quartier;
 	}
 
-
 	/**
 	 * @return the typeImmeuble
 	 */
@@ -87,14 +84,12 @@ public class Immeuble implements Serializable{
 		return typeImmeuble;
 	}
 
-
 	/**
 	 * @param typeImmeuble the typeImmeuble to set
 	 */
 	public void setTypeImmeuble(TypeImmeuble typeImmeuble) {
 		this.typeImmeuble = typeImmeuble;
 	}
-
 
 	@Override
 	public int hashCode() {

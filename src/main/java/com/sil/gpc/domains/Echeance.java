@@ -88,6 +88,22 @@ public class Echeance implements Serializable {
 
 	public void setContrat(Contrat contrat) {
 		this.contrat = contrat;
+	}	
+	
+	public String getMoisEcheance() {
+		return moisEcheance;
+	}
+
+	public void setMoisEcheance(String moisEcheance) {
+		this.moisEcheance = moisEcheance;
+	}
+
+	public OpCaisse getOpCaisse() {
+		return opCaisse;
+	}
+
+	public void setOpCaisse(OpCaisse opCaisse) {
+		this.opCaisse = opCaisse;
 	}
 
 	@Override

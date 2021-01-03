@@ -167,7 +167,7 @@ public class LigneOpCaisse implements Serializable {
 
 	@Override
 	public String toString() {
-		return "LigneOpCaisseRepository [idLigneOperCaisse=" + idLigneOperCaisse + ", qteLigneOperCaisse=" + qteLigneOperCaisse
+		return "LigneOpCaisse [idLigneOperCaisse=" + idLigneOperCaisse + ", qteLigneOperCaisse=" + qteLigneOperCaisse
 				+ ", prixLigneOperCaisse=" + prixLigneOperCaisse + ", CommentaireLigneOperCaisse="
 				+ CommentaireLigneOperCaisse + ", opCaisse=" + opCaisse + ", article=" + article + "]";
 	}

@@ -39,7 +39,7 @@ public class OpCaisse implements Serializable {
 	@JoinColumn(name = "codeTypRec", referencedColumnName = "codeTypRec", nullable = false)
 	private TypeRecette typeRecette;
 
-	//Liaison à la table "ModePaiementRepository"
+	//Liaison à la table "ModePaiement"
 	@ManyToOne(fetch = FetchType.EAGER, targetEntity = ModePaiement.class)
 	@JoinColumn(name = "codeModPay", referencedColumnName = "codeModPay", nullable = false)
 	private ModePaiement modePaiement;

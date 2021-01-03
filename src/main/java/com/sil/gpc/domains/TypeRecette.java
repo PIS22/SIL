@@ -47,6 +47,7 @@ public class TypeRecette implements Serializable{
 		this.libeTypRec = libeTypRec;
 	}
 
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(codeTypRec, libeTypRec, opérationstype);

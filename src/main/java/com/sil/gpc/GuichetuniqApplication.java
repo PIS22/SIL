@@ -9,5 +9,5 @@ public class GuichetuniqApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(GuichetuniqApplication.class, args);
 	}
-
+	
 }

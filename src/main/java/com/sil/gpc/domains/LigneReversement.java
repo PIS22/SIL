@@ -101,6 +101,7 @@ public class LigneReversement implements Serializable{
 	/**
 	 * @return the dateQuittanceReversement
 	 */
+
 	public Date getDateQuittanceReversement() {
 		return dateQuittanceReversement;
 	}
@@ -127,6 +128,8 @@ public class LigneReversement implements Serializable{
 	}
 
 	/**
+=======
+>>>>>>> c39f13262875ac7fb34f78df13c23383b6c88aae
 	 * @return the beneficiaire
 	 */
 	public String getBeneficiaire() {
@@ -184,7 +187,7 @@ public class LigneReversement implements Serializable{
 
 	@Override
 	public String toString() {
-		return "LigneReversementService [idLigneReversement=" + idLigneReversement + ", quantiteLigneReversement="
+		return "LigneReversement [idLigneReversement=" + idLigneReversement + ", quantiteLigneReversement="
 				+ quantiteLigneReversement + ", PULigneReversement=" + PULigneReversement
 				+ ", dateQuittanceReversement=" + dateQuittanceReversement + ", beneficiaire=" + beneficiaire
 				+ ", observation=" + observation + ", numReversement=" + numReversement + ", article=" + article

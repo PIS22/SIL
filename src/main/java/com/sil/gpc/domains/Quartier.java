@@ -159,7 +159,11 @@ public class Quartier implements Serializable {
 
 	@Override
 	public String toString() {
+<<<<<<< HEAD
 		return "QuartierRepository [codeQuartier=" + codeQuartier + ", nomQuartier=" + nomQuartier + ", numTelQuartier="
+=======
+		return "Quartier [codeQuartier=" + codeQuartier + ", nomQuartier=" + nomQuartier + ", numTelQuartier="
+>>>>>>> c39f13262875ac7fb34f78df13c23383b6c88aae
 				+ numTelQuartier + ", adresseQuartier=" + adresseQuartier + ", immeublesParQuartier="
 				+ immeublesParQuartier + ", arrondissement=" + arrondissement + "]";
 	}

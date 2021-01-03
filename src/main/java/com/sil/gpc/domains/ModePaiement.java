@@ -9,12 +9,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Table;
 
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "ModePaiementRepository")
 public class ModePaiement implements Serializable {
 	@Id
 	@Column(name = "codeModPay", length = 5)
@@ -77,7 +75,7 @@ public class ModePaiement implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ModePaiementRepository [codeModPay=" + codeModPay + ", libeModPay=" + libeModPay + ", opérationsMode="
+		return "ModePaiement [codeModPay=" + codeModPay + ", libeModPay=" + libeModPay + ", opérationsMode="
 				+ opérationsMode + "]";
 	}
 	

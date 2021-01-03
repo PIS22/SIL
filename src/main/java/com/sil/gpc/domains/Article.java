@@ -65,7 +65,7 @@ public class Article implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL,targetEntity = LigneRecollement.class,mappedBy = "article")
 	public List<LigneRecollement> recollementsDunArticle;
 
-	// Liaison à LigneReversementService
+	// Liaison à LigneReversement
 	@OneToMany(cascade = CascadeType.ALL,targetEntity = LigneReversement.class,mappedBy = "article")
 	public List<LigneReversement> reversementDunArticle;
 
@@ -162,6 +162,22 @@ public class Article implements Serializable {
 
 	public void setCouleurArticle(String couleurArticle) {
 		this.couleurArticle = couleurArticle;
+	}
+
+	public Famille getFamille() {
+		return famille;
+	}
+
+	public void setFamille(Famille famille) {
+		this.famille = famille;
+	}
+
+	public Uniter getUnite() {
+		return unite;
+	}
+
+	public void setUnite(Uniter unite) {
+		this.unite = unite;
 	}
 
 	@Override

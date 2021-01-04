@@ -1,6 +1,7 @@
 package com.sil.gpc.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -9,33 +10,49 @@ import com.sil.gpc.repositories.PaysRepository;
 
 @Service
 public class PaysService {
-	private final PaysRepository paysr;
+	private final PaysRepository repos;
 
 	/**
-	 * @param paysr
+	 * @param repos
 	 */
 	public PaysService(PaysRepository paysr) {
-		this.paysr = paysr;
+		this.repos = paysr;
 	}
 	
-	public Pays ajoutePays(Pays p){
-		return paysr.save(p);
+	public List<Pays> findByAll(){
+		return repos.findAll();
 	}
 	
-	public Pays recherchePays(String cp){
-		return paysr.getOne(cp);
+	public Optional<Pays> findById(String cp){
+		return repos.findById(cp);
+	}
+	
+	public List<Pays> findByCode(String cp){
+		return repos.findByCodePays(cp);
+	}
+	
+	public List<Pays> findByNomComplet(String nom){
+		return repos.findByNomCompletPays(nom);
+	}
+	
+	public List<Pays> findByNom(String nom){
+		return repos.findByNomPays(nom);
+	}
+	
+	public Pays save(Pays p){
+		return repos.save(p);
 	}
 
 	public Pays modifiePays(Pays p, String cp){
-		Pays pays=paysr.getOne(cp);
+		Pays pays=repos.getOne(cp);
 		pays.setCodePays(p.getCodePays());
 		pays.setNomCompletPays(p.getNomCompletPays());
 		pays.setNomPays(p.getNomPays());
-		return paysr.save(pays);
+		return repos.save(pays);
 	}
 	
-	public List<Pays> supprimePays(String cp){
-		paysr.deleteById(cp);
-		return paysr.findAll();
+	public boolean supprimePays(String cp){
+		repos.deleteById(cp);
+		return repos.existsById(cp);
 	}
 }

@@ -1,6 +1,7 @@
 package com.sil.gpc.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -9,33 +10,48 @@ import com.sil.gpc.repositories.ModePaiementRepository;
 
 @Service
 public class ModePaiementService {
-	private final ModePaiementRepository mpr;
+	private final ModePaiementRepository repos;
 
 	/**
-	 * @param mpr
+	 * @param repos
 	 */
 	public ModePaiementService(ModePaiementRepository mpr) {
-		this.mpr = mpr;
+		this.repos = mpr;
 	}
 
-	public ModePaiement ajouteModePaiment(ModePaiement mp){
-		return mpr.save(mp);
+	public ModePaiement save(ModePaiement mp){
+		return repos.save(mp);
 	}
 	
 	
-	public ModePaiement modifieMP(ModePaiement mp, String code){
-		ModePaiement modep=mpr.getOne(code);
+	public ModePaiement edit(ModePaiement mp, String code){
+		ModePaiement modep=repos.getOne(code);
+		if(modep!=null) {
 		modep.setCodeModPay(mp.getCodeModPay());
 		modep.setLibeModPay(mp.getLibeModPay());
-		return mpr.save(modep);
+		return repos.save(modep);
+		}else
+			return null;
 	}
 
-	public List<ModePaiement> suppprimeModePaiement(String code){
-		mpr.deleteById(code);
-		return mpr.findAll();
+	public boolean delete(String code){
+		repos.deleteById(code);
+		return repos.existsById(code);
 	}
 	
-	public ModePaiement rechercheModePaiement(String code){
-		return mpr.getOne(code);
+	public Optional<ModePaiement> findById(String code){
+		return repos.findById(code);
+	}
+	
+	public List<ModePaiement> findByCode(String code){
+		return repos.findByCodeModPay(code);
+	}
+	
+	public List<ModePaiement> findByLibelle(String lib){
+		return repos.findByLibeModPay(lib);
+	}
+	
+	public List<ModePaiement> findAll(){
+		return repos.findAll();
 	}
 }

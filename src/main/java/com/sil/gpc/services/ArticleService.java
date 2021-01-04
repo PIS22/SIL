@@ -38,7 +38,6 @@ public class ArticleService {
 			entiter.setStockerArticle(article.isStockerArticle());
 			entiter.setFamille(article.getFamille());
 			entiter.setUnite(article.getUnite());
-			
 			return this.repo.save(entiter);
 		}
 		

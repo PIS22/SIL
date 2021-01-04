@@ -27,10 +27,6 @@ public class Pays implements Serializable{
 	}
 	public Pays(String codePays, String nomPays, String nomCompletPays) {
 		super();
-<<<<<<< HEAD
-		
-=======
->>>>>>> c39f13262875ac7fb34f78df13c23383b6c88aae
 		this.codePays = codePays;
 		this.nomPays = nomPays;
 		this.nomCompletPays = nomCompletPays;

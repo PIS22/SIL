@@ -24,7 +24,6 @@ public class PlageNumArticle implements Serializable {
 	@JoinColumn(name = "codeArticle",referencedColumnName = "codeArticle",nullable = false)
 	public Article article;
 	
-	//private String numRecollement;//*****************************Liaison à effectuer
 	//Liaison à la table "Recollement"
 	@ManyToOne(fetch = FetchType.EAGER, targetEntity =LigneRecollement.class)
 	@JoinColumn(name = "idLigneRecollement", referencedColumnName = "idLigneRecollement", nullable = true)
@@ -78,7 +77,6 @@ public class PlageNumArticle implements Serializable {
 		this.numFinPlage = numFinPlage;
 	}
 
-<<<<<<< HEAD
 	/**
 	 * @return the article
 	 */
@@ -135,8 +133,6 @@ public class PlageNumArticle implements Serializable {
 		this.ligneAppro = ligneAppro;
 	}
 
-=======
->>>>>>> c39f13262875ac7fb34f78df13c23383b6c88aae
 	@Override
 	public int hashCode() {
 		final int prime = 31;

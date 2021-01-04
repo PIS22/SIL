@@ -1,6 +1,7 @@
 package com.sil.gpc.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -10,31 +11,45 @@ import com.sil.gpc.repositories.MagasinRepository;
 @Service
 public class MagasinService {
 	
-	private final MagasinRepository mgr;
+	private final MagasinRepository repos;
 
 	/**
-	 * @param mr
+	 * @param repos
 	 */
 	public MagasinService(MagasinRepository mr) {
-		this.mgr = mr;
+		this.repos = mr;
 	}
 	
-	public Magasin ajouteMagasin(Magasin mg){
-		return mgr.save(mg);
+	public Magasin save(Magasin mg){
+		return repos.save(mg);
 	}
 
 	
-	public Magasin modifieMagasin(Magasin mg, String cm){
-		Magasin mag=mgr.getOne(cm);
+	public Magasin edit(Magasin mg, String cm){
+		Magasin mag=repos.getOne(cm);
+		if(mag!=null) {
 		mag.setCodeMagasin(mg.getCodeMagasin());
 		mag.setLibMagasin(mg.getLibMagasin());
-		return mgr.save(mag);
+		return repos.save(mag);
+		}else
+			return null;
 	}
 
-	
-	List<Magasin> supprimeMagasin(String cm){
-		mgr.deleteById(cm);
-		return mgr.findAll();
+	public boolean delete(String cm){
+		repos.deleteById(cm);
+		return repos.existsById(cm);
+	}
+
+	Optional<Magasin> findById(String cm){
+		return repos.findById(cm);
+	}
+
+	List<Magasin> findByLibelle(String lib){
+		return repos.findByLibMagasin(lib);
+	}
+
+	List<Magasin> findAll(){
+		return repos.findAll();
 	}
 
 }

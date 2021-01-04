@@ -1,51 +1,86 @@
 package com.sil.gpc.services;
 
+import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.sil.gpc.domains.Article;
 import com.sil.gpc.domains.LigneReversement;
+import com.sil.gpc.domains.Reversement;
 import com.sil.gpc.repositories.LigneReversementRepository;
 
 @Service
 public class LigneReversementService {
 
-	private final LigneReversementRepository lrr;
+	private final LigneReversementRepository repos;
 
 	/**
-	 * @param lrr
+	 * @param repos
 	 */
 	public LigneReversementService(LigneReversementRepository lrr) {
-		this.lrr = lrr;
+		this.repos = lrr;
 	}
 
-	public LigneReversement rechercheUneLigne(Long id) {
-		return lrr.getOne(id);
+	public Optional<LigneReversement> findById(Long id) {
+		return repos.findById(id);
 	}
 
-	public List<LigneReversement> toutesLignes() {
-		return lrr.findAll();
+	public List<LigneReversement> findByArticle(Article article){
+		return repos.findByArticle(article);
+	}
+
+	public List<LigneReversement> findByQte(Long qte) {
+		return repos.findByQuantiteLigneReversement(qte);
+	}
+
+	public List<LigneReversement> findBybeneficiairex(String beneficiaire) {
+		return repos.findByBeneficiaire(beneficiaire);
+	}
+
+	public List<LigneReversement> findByDate(Date dateQuittance) {
+		return repos.findByDateQuittanceReversement(dateQuittance);
+	}
+
+	public List<LigneReversement> findByNumReversement(Reversement reversement){
+		return repos.findByNumReversement(reversement);
+	}
+
+	public List<LigneReversement> findByQuittance(String quittance){
+		return repos.findByQuittanceReversement(quittance);
+	}
+
+	public List<LigneReversement> findByPrix(Long pu){
+		return repos.findByPULigneReversement(pu);
+	}
+
+	public List<LigneReversement> findAll() {
+		return repos.findAll();
 	}
 
 
-	public LigneReversement ajouteLigneReversement(LigneReversement ligne){
-		return lrr.save(ligne);
+	public LigneReversement save(LigneReversement ligne){
+		return repos.save(ligne);
 	}
 
-	public LigneReversement modifieLigneReversement(LigneReversement ligne, Long id) {
-		LigneReversement lr=lrr.getOne(id);
-		lr.setArticle(ligne.getArticle());
-		lr.setBeneficiaire(ligne.getBeneficiaire());
-		lr.setDateQuittanceReversement(ligne.getDateQuittanceReversement());
-		lr.setObservation(ligne.getObservation());
-		lr.setPULigneReversement(ligne.getPULigneReversement());
-		lr.setQuantiteLigneReversement(ligne.getQuantiteLigneReversement());
-		lr.setQuittanceReversement(ligne.getQuittanceReversement());
-		return lrr.save(lr);
+	public LigneReversement edit(LigneReversement ligne, Long id) {
+		LigneReversement cible=repos.getOne(id);
+		if (cible!=null) {
+		cible.setArticle(ligne.getArticle());
+		cible.setBeneficiaire(ligne.getBeneficiaire());
+		cible.setDateQuittanceReversement(ligne.getDateQuittanceReversement());
+		cible.setObservation(ligne.getObservation());
+		cible.setPULigneReversement(ligne.getPULigneReversement());
+		cible.setQuantiteLigneReversement(ligne.getQuantiteLigneReversement());
+		cible.setQuittanceReversement(ligne.getQuittanceReversement());
+		return repos.save(cible);
+		}else
+			return null;
 	}
 	
-	public List<LigneReversement> supprimeLigneReversement(Long id){
-		lrr.deleteById(id);
-		return lrr.findAll();
+	public boolean delete(Long id){
+		repos.deleteById(id);
+		return repos.existsById(id);
 	}
 }

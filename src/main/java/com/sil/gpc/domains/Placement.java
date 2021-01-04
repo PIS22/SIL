@@ -30,8 +30,6 @@ public class Placement implements Serializable{
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY,targetEntity = Exercice.class)
 	@JoinColumn(name = "codeExercice",referencedColumnName = "codeExercice",nullable = false)
 	private Exercice exercice;
-	
-	//*************************************Il reste l'attribut qui concerne le correspondant
 
 	//Liaison à la table LignPlacement
 	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,targetEntity = LignePlacement.class,mappedBy = "placement")
@@ -47,7 +45,6 @@ public class Placement implements Serializable{
 		this.numPlacement = numPlacement;
 		this.datePlacement = datePlacement;
 		this.exercice = exercice;
-		this.articlesParPlacement = articlesParPlacement;
 	}
 
 	/**

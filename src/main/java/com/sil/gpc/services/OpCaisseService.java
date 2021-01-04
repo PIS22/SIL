@@ -1,23 +1,54 @@
 package com.sil.gpc.services;
 
+import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 
 import com.sil.gpc.domains.OpCaisse;
 import com.sil.gpc.repositories.OpCaisseRepository;
 
 public class OpCaisseService {
 
-	private final OpCaisseRepository ocr;
+	private final OpCaisseRepository repos;
 
 	/**
-	 * @param opcr
+	 * @param repos
 	 */
 	public OpCaisseService(OpCaisseRepository opcr) {
-		this.ocr = opcr;
+		this.repos = opcr;
+	}
+	
+	public Optional<OpCaisse> findById(String num){
+		return repos.findById(num);
+	}
+	
+	public List<OpCaisse> findAll(){
+		return repos.findAll();
+	}
+	
+	public List<OpCaisse> findByContribuale(String contribuable){
+		return repos.findByContribuable(contribuable);
+	}
+	
+	public List<OpCaisse> findByDateOpCaisse(Date dateOp){
+		return repos.findByDateOpCaisse(dateOp);
+	}
+	
+	public List<OpCaisse> findByModePaiement(String codMP){
+		return repos.findByModePaiement(codMP);
+	}
+	
+	public List<OpCaisse> findByCaisse(String codCai){
+		return repos.findByCaisse(codCai);
+	}
+	
+	public List<OpCaisse> findByTypeRecette(String codTR){
+		return repos.findByTypeRecette(codTR);
 	}
 
-	public OpCaisse modifieOpCaisse(OpCaisse oc, String num){
-		OpCaisse opc=ocr.getOne(num);
+	public OpCaisse edit(OpCaisse oc, String num){
+		OpCaisse opc=repos.getOne(num);
+		if (opc!=null) {
 		opc.setCaisse(oc.getCaisse());
 		opc.setContribuable(oc.getContribuable());
 		opc.setDateOpCaisse(oc.getDateOpCaisse());
@@ -26,20 +57,18 @@ public class OpCaisseService {
 		opc.setObservation(oc.getObservation());
 		opc.setTypeRecette(oc.getTypeRecette());
 		opc.setValideOpCaisse(oc.isValideOpCaisse());
-		return ocr.save(opc);
+		return repos.save(opc);
+		}else
+			return null;
 	}
 
-	public OpCaisse ajouteOpCaisse(OpCaisse oc){
-		return ocr.save(oc);
+	public OpCaisse save(OpCaisse oc){
+		return repos.save(oc);
 	}
 
-	public List<OpCaisse> supprimeOpCaisse(String num){
-		ocr.deleteById(num);
-		return ocr.findAll();
-	}
-	
-	public OpCaisse rechercheOpCaisse(String num){
-		return ocr.getOne(num);
+	public List<OpCaisse> delete(String num){
+		repos.deleteById(num);
+		return repos.findAll();
 	}
 	
 }

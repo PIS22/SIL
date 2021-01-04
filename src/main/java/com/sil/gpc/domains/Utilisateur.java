@@ -4,17 +4,16 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-<<<<<<< HEAD
-=======
-import javax.persistence.FetchType;
->>>>>>> c39f13262875ac7fb34f78df13c23383b6c88aae
+
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
 public class Utilisateur {
 
-	@Id  //*******************A générer automatiquement
+	@Id
 	private Long idUtilisateur;
 	private String login;
 	private String motDePass;
@@ -27,15 +26,13 @@ public class Utilisateur {
 	public List<OpCaisse> opCaisseParUtilisateur;
 	
 	private String codeService; //***************************Code Service A Etablir
-	
-	//**************************Les affecters de l'utilisateur
-<<<<<<< HEAD
+	@ManyToOne(cascade = CascadeType.ALL,targetEntity = Service.class)
+	@JoinColumn(name = "codeService", referencedColumnName = "codeService", nullable = true)
+	public Service service;
+
 	// Liaison à la table Affecter
-=======
-	// Liaison à la table LigneRecollement
->>>>>>> c39f13262875ac7fb34f78df13c23383b6c88aae
 	@OneToMany(cascade = CascadeType.ALL,targetEntity = Affecter.class, mappedBy = "utilisateur")
-	public List<Utilisateur> affectationsDunUtilisateur;
+	public List<Affecter> affectationsDunUtilisateur;
 
 	
 	public Utilisateur() {

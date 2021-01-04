@@ -51,10 +51,13 @@ public class Gerer implements Serializable{
 	public int getIdGerer() {
 		return idGerer;
 	}
-
+	
 	/**
 	 * @param idGerer the idGerer to set
 	 */
+	public void setIdGerer(int idGerer) {
+		this.idGerer = idGerer;
+	}
 
 	/**
 	 * @return the magasinier

@@ -1,46 +1,63 @@
 package com.sil.gpc.services;
 
 import java.util.List;
+import java.util.Optional;
 
+import com.sil.gpc.domains.Article;
 import com.sil.gpc.domains.LigneRecollement;
 import com.sil.gpc.repositories.LigneRecollementRepository;
 
 public class LigneRecollementService {
 
-	private final LigneRecollementRepository lrr;
+	private final LigneRecollementRepository repos;
 
 	/**
-	 * @param lr
+	 * @param repos
 	 */
 	public LigneRecollementService(LigneRecollementRepository lrr) {
-		this.lrr = lrr;
+		this.repos = lrr;
 	}
 
-	public LigneRecollement rechercheUneLigne(Long id) {
-		return lrr.getOne(id);
+	public Optional<LigneRecollement> FindById(Long id) {
+		return repos.findById(id);
 	}
 
-	public List<LigneRecollement> toutesLignes() {
-		return lrr.findAll();
+	public List<LigneRecollement> findAll() {
+		return repos.findAll();
 	}
 
-	public List<LigneRecollement> ajouteLigneRecollement(LigneRecollement ligne){
-		lrr.save(ligne);
-		return lrr.findAll();
+	public List<LigneRecollement> findByArtice(Article article) {
+		return repos.findByArticle(article);
 	}
 
-	public LigneRecollement modifieLigneRecollement(LigneRecollement ligne, Long id) {
-		LigneRecollement lr=lrr.getOne(id);
-		lr.setArticle(ligne.getArticle());
-		lr.setObservationLigneRecollement(ligne.getObservationLigneRecollement());
-		lr.setPULigneRecollement(ligne.getPULigneRecollement());
-		lr.setQuantiteLigneRecollement(ligne.getQuantiteLigneRecollement());
-		return lrr.save(lr);
+	public List<LigneRecollement> findByQte(double qte) {
+		return repos.findByQte(qte);
 	}
 
-	public List<LigneRecollement> supprimeLigneRecollement(Long id) {
-		lrr.deleteById(id);
-		return lrr.findAll();
+	public List<LigneRecollement> findByPrix(double prix) {
+		return repos.findByPrix(prix);
+	}
+
+	public List<LigneRecollement> save(LigneRecollement ligne){
+		repos.save(ligne);
+		return repos.findAll();
+	}
+
+	public LigneRecollement edit(LigneRecollement ligne, Long id) {
+		LigneRecollement cible=repos.getOne(id);
+		if(cible!=null) {
+		cible.setArticle(ligne.getArticle());
+		cible.setObservationLigneRecollement(ligne.getObservationLigneRecollement());
+		cible.setPULigneRecollement(ligne.getPULigneRecollement());
+		cible.setQuantiteLigneRecollement(ligne.getQuantiteLigneRecollement());
+		return repos.save(cible);
+		}else
+			return null;
+	}
+
+	public boolean delete(Long id) {
+		repos.deleteById(id);
+		return repos.existsById(id);
 	}
 
 }

@@ -70,7 +70,6 @@ public class PointVente implements Serializable{
 		this.exercice = exercice;
 		this.correspondant = correspondant;
 		this.regisseur = regisseur;
-		this.lignesParPoint = lignesParPoint;
 	}
 
 	/**

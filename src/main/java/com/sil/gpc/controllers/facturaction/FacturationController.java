@@ -21,6 +21,7 @@ import com.sil.gpc.domains.LigneReversement;
 import com.sil.gpc.domains.ModePaiement;
 import com.sil.gpc.domains.OpCaisse;
 import com.sil.gpc.domains.Reversement;
+import com.sil.gpc.domains.SiteMarcher;
 import com.sil.gpc.domains.TypeRecette;
 import com.sil.gpc.services.AffecterService;
 import com.sil.gpc.services.ArrondissementService;
@@ -31,6 +32,7 @@ import com.sil.gpc.services.LigneReversementService;
 import com.sil.gpc.services.ModePaiementService;
 import com.sil.gpc.services.OpCaisseService;
 import com.sil.gpc.services.ReversementService;
+import com.sil.gpc.services.SiteMarcherService;
 import com.sil.gpc.services.TypeRecetteService;
 import com.sil.gpc.services.UtilisateurService;
 
@@ -47,13 +49,14 @@ public class FacturationController {
 	private final ReversementService reversementService;
 	private final TypeRecetteService typeRecetteService;
 	private final ArrondissementService arrondissementService;
+	private final SiteMarcherService siteMarcherService;
 	private final UtilisateurService utilisateurService;
 	private final ArticleService articleService;
 	
 	
 	public FacturationController(CaisseService caisseService, AffecterService affecterService,
 			LigneOpCaisseService ligneOpCaisseService, LigneReversementService ligneReversementService,
-			ModePaiementService modePaiementService, OpCaisseService opCaisseService,
+			ModePaiementService modePaiementService, OpCaisseService opCaisseService, SiteMarcherService siteMarcherService,
 			ReversementService reversementService, TypeRecetteService typeRecetteService, ArrondissementService arrondissementService, UtilisateurService utilisateurService, ArticleService articleService) {
 		super();
 		this.caisseService = caisseService;
@@ -65,6 +68,7 @@ public class FacturationController {
 		this.reversementService = reversementService;
 		this.typeRecetteService = typeRecetteService;
 		this.arrondissementService = arrondissementService;
+		this.siteMarcherService = siteMarcherService;
 		this.utilisateurService = utilisateurService;
 		this.articleService = articleService;
 	}
@@ -105,12 +109,12 @@ public class FacturationController {
 	}
 	
 	
-	@GetMapping(path = "caisse/byCodArrondi/{valeur}")
-	public List<Caisse> getCaisseByCodeArrondissement(@PathVariable(name = "valeur") String valeur){
+	@GetMapping(path = "caisse/byCodSit/{valeur}")
+	public List<Caisse> getCaisseByCodeSite(@PathVariable(name = "valeur") String valeur){
 		
 		List<Caisse> res = new ArrayList<Caisse>();
-		if(this.arrondissementService.findByCodeArrondi(valeur).isEmpty()==false) {
-			res = this.caisseService.findByArrondissement(this.arrondissementService.findByCodeArrondi(valeur).get(0));
+		if(this.siteMarcherService.findByCodeSiteMarchers(valeur).isEmpty()==false) {
+			res = this.caisseService.findBySite(this.siteMarcherService.findByCodeSiteMarchers(valeur).get(0));
 			return res;
 		}
 		

@@ -1,5 +1,6 @@
 package com.sil.gpc.services;
 
+import com.sil.gpc.domains.Regisseur;
 import com.sil.gpc.domains.Reversement;
 
 import com.sil.gpc.repositories.ReversementRepository;
@@ -67,7 +68,12 @@ public class ReversementService {
 		
 		return this.reversementRepository.findByDateVersement(DateReversement);
 	}
-    
+
+    //
+    public List<Reversement> findByRegisseur(Regisseur regi){
+		
+		return this.reversementRepository.findByRegisseur(regi);
+	}   
     
  
     

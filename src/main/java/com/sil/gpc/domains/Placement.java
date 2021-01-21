@@ -26,6 +26,11 @@ public class Placement implements Serializable{
 	@JoinColumn(name = "idCorrespondant",referencedColumnName = "idCorrespondant",nullable = false)
 	private Correspondant correspondant;
 
+	//Liaison avec correspondatnt
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY,targetEntity = Regisseur.class)
+	@JoinColumn(name = "idRegisseur",referencedColumnName = "idRegisseur",nullable = false)
+	private Regisseur regisseur;
+
 	//Liaison avec Exercice
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY,targetEntity = Exercice.class)
 	@JoinColumn(name = "codeExercice",referencedColumnName = "codeExercice",nullable = false)
@@ -42,12 +47,13 @@ public class Placement implements Serializable{
 	}
 
 	public Placement(String numPlacement, Date datePlacement, Exercice exercice,
-			List<LignePlacement> articlesParPlacement) {
+			Regisseur regisseur, Correspondant corres) {
 		super();
 		this.numPlacement = numPlacement;
 		this.datePlacement = datePlacement;
 		this.exercice = exercice;
-		this.articlesParPlacement = articlesParPlacement;
+		this.regisseur=regisseur;
+		this.correspondant=corres;
 	}
 
 	/**

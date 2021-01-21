@@ -6,8 +6,10 @@ import java.util.List;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
+import com.sil.gpc.domains.Correspondant;
 import com.sil.gpc.domains.Exercice;
 import com.sil.gpc.domains.Magasin;
+import com.sil.gpc.domains.Placement;
 import com.sil.gpc.domains.Recollement;
 import com.sil.gpc.domains.Regisseur;
 
@@ -25,5 +27,7 @@ public interface RecollementRepository extends JpaRepository<Recollement, String
 	public List<Recollement> findByRegisseur(Regisseur reg);
 	
 	public List<Recollement> findByExercice(Exercice exo);
+	
+	List<Recollement> findByCorrespondant(Correspondant corres);
 
 }

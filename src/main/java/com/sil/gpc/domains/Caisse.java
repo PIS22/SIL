@@ -24,9 +24,9 @@ public class Caisse implements Serializable {
 
 	
 	//Liaison à venir
-	@ManyToOne(cascade = CascadeType.DETACH,targetEntity = Arrondissement.class,fetch = FetchType.LAZY)
-	@JoinColumn(name = "codeArrondi",referencedColumnName = "codeArrondi", nullable = false)
-	private Arrondissement arrondissement;
+	@ManyToOne(cascade = CascadeType.DETACH,targetEntity = SiteMarcher.class,fetch = FetchType.LAZY)
+	@JoinColumn(name = "codeSite",referencedColumnName = "codeSite", nullable = false)
+	private SiteMarcher site;
 	
 	@OneToMany(targetEntity = Affecter.class, mappedBy = "caisse")
 	public List<Affecter> utilisateursDuneCaisse;
@@ -39,11 +39,11 @@ public class Caisse implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Caisse(String codeCaisse, String libeCaisse, Arrondissement arrondissement) {
+	public Caisse(String codeCaisse, String libeCaisse, SiteMarcher sitem) {
 		super();
 		this.codeCaisse = codeCaisse;
 		this.libeCaisse = libeCaisse;
-		this.arrondissement = arrondissement;
+		this.site = sitem;
 	}
 	
 	public String getCodeCaisse() {
@@ -63,17 +63,17 @@ public class Caisse implements Serializable {
 	}
 
 	/**
-	 * @return the arrondissement
+	 * @return the site
 	 */
-	public Arrondissement getArrondissement() {
-		return arrondissement;
+	public SiteMarcher getSite() {
+		return site;
 	}
 
 	/**
-	 * @param arrondissement the arrondissement to set
+	 * @param arrondissement the site to set
 	 */
-	public void setArrondissement(Arrondissement arrondissement) {
-		this.arrondissement = arrondissement;
+	public void setSite(SiteMarcher sitem) {
+		this.site = sitem;
 	}
 
 	/**
@@ -92,7 +92,7 @@ public class Caisse implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(arrondissement, codeCaisse, libeCaisse);
+		return Objects.hash(site, codeCaisse, libeCaisse);
 	}
 
 	@Override
@@ -107,13 +107,13 @@ public class Caisse implements Serializable {
 			return false;
 		}
 		Caisse other = (Caisse) obj;
-		return Objects.equals(arrondissement, other.arrondissement) && Objects.equals(codeCaisse, other.codeCaisse)
+		return Objects.equals(site, other.site) && Objects.equals(codeCaisse, other.codeCaisse)
 				&& Objects.equals(libeCaisse, other.libeCaisse);
 	}
 
 	@Override
 	public String toString() {
-		return "Caisse [codeCaisse=" + codeCaisse + ", libeCaisse=" + libeCaisse + ", arrondissement=" + arrondissement
+		return "Caisse [codeCaisse=" + codeCaisse + ", libeCaisse=" + libeCaisse + ", arrondissement=" + site
 				+ ", affectationsDuneCaisse=" + utilisateursDuneCaisse + ", opérationsDuneCaisse="
 				+ opérationsDuneCaisse + "]";
 	}

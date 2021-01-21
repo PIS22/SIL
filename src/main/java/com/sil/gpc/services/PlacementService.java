@@ -6,7 +6,9 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.sil.gpc.domains.Correspondant;
 import com.sil.gpc.domains.Placement;
+import com.sil.gpc.domains.Regisseur;
 import com.sil.gpc.repositories.PlacementRepository;
 
 @Service
@@ -47,6 +49,14 @@ public class PlacementService {
 	
 	public List<Placement> findByDatePlacement(Date dateP){
 		return repos.findByDatePlacement(dateP);
+	}
+	
+	public List<Placement> findByCorrespondant(Correspondant corres){
+		return repos.findByCorrespondant(corres);
+	}
+	
+	public List<Placement> findByRegisseur(Regisseur regi){
+		return repos.findByRegisseur(regi);
 	}
 	
 	public Boolean delete(String np){

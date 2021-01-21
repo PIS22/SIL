@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.sil.gpc.domains.Arrondissement;
 import com.sil.gpc.domains.Caisse;
+import com.sil.gpc.domains.SiteMarcher;
 import com.sil.gpc.repositories.CaisseRepository;
 
 @Service
@@ -29,7 +30,7 @@ public class CaisseService {
 		Caisse entiter = this.repo.getOne(id);
 		if(entiter != null) {
 			entiter.setLibeCaisse(caisse.getLibeCaisse());
-			entiter.setArrondissement(caisse.getArrondissement());
+			entiter.setSite(caisse.getSite());
 			
 			return this.repo.save(entiter);
 		}
@@ -62,9 +63,9 @@ public class CaisseService {
 		return this.repo.findByCodeCaisse(codeCaisse);
 	}
 	
-	public List<Caisse> findByArrondissement(Arrondissement arrondissement){
+	public List<Caisse> findBySite(SiteMarcher site){
 		
-		return this.repo.findByArrondissement(arrondissement);
+		return this.repo.findBySite(site);
 	}
 	
 	public List<Caisse> findByLibeCaisse(String libeCaisse){

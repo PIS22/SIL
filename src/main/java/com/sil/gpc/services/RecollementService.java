@@ -1,7 +1,9 @@
 package com.sil.gpc.services;
 
+import com.sil.gpc.domains.Correspondant;
 import com.sil.gpc.domains.Exercice;
 import com.sil.gpc.domains.Magasin;
+import com.sil.gpc.domains.Placement;
 import com.sil.gpc.domains.Recollement;
 import com.sil.gpc.domains.Regisseur;
 import com.sil.gpc.repositories.RecollementRepository;
@@ -97,6 +99,10 @@ public class RecollementService {
 		
 		return this.recollementRepository.findByExercice(exo);
 	}
-    
+
+	
+	public List<Recollement> findByCorrespondant(Correspondant Corres){
+		return recollementRepository.findByCorrespondant(Corres);
+	}
 
 }

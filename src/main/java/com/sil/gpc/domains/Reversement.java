@@ -22,10 +22,15 @@ public class Reversement implements Serializable{
 	private Date dateVersement;
 	
 	//Liaison avec Exercice
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY,targetEntity = Exercice.class)
-	@JoinColumn(name = "codeExercice",referencedColumnName = "codeExercice",nullable = false)
-	private Exercice exercice;
-	
+		@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY,targetEntity = Exercice.class)
+		@JoinColumn(name = "codeExercice",referencedColumnName = "codeExercice",nullable = false)
+		private Exercice exercice;
+		
+		//Liaison avec regisseur
+		@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY,targetEntity = Regisseur.class)
+		@JoinColumn(name = "idRegi",referencedColumnName = "idRegisseur",nullable = false)
+		private Reversement revers;
+		
 	//************************************Liste des lignes reversements
 	// Liaison à la table LigneRecollement
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = LigneReversement.class, mappedBy = "numReversement")

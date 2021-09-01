@@ -1,0 +1,85 @@
+[33mcommit a5021e657c756bef08596c7fd8e6ecccf9a38ee6[m[33m ([m[1;36mHEAD -> [m[1;32mPeter[m[33m, [m[1;31moriginal/cori[m[33m, [m[1;32mcori[m[33m)[m
+Author: Salim AG <salimanagonhealberic@gmail.com>
+Date:   Thu Dec 24 12:51:58 2020 +0100
+
+    corrections
+
+[33mcommit f72e0d1f49d57f8348d4a3213de625dd5dbec5d4[m[33m ([m[1;31moriginal/Peter[m[33m)[m
+Author: DJOSSOU Peter Ive <ivedjossou@gmail.com>
+Date:   Mon Dec 21 12:00:55 2020 +0100
+
+    Les relations
+
+[33mcommit d4864befb3b825dcf2f1d222595d8bcbb363c8e3[m
+Author: DJOSSOU Peter Ive <ivedjossou@gmail.com>
+Date:   Mon Dec 21 11:59:19 2020 +0100
+
+    Les relations
+
+[33mcommit 5e6426a7e4563f5de8737ab130621142c64e21df[m
+Merge: 5d02880 4fcf10f
+Author: DJOSSOU Peter Ive <ivedjossou@gmail.com>
+Date:   Wed Dec 16 11:17:04 2020 +0100
+
+    Fusion
+
+[33mcommit 5d0288092f362a6108afc629a044c58aa48b44b8[m
+Author: Salim AG <salimanagonhealberic@gmail.com>
+Date:   Mon Dec 14 22:01:53 2020 +0100
+
+    com
+
+[33mcommit 4fcf10f088833ec84984a51a37bcc84c4ceb9c2e[m
+Author: DJOSSOU Peter Ive <ivedjossou@gmail.com>
+Date:   Mon Dec 14 13:39:37 2020 +0100
+
+    Les dernières tables
+
+[33mcommit 7a1fcaa0f149de8939ca16aedf230d07f103d94b[m
+Author: Salim AG <salimanagonhealberic@gmail.com>
+Date:   Mon Dec 14 11:55:01 2020 +0100
+
+    ajout des commits
+
+[33mcommit 30177cde49f5d4b9597287099d6d7f1aae3985bf[m
+Author: Salim AG <salimanagonhealberic@gmail.com>
+Date:   Mon Dec 14 11:08:03 2020 +0100
+
+    ajout des nouvelles entités quartier, commune,...
+
+[33mcommit c5e7ce4470dcd95f3c980201f38be87a6f137789[m
+Author: Salim AG <salimanagonhealberic@gmail.com>
+Date:   Mon Dec 14 09:50:49 2020 +0100
+
+    chagement du nom du package
+
+[33mcommit a7d4e9899bb2f3b548d31879f0e6f8c8977f4cc4[m
+Author: DJOSSOU Peter Ive <ivedjossou@gmail.com>
+Date:   Fri Dec 11 11:58:27 2020 +0100
+
+    Mes premières entités
+
+[33mcommit c3ef2e93e6eb2b9c167ca6ac2f1617f10418aa2a[m
+Merge: de35d9e 5cad86e
+Author: Salim AG <salimanagonhealberic@gmail.com>
+Date:   Wed Dec 9 18:17:17 2020 +0100
+
+    Merge branch 'master' into salson
+
+[33mcommit de35d9ea20e2268542367209e80d05de960fc455[m
+Author: Salim AG <salimanagonhealberic@gmail.com>
+Date:   Wed Dec 9 18:14:26 2020 +0100
+
+    commit sal
+
+[33mcommit 5cad86ea2a768f86615b14b4f160545b8a4fdbb8[m[33m ([m[1;31moriginal/master[m[33m, [m[1;32mmaster[m[33m)[m
+Author: DJOSSOU Peter Ive <ivedjossou@gmail.com>
+Date:   Tue Dec 8 18:04:13 2020 +0100
+
+    configuration de la base de données
+
+[33mcommit 2e0d4101a0f561c8a4dc4bd06f691213441dc8e3[m[33m ([m[1;31moriginal/Leonel[m[33m, [m[1;32mSalson[m[33m, [m[1;32mLeonel[m[33m)[m
+Author: DJOSSOU Peter Ive <ivedjossou@gmail.com>
+Date:   Tue Dec 8 16:35:08 2020 +0100
+
+    Initialisation

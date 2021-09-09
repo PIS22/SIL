@@ -2,7 +2,6 @@ package com.sil.gpc.domains;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,7 +20,7 @@ public class OpCaisse implements Serializable {
 	@Id
 	@Column(name = "numOpCaisse", length = 20)
 	private String numOpCaisse;
-	
+
 	private Timestamp dateOpCaisse;
 	@Column(length = 50)
 	private String contribuable;
@@ -33,50 +32,57 @@ public class OpCaisse implements Serializable {
 	private double mttRem;
 	private double monnai;
 	private double reliquat;
+	private String annulMotif;
+	private Timestamp datAnnul;
 
-	//Liaison à la caisse
+	// Liaison à la caisse
 	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Caisse.class)
 	@JoinColumn(name = "codeCaisse", referencedColumnName = "codeCaisse", nullable = false)
 	private Caisse caisse;
 
-	//Liaison au type de recette
+	// Liaison au type de recette
 	@ManyToOne(fetch = FetchType.EAGER, targetEntity = TypeRecette.class)
 	@JoinColumn(name = "codeTypRec", referencedColumnName = "codeTypRec", nullable = false)
 	private TypeRecette typeRecette;
 
-	//Liaison à la table "ModePaiementRepository"
+	// Liaison à la table "ModePaiementRepository"
 	@ManyToOne(fetch = FetchType.EAGER, targetEntity = ModePaiement.class)
 	@JoinColumn(name = "codeModPay", referencedColumnName = "codeModPay", nullable = false)
 	private ModePaiement modePaiement;
 
-	//Liaison au type de recette
+	// Liaison au type de recette
 	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Exercice.class)
 	@JoinColumn(name = "codeExercice", referencedColumnName = "codeExercice", nullable = true)
 	private Exercice exercice;
 
-	//Liaison à la table "ModePaiementRepository"
+	// Liaison à la table "Utilisateur"
 	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Utilisateur.class)
 	@JoinColumn(name = "idUtilisateur", referencedColumnName = "idUtilisateur", nullable = true)
 	private Utilisateur utilisateur;
+
+	// Liaison à la table "Auteur de l'annulation"
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Utilisateur.class)
+	@JoinColumn(name = "devalidateur", referencedColumnName = "idUtilisateur", nullable = true)
+	private Utilisateur auteurAnnul;
 
 	public OpCaisse() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public OpCaisse(String numOpCaisse, Timestamp dateOpCaisse, String contribuable, String obsOpCaisse,
-			Timestamp dateSaisie, Caisse caisse, TypeRecette typeRecette, ModePaiement modePaiement, Exercice exercice,
-			Double mttRem, Double monnai, Double reliquat, Utilisateur utilisateur) {
+	public OpCaisse(String numOpCaisse, Timestamp dateOpCaisse, String contribuable, String obsOpCaisse, Caisse caisse,
+			TypeRecette typeRecette, ModePaiement modePaiement, Exercice exercice, boolean validOp, Double mttRem,
+			Double monnai, Double reliquat, Utilisateur utilisateur) {
 		this.numOpCaisse = numOpCaisse;
 		this.dateOpCaisse = dateOpCaisse;
 		this.contribuable = contribuable;
 		this.obsOpCaisse = obsOpCaisse;
-		this.dateSaisie = (Timestamp) new Date();
 		this.caisse = caisse;
 		this.typeRecette = typeRecette;
 		this.modePaiement = modePaiement;
 		this.exercice = exercice;
 		this.utilisateur = utilisateur;
+		this.valideOpCaisse = validOp;
 		this.mttRem = mttRem;
 		this.monnai = monnai;
 		this.reliquat = reliquat;
@@ -202,14 +208,38 @@ public class OpCaisse implements Serializable {
 		this.reliquat = reliquat;
 	}
 
+	public String getAnnulMotif() {
+		return annulMotif;
+	}
+
+	public void setAnnulMotif(String annulMotif) {
+		this.annulMotif = annulMotif;
+	}
+
+	public Timestamp getDatAnnul() {
+		return datAnnul;
+	}
+
+	public void setDatAnnul(Timestamp datAnnul) {
+		this.datAnnul = datAnnul;
+	}
+
+	public Utilisateur getAuteurAnnul() {
+		return auteurAnnul;
+	}
+
+	public void setAuteurAnnul(Utilisateur auteurAnnul) {
+		this.auteurAnnul = auteurAnnul;
+	}
+
 	@Override
 	public String toString() {
 		return "OpCaisse [numOpCaisse=" + numOpCaisse + ", dateOpCaisse=" + dateOpCaisse + ", contribuable="
 				+ contribuable + ", valideOpCaisse=" + valideOpCaisse + ", obsOpCaisse=" + obsOpCaisse + ", dateSaisie="
 				+ dateSaisie + ", valeur=" + valeur + ", mttRem=" + mttRem + ", monnai=" + monnai + ", reliquat="
-				+ reliquat + ", caisse=" + caisse + ", typeRecette=" + typeRecette + ", modePaiement=" + modePaiement
+				+ reliquat + ", annulMotif=" + annulMotif + ", datAnnul=" + datAnnul + ", auteurAnnul=" + auteurAnnul
+				+ ", caisse=" + caisse + ", typeRecette=" + typeRecette + ", modePaiement=" + modePaiement
 				+ ", exercice=" + exercice + ", utilisateur=" + utilisateur + "]";
 	}
-
 
 }

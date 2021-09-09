@@ -1,5 +1,6 @@
 package com.sil.gpc.services;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -43,16 +44,15 @@ public class LigneOpCaisseService {
 	}
 
 	public LigneOpCaisse edit(LigneOpCaisse ligne, Long id) {
-		LigneOpCaisse cible=repos.getOne(id);
-		if (cible!=null) {
+		LigneOpCaisse cible = repos.getOne(id);
+		if (cible != null) {
 			cible.setCommentaireLigneOperCaisse(ligne.getCommentaireLigneOperCaisse());
 			cible.setArticle(ligne.getArticle());
 			cible.setPrixLigneOperCaisse(ligne.getPrixLigneOperCaisse());
 			cible.setQteLigneOperCaisse(ligne.getQteLigneOperCaisse());
 			cible.setLivre(ligne.isLivre());
-		return repos.save(cible);
-		}
-		else
+			return repos.save(cible);
+		} else
 			return null;
 	}
 
@@ -64,9 +64,25 @@ public class LigneOpCaisseService {
 	public List<LigneOpCaisse> getByOperation(OpCaisse oc) {
 		return repos.findByOpCaisse(oc);
 	}
-	
-	public List<LigneOpCaisse> findLigneByOP(OpCaisse opc){
+
+	public List<LigneOpCaisse> findLigneByOP(OpCaisse opc) {
 		return repos.findByOpCaisse(opc);
-		
 	}
+
+	public double caisseImputMode(String caisse, String mode, Timestamp deb, Timestamp fin) {
+		return repos.caisseModImput(mode, caisse, deb, fin);
+	}
+
+	public double caissePrestMode(String caisse, String mode, Timestamp deb, Timestamp fin) {
+		return repos.caisseModPrest(mode, caisse, deb, fin);
+	}
+
+	public double arrImputMode(String caisse, String mode, Timestamp deb, Timestamp fin) {
+		return repos.arrModImput(mode, caisse, deb, fin);
+	}
+
+	public double arrPrestMode(String caisse, String mode, Timestamp deb, Timestamp fin) {
+		return repos.caisseModImput(mode, caisse, deb, fin);
+	}
+
 }

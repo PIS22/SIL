@@ -31,11 +31,12 @@ public class DemandeApprovisionnement implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public DemandeApprovisionnement(String numDA, Timestamp dateDA, Exercice exercice) {
+	public DemandeApprovisionnement(String numDA, Timestamp dateDA, Exercice exercice, boolean validDA) {
 		super();
 		this.numDA = numDA;
 		this.dateDA = dateDA;
 		this.exercice = exercice;
+		this.valideDA = validDA;
 		valeur = 0;
 	}
 

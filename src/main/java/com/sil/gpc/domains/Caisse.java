@@ -14,32 +14,31 @@ import javax.persistence.PrimaryKeyJoinColumn;
 @SuppressWarnings("serial")
 @Entity
 public class Caisse implements Serializable {
-	
+
 	@Id
 	@PrimaryKeyJoinColumn
 	@Column(length = 5, unique = true)
-	
+
 	private String codeCaisse;
 	private String libeCaisse;
 
-	
-	//Liaison à venir
-	@ManyToOne(targetEntity = Arrondissement.class,fetch = FetchType.EAGER)
-	@JoinColumn(name = "codeArrondi",referencedColumnName = "codeArrondi", nullable = false)
+	// Liaison à venir
+	@ManyToOne(targetEntity = Arrondissement.class, fetch = FetchType.EAGER)
+	@JoinColumn(name = "codeArrondi", referencedColumnName = "codeArrondi", nullable = false)
 	private Arrondissement arrondissement;
-	
+
 	public Caisse() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	public Caisse(String codeCaisse, String libeCaisse, Arrondissement arrondissement) {
 		super();
 		this.codeCaisse = codeCaisse;
 		this.libeCaisse = libeCaisse;
 		this.arrondissement = arrondissement;
 	}
-	
+
 	public String getCodeCaisse() {
 		return codeCaisse;
 	}
@@ -47,11 +46,11 @@ public class Caisse implements Serializable {
 	public void setCodeCaisse(String codeCaisse) {
 		this.codeCaisse = codeCaisse;
 	}
-	
+
 	public String getLibeCaisse() {
 		return libeCaisse;
 	}
-	
+
 	public void setLibeCaisse(String libeCaisse) {
 		this.libeCaisse = libeCaisse;
 	}
@@ -96,6 +95,5 @@ public class Caisse implements Serializable {
 		return Objects.equals(arrondissement, other.arrondissement) && Objects.equals(codeCaisse, other.codeCaisse)
 				&& Objects.equals(libeCaisse, other.libeCaisse);
 	}
-	
 
 }

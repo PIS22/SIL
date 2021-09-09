@@ -1,7 +1,6 @@
 package com.sil.gpc.domains;
 
 import java.io.Serializable;
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Objects;
 
@@ -14,11 +13,11 @@ import javax.persistence.ManyToOne;
 
 @SuppressWarnings("serial")
 @Entity
-public class PointVente implements Serializable{
+public class PointVente implements Serializable {
 
 	@Id
-	@Column(name="numPointVente", length = 2)
-	private String numPointVente; 
+	@Column(name = "numPointVente", length = 22)
+	private String numPointVente;
 	private Timestamp datePointVente;
 	private boolean validePoint;
 	private boolean payerPoint;
@@ -29,27 +28,27 @@ public class PointVente implements Serializable{
 	@JoinColumn(name = "idUser", referencedColumnName = "idUtilisateur")
 	public Utilisateur utlisateur;
 
-	//Liaison avec Exercice
-	@ManyToOne(fetch = FetchType.EAGER,targetEntity = Exercice.class)
-	@JoinColumn(name = "codeExercice",referencedColumnName = "codeExercice",nullable = false)
+	// Liaison avec Exercice
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Exercice.class)
+	@JoinColumn(name = "codeExercice", referencedColumnName = "codeExercice", nullable = false)
 	private Exercice exercice;
 
-	//Liaison avec Correspondant
-	@ManyToOne(fetch = FetchType.EAGER,targetEntity = Correspondant.class)
-	@JoinColumn(name = "idCorrepondant",referencedColumnName = "idCorrespondant",nullable = false)
+	// Liaison avec Correspondant
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Correspondant.class)
+	@JoinColumn(name = "idCorrepondant", referencedColumnName = "idCorrespondant", nullable = false)
 	private Correspondant correspondant;
 
-	//*********************************Il reste l'opération de caisse
-	//Liaison avec OpCaisse
-	@ManyToOne(fetch = FetchType.EAGER,targetEntity = OpCaisse.class)
-	@JoinColumn(name = "numOpCaisse",referencedColumnName = "numOpCaisse",nullable = true)
+	// *********************************Il reste l'opération de caisse
+	// Liaison avec OpCaisse
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = OpCaisse.class)
+	@JoinColumn(name = "numOpCaisse", referencedColumnName = "numOpCaisse", nullable = true)
 	private OpCaisse opCaisse;
 
-	//Liaison avec Regisseur
-	@ManyToOne(fetch = FetchType.EAGER,targetEntity = Regisseur.class)
-	@JoinColumn(name = "idRegisseur",referencedColumnName = "idRegisseur",nullable = true)
+	// Liaison avec Regisseur
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Regisseur.class)
+	@JoinColumn(name = "idRegisseur", referencedColumnName = "idRegisseur", nullable = true)
 	private Regisseur regisseur;
-	
+
 	public PointVente() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -75,10 +74,9 @@ public class PointVente implements Serializable{
 		this.correspondant = correspondant;
 		this.opCaisse = opCaisse;
 		this.regisseur = regisseur;
-		validePoint=true;
-		valeur =  0;
+		validePoint = true;
+		valeur = 0;
 	}
-
 
 	/**
 	 * @return the valeur
@@ -129,14 +127,12 @@ public class PointVente implements Serializable{
 		return validePoint;
 	}
 
-
 	/**
 	 * @param validePoint the validePoint to set
 	 */
 	public void setValidePoint(boolean validePoint) {
 		this.validePoint = validePoint;
 	}
-
 
 	/**
 	 * @return the payerPoint
@@ -255,5 +251,5 @@ public class PointVente implements Serializable{
 				&& payerPoint == other.payerPoint && Objects.equals(regisseur, other.regisseur)
 				&& validePoint == other.validePoint;
 	}
-	
+
 }

@@ -1,7 +1,6 @@
 package com.sil.gpc.domains;
 
 import java.io.Serializable;
-import java.sql.Date;
 import java.sql.Timestamp;
 
 import javax.persistence.Entity;
@@ -25,179 +24,127 @@ public class Recollement implements Serializable {
 	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Utilisateur.class)
 	@JoinColumn(name = "idUser", referencedColumnName = "idUtilisateur")
 	public Utilisateur utlisateur;
-	
 
 	// Liaison avec Magasin
 	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Magasin.class)
-	@JoinColumn(name = "codeMagasin", referencedColumnName = "codeMagasin", nullable = false)
-	private Magasin magasin;
+	@JoinColumn(name = "magasinsource", referencedColumnName = "codeMagasin", nullable = false)
+	private Magasin magasinsource;
+
+	// Liaison avec Magasin
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Magasin.class)
+	@JoinColumn(name = "codeDestination", referencedColumnName = "codeMagasin", nullable = false)
+	private Magasin magasinDestination;
 
 	// Liaison avec Correspondant
-	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Correspondant.class)
-	@JoinColumn(name = "idCorrespondant", referencedColumnName = "idCorrespondant", nullable = true)
-	private Correspondant corres;
+	// @ManyToOne(fetch = FetchType.EAGER, targetEntity = Correspondant.class)
+	// @JoinColumn(name = "idCorrespondant", referencedColumnName =
+	// "idCorrespondant", nullable = true)
+	// private Correspondant corres;
 
 	// Liaison avec Regisseur
 	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Regisseur.class)
-	@JoinColumn(name = "idRegisseur", referencedColumnName = "idRegisseur", nullable = false)
+	@JoinColumn(name = "idRegisseur", referencedColumnName = "idRegisseur", nullable = true)
 	private Regisseur regisseur;
 
 	// Liaison avec Exercice
 	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Exercice.class)
 	@JoinColumn(name = "codeExercice", referencedColumnName = "codeExercice", nullable = false)
 	private Exercice exercice;
-	
+
 	public Recollement() {
 		super();
 	}
 
-	/**
-	 * @param numRecollement
-	 * @param descriptionRecollement
-	 * @param dateRecollement
-	 * @param valideRecol
-	 * @param magasin
-	 * @param corres
-	 * @param regisseur
-	 * @param exercice
-	 */
-	public Recollement(String numRecollement, String descriptionRecollement, Timestamp dateRecollement, boolean valideRecol,
-			Magasin magasin, Correspondant corres, Regisseur regisseur, Exercice exercice) {
+	public Recollement(String numRecollement, String descriptionRecollement, Timestamp dateRecollement,
+			Magasin magasinsource, Magasin magasinDestination, Exercice exercice, Utilisateur utlisateur,
+			boolean valRec) {
+		super();
 		this.numRecollement = numRecollement;
 		this.descriptionRecollement = descriptionRecollement;
 		this.dateRecollement = dateRecollement;
-		this.valideRecol = valideRecol;
-		this.magasin = magasin;
-		this.corres = corres;
-		this.regisseur = regisseur;
+		this.utlisateur = utlisateur;
+		this.magasinsource = magasinsource;
+		this.magasinDestination = magasinDestination;
+		this.valideRecol = valRec;
 		this.exercice = exercice;
-		this.valideRecol=true;
-		this.valeur=0;
 	}
 
-
-	/**
-	 * @return the numRecollement
-	 */
 	public String getNumRecollement() {
 		return numRecollement;
 	}
 
-	/**
-	 * @param numRecollement the numRecollement to set
-	 */
 	public void setNumRecollement(String numRecollement) {
 		this.numRecollement = numRecollement;
 	}
 
-	/**
-	 * @return the descriptionRecollement
-	 */
 	public String getDescriptionRecollement() {
 		return descriptionRecollement;
 	}
 
-	/**
-	 * @param descriptionRecollement the descriptionRecollement to set
-	 */
 	public void setDescriptionRecollement(String descriptionRecollement) {
 		this.descriptionRecollement = descriptionRecollement;
 	}
 
-	/**
-	 * @return the dateRecollement
-	 */
 	public Timestamp getDateRecollement() {
 		return dateRecollement;
 	}
 
-	/**
-	 * @param dateRecollement the dateRecollement to set
-	 */
 	public void setDateRecollement(Timestamp dateRecollement) {
 		this.dateRecollement = dateRecollement;
 	}
 
-	/**
-	 * @return the valideRecol
-	 */
 	public boolean isValideRecol() {
 		return valideRecol;
 	}
 
-	/**
-	 * @param valideRecol the valideRecol to set
-	 */
 	public void setValideRecol(boolean valideRecol) {
 		this.valideRecol = valideRecol;
 	}
 
-	/**
-	 * @return the magasin
-	 */
-	public Magasin getMagasin() {
-		return magasin;
-	}
-
-	/**
-	 * @return the valeur
-	 */
 	public int getValeur() {
 		return valeur;
 	}
 
-	/**
-	 * @param valeur the valeur to set
-	 */
 	public void setValeur(int valeur) {
 		this.valeur = valeur;
 	}
 
-	/**
-	 * @param magasin the magasin to set
-	 */
-	public void setMagasin(Magasin magasin) {
-		this.magasin = magasin;
+	public Timestamp getDateSaisie() {
+		return dateSaisie;
 	}
 
-	/**
-	 * @return the corres
-	 */
-	public Correspondant getCorres() {
-		return corres;
+	public void setDateSaisie(Timestamp dateSaisie) {
+		this.dateSaisie = dateSaisie;
 	}
 
-	/**
-	 * @param corres the corres to set
-	 */
-	public void setCorres(Correspondant corres) {
-		this.corres = corres;
+	public Utilisateur getUtlisateur() {
+		return utlisateur;
 	}
 
-	/**
-	 * @return the regisseur
-	 */
-	public Regisseur getRegisseur() {
-		return regisseur;
+	public void setUtlisateur(Utilisateur utlisateur) {
+		this.utlisateur = utlisateur;
 	}
 
-	/**
-	 * @param regisseur the regisseur to set
-	 */
-	public void setRegisseur(Regisseur regisseur) {
-		this.regisseur = regisseur;
+	public Magasin getMagasinsource() {
+		return magasinsource;
 	}
 
-	/**
-	 * @return the exercice
-	 */
+	public void setMagasinsource(Magasin magasinsource) {
+		this.magasinsource = magasinsource;
+	}
+
+	public Magasin getMagasinDestination() {
+		return magasinDestination;
+	}
+
+	public void setMagasinDestination(Magasin magasinDestination) {
+		this.magasinDestination = magasinDestination;
+	}
+
 	public Exercice getExercice() {
 		return exercice;
 	}
 
-	/**
-	 * @param exercice the exercice to set
-	 */
 	public void setExercice(Exercice exercice) {
 		this.exercice = exercice;
 	}
@@ -205,8 +152,8 @@ public class Recollement implements Serializable {
 	@Override
 	public String toString() {
 		return "Recollement [numRecollement=" + numRecollement + ", descriptionRecollement=" + descriptionRecollement
-				+ ", dateRecollement=" + dateRecollement + ", valideRecol=" + valideRecol + ", magasin=" + magasin
-				+ ", corres=" + corres + ", regisseur=" + regisseur + ", exercice=" + exercice + "]";
+				+ ", dateRecollement=" + dateRecollement + ", valideRecol=" + valideRecol + ", valeur=" + valeur
+				+ ", dateSaisie=" + dateSaisie + ", utlisateur=" + utlisateur + ", magasinsource=" + magasinsource
+				+ ", magasinDestination=" + magasinDestination + ", exercice=" + exercice + "]";
 	}
-
 }

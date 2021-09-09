@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,7 +14,7 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Utilisateur {
 
-	@Id  //*******************A générer automatiquement
+	@Id // *******************A générer automatiquement
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long idUtilisateur;
 	@Column(unique = true)
@@ -21,21 +22,24 @@ public class Utilisateur {
 	private String motDePass;
 	private String nomUtilisateur;
 	private String prenomUtilisateur;
-	private String fonctionUtilisateur;
+
+	@ManyToOne(targetEntity = Fonction.class, fetch = FetchType.EAGER)
+	@JoinColumn(name = "codeFonction", referencedColumnName = "codeFonction")
+	private Fonction fonctionUtilisateur;
 	private boolean activeUtilisateur;
 	private String dateLastConnex;
 	private boolean askMdp1erLance;
-	
+
 	@ManyToOne(targetEntity = Service.class)
 	@JoinColumn(name = "codeService", referencedColumnName = "codeService", nullable = true)
 	public Service service;
-	
+
 	public Utilisateur() {
 		super();
 	}
 
 	public Utilisateur(String login, String motDePass, String nomUtilisateur, String prenomUtilisateur,
-			String fonctionUtilisateur, boolean activeUtilisateur, Service service) {
+			Fonction fonctionUtilisateur, boolean activeUtilisateur, Service service) {
 		super();
 		this.login = login;
 		this.motDePass = motDePass;
@@ -48,7 +52,7 @@ public class Utilisateur {
 	}
 
 	public Utilisateur(String login, String motDePass, String nomUtilisateur, String prenomUtilisateur,
-			String fonctionUtilisateur, boolean activeUtilisateur, String dateLastConnex, boolean askMdp1erLance,
+			Fonction fonctionUtilisateur, boolean activeUtilisateur, String dateLastConnex, boolean askMdp1erLance,
 			Service service) {
 		super();
 		this.login = login;
@@ -102,11 +106,11 @@ public class Utilisateur {
 		this.prenomUtilisateur = prenomUtilisateur;
 	}
 
-	public String getFonctionUtilisateur() {
+	public Fonction getFonctionUtilisateur() {
 		return fonctionUtilisateur;
 	}
 
-	public void setFonctionUtilisateur(String fonctionUtilisateur) {
+	public void setFonctionUtilisateur(Fonction fonctionUtilisateur) {
 		this.fonctionUtilisateur = fonctionUtilisateur;
 	}
 
@@ -176,5 +180,5 @@ public class Utilisateur {
 				&& Objects.equals(motDePass, other.motDePass) && Objects.equals(nomUtilisateur, other.nomUtilisateur)
 				&& Objects.equals(prenomUtilisateur, other.prenomUtilisateur) && Objects.equals(service, other.service);
 	}
-	
+
 }

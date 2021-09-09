@@ -10,10 +10,12 @@
 	</parent>
 	<groupId>com.sil</groupId>
 	<artifactId>guichetuniq</artifactId>
+
 	<version>1.0.1</version>
 	<name>guichetuniq</name>
 	<description>Prestations communales en mode web</description>
 	<packaging>war</packaging>
+
 
 	<properties>
 		<java.version>1.8</java.version>

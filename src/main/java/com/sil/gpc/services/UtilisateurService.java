@@ -3,17 +3,22 @@ package com.sil.gpc.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.sil.gpc.domains.Fonction;
 import com.sil.gpc.domains.Service;
 import com.sil.gpc.domains.Utilisateur;
+import com.sil.gpc.repositories.FonctionRepository;
 import com.sil.gpc.repositories.UtilisateurRepository;
 
 @org.springframework.stereotype.Service
 public class UtilisateurService {
 
 	private final UtilisateurRepository userRepository;
+	private final FonctionRepository repos;
 
-	public UtilisateurService(UtilisateurRepository userRepository) {
+	public UtilisateurService(UtilisateurRepository userRepository, FonctionRepository repos) {
+		super();
 		this.userRepository = userRepository;
+		this.repos = repos;
 	}
 
 	// Sauvegarder
@@ -62,7 +67,14 @@ public class UtilisateurService {
 	// Liste
 	public List<Utilisateur> getAll() {
 		if (this.userRepository.findAll().size() == 0) {
-			userRepository.save(new Utilisateur("Admin", "admin", "Administrateur", "", "Administrateur", true, null));
+			if (repos.findAll().size() == 0) {
+				repos.saveAndFlush(new Fonction("S1", "Caissier"));
+				repos.saveAndFlush(new Fonction("S2", "Regisseur"));
+				repos.saveAndFlush(new Fonction("S3", "Livreur"));
+				repos.saveAndFlush(new Fonction("S4", "Admin"));
+			}
+			userRepository.save(new Utilisateur("Admin", "admin", "Administrateur", "",
+					new Fonction("S4", "Administrateur"), true, new Service("S4", "Admin")));
 		}
 		return this.userRepository.findAll();
 	}

@@ -25,6 +25,7 @@ import com.sil.gpc.domains.Placement;
 import com.sil.gpc.domains.PlageNumDispo;
 import com.sil.gpc.domains.Recollement;
 import com.sil.gpc.domains.Regisseur;
+import com.sil.gpc.domains.Stocker;
 import com.sil.gpc.services.ApprovisionnementService;
 import com.sil.gpc.services.LigneApproService;
 import com.sil.gpc.services.LignePlacementService;
@@ -33,6 +34,7 @@ import com.sil.gpc.services.PlacementService;
 import com.sil.gpc.services.PlageNumDispoService;
 import com.sil.gpc.services.RecollementService;
 import com.sil.gpc.services.RegisseurService;
+import com.sil.gpc.services.StockerService;
 
 @CrossOrigin
 @RestController
@@ -47,11 +49,12 @@ public class MairieController {
 	private final LigneRecollementService ligneRecollementService;
 	private final RegisseurService regisseurService;
 	private final PlageNumDispoService pds;
+	private final StockerService stk;
 
 	public MairieController(ApprovisionnementService approvisionnementService, LigneApproService ligneApproService,
 			PlacementService placementService, LignePlacementService lignePlacementService,
 			RecollementService recollementService, LigneRecollementService ligneRecollementService,
-			RegisseurService regisseurService, PlageNumDispoService pds) {
+			RegisseurService regisseurService, PlageNumDispoService pds, StockerService s) {
 		super();
 		this.approvisionnementService = approvisionnementService;
 		this.ligneApproService = ligneApproService;
@@ -61,6 +64,7 @@ public class MairieController {
 		this.ligneRecollementService = ligneRecollementService;
 		this.regisseurService = regisseurService;
 		this.pds = pds;
+		this.stk = s;
 	}
 
 	/*
@@ -120,6 +124,7 @@ public class MairieController {
 
 	@PostMapping(path = "ligneAppro/list")
 	public LigneAppro createLigneAppro(@RequestBody LigneAppro ligneAppro) {
+
 		LigneAppro la = this.ligneApproService.save(ligneAppro);
 		if (la != null && la.getLigneDA().getArticle().isNumSerieArticle()) {
 			Long qte = (long) la.getQuantiteLigneAppro();
@@ -128,15 +133,50 @@ public class MairieController {
 			PlageNumDispo plagecourante = plageD.get(0);
 			Long qt = plagecourante.getNumFinPlageDispo() - plagecourante.getNumDebPlageDispo() + 1;
 			if (qte < qt) {
-				if (pds.save(new PlageNumDispo(plagecourante.getNumDebPlageDispo(), plagecourante.getNumDebPlageDispo(),
-						plagecourante.getNumDebPlageDispo() + qte - 1, plagecourante.getNumDebPlageDispo() + qte - 1,
-						plagecourante.getExercice(), plagecourante.getArticle(), new Magasin("CM", "Caveau Mairie"),
-						null, la.getAppro(), null, null)) != null) {
+				PlageNumDispo np = new PlageNumDispo(plagecourante.getNumDebPlageDispo(),
+						plagecourante.getNumDebPlageDispo(), plagecourante.getNumDebPlageDispo() + qte - 1,
+						plagecourante.getNumDebPlageDispo() + qte - 1, plagecourante.getExercice(),
+						plagecourante.getArticle(), new Magasin("CM", "Caveau Mairie"), null, la.getAppro(), null,
+						null);
+				System.out.println("Nouvelle plage" + np);
+				if (pds.save(np) != null) {
 					plagecourante.setNumDebPlageDispo(plagecourante.getNumDebPlageDispo() + qte);
+					System.out.println("plage reaménagée: " + plagecourante);
 					pds.edit(plagecourante, plagecourante.getCodePlageDispo());
+				}
+			} else {
+				int i = 0;
+				while (qte > 0) {
+					plagecourante = plageD.get(i);
+					qt = plagecourante.getNumFinPlageDispo() - plagecourante.getNumDebPlageDispo() + 1;
+					if (qte >= qt) {
+						plagecourante.setMagasin(new Magasin("CM", "Caveau mairie"));
+						System.out.println("plage reaménagée: " + plagecourante);
+						pds.edit(plagecourante, plagecourante.getCodePlageDispo());
+					} else {
+						PlageNumDispo np = new PlageNumDispo(plagecourante.getNumDebPlageDispo(),
+								plagecourante.getNumDebPlageDispo(), plagecourante.getNumDebPlageDispo() + qte - 1,
+								plagecourante.getNumDebPlageDispo() + qte - 1, plagecourante.getExercice(),
+								plagecourante.getArticle(), new Magasin("CM", "Caveau Mairie"), null, la.getAppro(),
+								null, null);
+						System.out.println("Nouvelle plage" + np);
+						if (pds.save(np) != null) {
+							plagecourante.setNumDebPlageDispo(plagecourante.getNumDebPlageDispo() + qte);
+							System.out.println("plage reaménagée: " + plagecourante);
+							pds.edit(plagecourante, plagecourante.getCodePlageDispo());
+						}
+					}
+					i++;
+					qte -= qt;
 				}
 			}
 		}
+		Stocker stkMairie = stk.ligneStocker(ligneAppro.getLigneDA().getArticle(), "CM");
+		stkMairie.setQuantiterStocker(stkMairie.getQuantiterStocker() + la.getQuantiteLigneAppro());
+		stk.edit(stkMairie.getIdStocker(), stkMairie);
+		Stocker stkTresor = stk.ligneStocker(ligneAppro.getLigneDA().getArticle(), "CT");
+		stkTresor.setQuantiterStocker(stkTresor.getQuantiterStocker() + la.getQuantiteLigneAppro());
+		stk.edit(stkTresor.getIdStocker(), stkTresor);
 		return la;
 	}
 
@@ -270,11 +310,12 @@ public class MairieController {
 		return this.recollementService.findByDateRecollement(dateReco);
 	}
 
-	@GetMapping(path = "recollement/byMag/{mag}")
-	public List<Recollement> getRecollementByMagasin(@PathVariable(name = "mag") Magasin mag) {
-
-		return this.recollementService.findByMagasinRecollement(mag);
-	}
+	// @GetMapping(path = "recollement/byMag/{mag}")
+	// public List<Recollement> getRecollementByMagasin(@PathVariable(name = "mag")
+	// Magasin mag) {
+//
+	// return this.recollementService.findByMagasinRecollement(mag);
+	// }
 
 	@GetMapping(path = "recollement/byReg/{reg}")
 	public List<Recollement> getRecollementByRegisseur(@PathVariable(name = "reg") Regisseur reg) {

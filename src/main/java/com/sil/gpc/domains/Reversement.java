@@ -1,7 +1,6 @@
 package com.sil.gpc.domains;
 
 import java.io.Serializable;
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Objects;
 
@@ -13,7 +12,7 @@ import javax.persistence.ManyToOne;
 
 @SuppressWarnings("serial")
 @Entity
-public class Reversement implements Serializable{
+public class Reversement implements Serializable {
 
 	@Id
 	private String numReversement;
@@ -25,28 +24,28 @@ public class Reversement implements Serializable{
 	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Utilisateur.class)
 	@JoinColumn(name = "idUser", referencedColumnName = "idUtilisateur")
 	public Utilisateur utlisateur;
-	
-	//Liaison avec Exercice
-	@ManyToOne(fetch = FetchType.EAGER,targetEntity = Exercice.class)
-	@JoinColumn(name = "codeExercice",referencedColumnName = "codeExercice",nullable = false)
+
+	// Liaison avec Exercice
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Exercice.class)
+	@JoinColumn(name = "codeExercice", referencedColumnName = "codeExercice", nullable = false)
 	private Exercice exercice;
-	
-	//Liaison avec Reversement
-	@ManyToOne(fetch = FetchType.EAGER,targetEntity = Regisseur.class)
-	@JoinColumn(name = "idRegisseur",referencedColumnName = "idRegisseur",nullable = false)
+
+	// Liaison avec Reversement
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Regisseur.class)
+	@JoinColumn(name = "idRegisseur", referencedColumnName = "idRegisseur", nullable = false)
 	private Regisseur regisseur;
-	
+
 	public Reversement() {
 		super();
 	}
-	
+
 	/**
 	 * @return the numReversement
 	 */
 	public String getNumReversement() {
 		return numReversement;
 	}
-	
+
 	/**
 	 * @param numReversement
 	 * @param dateVersement
@@ -54,15 +53,14 @@ public class Reversement implements Serializable{
 	 * @param exercice
 	 * @param regisseur
 	 */
-	public Reversement(String numReversement, Timestamp dateVersement, boolean valideReve, Exercice exercice,
-			Regisseur regisseur) {
+	public Reversement(String numReversement, Timestamp dateVersement, Exercice exercice, Regisseur regisseur,
+			boolean valideReve) {
 		this.numReversement = numReversement;
 		this.dateVersement = dateVersement;
-		this.valideReve = valideReve;
 		this.exercice = exercice;
 		this.regisseur = regisseur;
-		valideReve=true;
-		valeur =  0;
+		this.valideReve = valideReve;
+		valeur = 0;
 	}
 
 	/**
@@ -185,5 +183,5 @@ public class Reversement implements Serializable{
 				&& Objects.equals(numReversement, other.numReversement) && Objects.equals(regisseur, other.regisseur)
 				&& valideReve == other.valideReve;
 	}
-	
+
 }

@@ -5,10 +5,11 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+@SuppressWarnings("serial")
 @Entity
 public class Fonction implements Serializable {
 	@Id
-	private String codeFonction;
+	private String codFonction;
 	private String libFonction;
 
 	public Fonction() {
@@ -18,16 +19,16 @@ public class Fonction implements Serializable {
 
 	public Fonction(String codeFonction, String libFonction) {
 		super();
-		this.codeFonction = codeFonction;
+		this.codFonction = codeFonction;
 		this.libFonction = libFonction;
 	}
 
 	public String getCodeFonction() {
-		return codeFonction;
+		return codFonction;
 	}
 
 	public void setCodeFonction(String codeFonction) {
-		this.codeFonction = codeFonction;
+		this.codFonction = codeFonction;
 	}
 
 	public String getLibFonction() {
@@ -40,7 +41,7 @@ public class Fonction implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Fonction [codeFonction=" + codeFonction + ", libFonction=" + libFonction + "]";
+		return "Fonction [codeFonction=" + codFonction + ", libFonction=" + libFonction + "]";
 	}
 
 }

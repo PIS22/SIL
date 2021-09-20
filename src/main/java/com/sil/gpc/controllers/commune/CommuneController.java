@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sil.gpc.domains.AffectDroitGroupUser;
@@ -27,10 +28,15 @@ import com.sil.gpc.domains.Fonction;
 import com.sil.gpc.domains.Fournisseur;
 import com.sil.gpc.domains.GroupUser;
 import com.sil.gpc.domains.InstituReverse;
+import com.sil.gpc.domains.Occuper;
 import com.sil.gpc.domains.Pays;
+import com.sil.gpc.domains.Personne;
+import com.sil.gpc.domains.Poste;
 import com.sil.gpc.domains.PourcenReverse;
 import com.sil.gpc.domains.Quartier;
+import com.sil.gpc.domains.Rapport;
 import com.sil.gpc.domains.Service;
+import com.sil.gpc.domains.Signer;
 import com.sil.gpc.domains.SiteMarcher;
 import com.sil.gpc.domains.Utilisateur;
 import com.sil.gpc.services.AffectDroitGroupUserService;
@@ -46,10 +52,15 @@ import com.sil.gpc.services.FonctionService;
 import com.sil.gpc.services.FournisseurService;
 import com.sil.gpc.services.GroupUserService;
 import com.sil.gpc.services.InstituReverseService;
+import com.sil.gpc.services.OccuperService;
 import com.sil.gpc.services.PaysService;
+import com.sil.gpc.services.PersonneService;
+import com.sil.gpc.services.PosteService;
 import com.sil.gpc.services.PourcenReverseService;
 import com.sil.gpc.services.QuartierService;
+import com.sil.gpc.services.RapportService;
 import com.sil.gpc.services.ServiceService;
+import com.sil.gpc.services.SignerService;
 import com.sil.gpc.services.SiteMarcherService;
 import com.sil.gpc.services.UtilisateurService;
 
@@ -77,6 +88,11 @@ public class CommuneController {
 	private final InstituReverseService ir;
 	private final PourcenReverseService perce;
 	private final AffectUserToArrondiService auta;
+	private final PosteService posts;
+	private final OccuperService ocs;
+	private final SignerService sis;
+	private final RapportService raps;
+	private final PersonneService pers;
 
 	public CommuneController(ExerciceService exerciceService, FournisseurService fournisseurService,
 			ServiceService serviceService, UtilisateurService utilisateurService, FonctionService fonctionService,
@@ -84,7 +100,8 @@ public class CommuneController {
 			ArrondissementService arrondissementService, QuartierService quartierService,
 			EtreAffeccteService etreAffecterService, SiteMarcherService siMaS, GroupUserService ug,
 			AffectDroitGroupUserService dgus, AffectUserGroupService aug, DroitUserService du, InstituReverseService ir,
-			PourcenReverseService perce, AffectUserToArrondiService auta) {
+			PourcenReverseService perce, AffectUserToArrondiService auta, PosteService posts, OccuperService ocs,
+			SignerService sis, RapportService raps, PersonneService pers) {
 		super();
 		this.exerciceService = exerciceService;
 		this.fournisseurService = fournisseurService;
@@ -105,6 +122,11 @@ public class CommuneController {
 		this.ir = ir;
 		this.perce = perce;
 		this.auta = auta;
+		this.posts = posts;
+		this.ocs = ocs;
+		this.sis = sis;
+		this.raps = raps;
+		this.pers = pers;
 	}
 
 	/*
@@ -115,8 +137,7 @@ public class CommuneController {
 
 	@GetMapping(path = "fonc/list")
 	public List<Fonction> getAllFonction() {
-
-		return this.fonctionService.getAll();
+		return fonctionService.getAll();
 	}
 
 	@GetMapping(path = "fonc/byCodFon/{id}")
@@ -126,32 +147,27 @@ public class CommuneController {
 	}
 
 	/*
-	 * ########################################################### #############
-	 * Partie réservée pour exercice
-	 * ###########################################################
+	 * ####################### Partie réservée pour exercice
+	 * ##########################
 	 */
 
 	@GetMapping(path = "exercice/list")
 	public List<Exercice> getAllExercice() {
-
 		return this.exerciceService.getAll();
 	}
 
 	@GetMapping(path = "exercice/byCodExe/{id}")
 	public Optional<Exercice> getExerciceById(@PathVariable(name = "id") String id) {
-
 		return this.exerciceService.getById(id);
 	}
 
 	@GetMapping(path = "exercice/byExoSel/{exoSel}")
 	public List<Exercice> getExerciceById(@PathVariable(name = "exoSel") boolean exoSel) {
-
 		return this.exerciceService.findByExoSelectionner(exoSel);
 	}
 
 	@PostMapping(path = "exercice/list")
 	public Exercice createExercice(@RequestBody Exercice exercice) {
-
 		return this.exerciceService.save(exercice);
 	}
 
@@ -167,15 +183,10 @@ public class CommuneController {
 		return this.exerciceService.delete(id);
 	}
 
-	/*
-	 * ########################################################### #############
-	 * Partie réservée pour EtreAffecte
-	 * ###########################################################
-	 */
+	/* ############# Partie réservée pour EtreAffecte ################# */
 
 	@GetMapping(path = "Affect/list")
 	public List<EtreAffecte> getAllAffectation() {
-
 		return this.etreAffecterService.getAllAffect();
 	}
 
@@ -459,11 +470,152 @@ public class CommuneController {
 		return this.aug.delete(id);
 	}
 
-	/*
-	 * ########################################################### #############
-	 * Partie réservée pour DroitUser
-	 * ###########################################################
-	 */
+	/* ############# Partie réservée pour Poste ################# */
+	@GetMapping(path = "post/list")
+	public List<Poste> getAllPoste() {
+		return this.posts.getAll();
+	}
+
+	@GetMapping(path = "post/byId/{id}")
+	public Poste getPoste(@PathVariable(name = "id") Long id) {
+		return this.posts.getById(id);
+	}
+
+	@PutMapping(path = "post/byId/{id}")
+	public Poste editPoste(@PathVariable(name = "id") Long id, @RequestParam Poste p) {
+		return this.posts.edit(id, p);
+	}
+
+	@DeleteMapping(path = "post/byId/{id}")
+	public boolean deletePoste(@PathVariable(name = "id") Long id) {
+		return this.posts.delete(id);
+	}
+
+	@PostMapping(path = "post/list")
+	public Poste createPoste(@RequestBody Poste post) {
+		return this.posts.add(post);
+	}
+
+	/* ############# Partie réservée pour Signer ################# */
+	@GetMapping(path = "sig/list")
+	public List<Signer> getAllSigner() {
+		return this.sis.getAll();
+	}
+
+	@GetMapping(path = "sig/mtn")
+	public List<Signer> getSignerActuel() {
+		return this.sis.SignatairesActuels();
+	}
+
+	@GetMapping(path = "sig/byId/{id}")
+	public Signer getSigner(@PathVariable(name = "id") Long id) {
+		return this.sis.getById(id);
+	}
+
+	@PutMapping(path = "sig/byId/{id}")
+	public Signer editSigner(@PathVariable(name = "id") Long id, @RequestParam Signer cor) {
+		return this.sis.edit(id, cor);
+	}
+
+	@DeleteMapping(path = "sig/byId/{id}")
+	public boolean deleteSigner(@PathVariable(name = "id") Long id) {
+		return this.sis.delete(id);
+	}
+
+	@PostMapping(path = "sig/list")
+	public Signer createSigner(@RequestBody Signer sig) {
+		return this.sis.add(sig);
+	}
+
+	/* ############# Partie réservée pour Rapport ################# */
+	@GetMapping(path = "rap/list")
+	public List<Rapport> getAllPRapport() {
+		return this.raps.getAll();
+	}
+
+	@GetMapping(path = "rap/byId/{id}")
+	public Rapport getRapport(@PathVariable(name = "id") Long id) {
+		return this.raps.getById(id);
+	}
+
+	@PutMapping(path = "rap/byId/{id}")
+	public Rapport editRapport(@PathVariable(name = "id") Long id, @RequestParam Rapport p) {
+		return this.raps.edit(id, p);
+	}
+
+	@PutMapping(path = "rap/byLib/{lib}")
+	public List<Rapport> editRapport(@PathVariable(name = "id") String lib) {
+		return this.raps.getByLib(lib);
+	}
+
+	@DeleteMapping(path = "rap/byId/{id}")
+	public boolean deleteRapport(@PathVariable(name = "id") Long id) {
+		return this.raps.delete(id);
+	}
+
+	@PostMapping(path = "rap/list")
+	public Rapport createRapport(@RequestBody Rapport perss) {
+		return this.raps.add(perss);
+	}
+
+	/* ############# Partie réservée pour Occuper ################# */
+	@GetMapping(path = "occ/list")
+	public List<Occuper> getAllOccuper() {
+		return this.ocs.getAll();
+	}
+
+	@GetMapping(path = "occ/mtn")
+	public List<Occuper> getOccupActu() {
+		return this.ocs.getOccupActu();
+	}
+
+	@GetMapping(path = "occ/byId/{id}")
+	public Occuper getOccuper(@PathVariable(name = "id") Long id) {
+		return this.ocs.getById(id);
+	}
+
+	@PutMapping(path = "occ/byId/{id}")
+	public Occuper editOccuper(@PathVariable(name = "id") Long id, @RequestParam Occuper p) {
+		return this.ocs.edit(id, p);
+	}
+
+	@DeleteMapping(path = "occ/byId/{id}")
+	public boolean deleteOccuper(@PathVariable(name = "id") Long id) {
+		return this.ocs.delete(id);
+	}
+
+	@PostMapping(path = "occ/list")
+	public Occuper createOccuper(@RequestBody Occuper perss) {
+		return this.ocs.add(perss);
+	}
+
+	/* ############# Partie réservée pour Personne ################# */
+	@GetMapping(path = "pers/list")
+	public List<Personne> getAllPersonne() {
+		return this.pers.getAll();
+	}
+
+	@GetMapping(path = "pers/byId/{id}")
+	public Personne getPersonne(@PathVariable(name = "id") Long id) {
+		return this.pers.getById(id);
+	}
+
+	@PutMapping(path = "pers/byId/{id}")
+	public Personne editPersonne(@PathVariable(name = "id") Long id, @RequestParam Personne p) {
+		return this.pers.edit(id, p);
+	}
+
+	@DeleteMapping(path = "pers/byId/{id}")
+	public boolean deletePersonne(@PathVariable(name = "id") Long id) {
+		return this.pers.delete(id);
+	}
+
+	@PostMapping(path = "pers/list")
+	public Personne createPersonne(@RequestBody Personne perss) {
+		return this.pers.add(perss);
+	}
+
+	/* ############# Partie réservée pour DroitUser ################# */
 
 	@GetMapping(path = "du/list")
 	public List<DroitUser> getAllDroits() {

@@ -22,7 +22,7 @@ public class Recollement implements Serializable {
 	private Timestamp dateSaisie;
 
 	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Utilisateur.class)
-	@JoinColumn(name = "idUser", referencedColumnName = "idUtilisateur")
+	@JoinColumn(name = "idUser", referencedColumnName = "idUtilisateur", nullable = true)
 	public Utilisateur utlisateur;
 
 	// Liaison avec Magasin

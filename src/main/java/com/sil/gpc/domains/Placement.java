@@ -1,7 +1,6 @@
 package com.sil.gpc.domains;
 
 import java.io.Serializable;
-
 import java.sql.Timestamp;
 
 import javax.persistence.Entity;
@@ -12,7 +11,7 @@ import javax.persistence.ManyToOne;
 
 @SuppressWarnings("serial")
 @Entity
-public class Placement implements Serializable{
+public class Placement implements Serializable {
 
 	@Id
 	private String numPlacement;
@@ -21,23 +20,31 @@ public class Placement implements Serializable{
 	private boolean validepl;
 	private Timestamp dateSaisie;
 
+	public Timestamp getDateSaisie() {
+		return dateSaisie;
+	}
+
+	public void setDateSaisie(Timestamp dateSaisie) {
+		this.dateSaisie = dateSaisie;
+	}
+
 	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Utilisateur.class)
 	@JoinColumn(name = "idUser", referencedColumnName = "idUtilisateur")
-	public Utilisateur utlisateur; 
+	public Utilisateur utlisateur;
 
-	//Liaison avec Regisseur
-	@ManyToOne(fetch = FetchType.EAGER,targetEntity = Regisseur.class)
-	@JoinColumn(name = "idRegisseur",referencedColumnName = "IdRegisseur",nullable = false)
+	// Liaison avec Regisseur
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Regisseur.class)
+	@JoinColumn(name = "idRegisseur", referencedColumnName = "IdRegisseur", nullable = false)
 	private Regisseur regisseur;
 
-	//Liaison avec correspondant
-	@ManyToOne(fetch = FetchType.EAGER,targetEntity = Correspondant.class)
-	@JoinColumn(name = "idCorrespondant",referencedColumnName = "idCorrespondant",nullable = false)
+	// Liaison avec correspondant
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Correspondant.class)
+	@JoinColumn(name = "idCorrespondant", referencedColumnName = "idCorrespondant", nullable = false)
 	private Correspondant correspondant;
 
-	//Liaison avec Exercice
-	@ManyToOne(fetch = FetchType.EAGER,targetEntity = Exercice.class)
-	@JoinColumn(name = "codeExercice",referencedColumnName = "codeExercice",nullable = false)
+	// Liaison avec Exercice
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Exercice.class)
+	@JoinColumn(name = "codeExercice", referencedColumnName = "codeExercice", nullable = false)
 	private Exercice exercice;
 
 	public Placement() {
@@ -58,8 +65,8 @@ public class Placement implements Serializable{
 		this.regisseur = regisseur;
 		this.correspondant = correspondant;
 		this.exercice = exercice;
-		this.valeur=0;
-		this.validepl=true;
+		this.valeur = 0;
+		this.validepl = true;
 	}
 
 	/**
@@ -165,5 +172,5 @@ public class Placement implements Serializable{
 		return "Placement [numPlacement=" + numPlacement + ", datePlacement=" + datePlacement + ", regisseur="
 				+ regisseur + ", correspondant=" + correspondant + ", exercice=" + exercice + "]";
 	}
-	
+
 }

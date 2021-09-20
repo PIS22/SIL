@@ -1,7 +1,6 @@
 package com.sil.gpc.controllers.location;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -112,17 +111,20 @@ public class LocationController {
 		return this.echeanceService.getAll();
 	}
 
-	@GetMapping(path = "eche/mod/{mod}/{caisse}/{deb}/{fin}")
-	public double getCaisseMode(@PathVariable(name = "mod") String mod, @PathVariable(name = "mod") String caisse,
-			@PathVariable(name = "mod") String deb, @PathVariable(name = "mod") String fin) {
-		Timestamp t = new Timestamp(Integer.parseInt(deb.substring(0, 3)), Integer.parseInt(deb.substring(5, 6)),
-				Integer.parseInt(deb.substring(8, 9)), Integer.parseInt(deb.substring(10, 11)),
-				Integer.parseInt(deb.substring(13, 14)), Integer.parseInt(deb.substring(16, 17)), 0);
-		System.out.println("Debut controlleur" + t);
-		System.out.println("date fin controlleur" + Date.valueOf(fin));
-		return 12.25;
-		// return this.echeanceService.caisseLocMode(caisse, mod, deb, fin);
-	}
+	/*
+	 * @GetMapping(path = "eche/mod/{mod}/{caisse}/{deb}/{fin}") public double
+	 * getCaisseMode(@PathVariable(name = "mod") String mod, @PathVariable(name =
+	 * "mod") String caisse,
+	 * 
+	 * @PathVariable(name = "mod") String deb, @PathVariable(name = "mod") String
+	 * fin) { Timestamp t = new Timestamp(Integer.parseInt(deb.substring(0, 3)),
+	 * Integer.parseInt(deb.substring(5, 6)), Integer.parseInt(deb.substring(8, 9)),
+	 * Integer.parseInt(deb.substring(10, 11)), Integer.parseInt(deb.substring(13,
+	 * 14)), Integer.parseInt(deb.substring(16, 17)), 0);
+	 * System.out.println("Debut controlleur" + t);
+	 * System.out.println("date fin controlleur" + Date.valueOf(fin)); return 12.25;
+	 * // return this.echeanceService.caisseLocMode(caisse, mod, deb, fin); }
+	 */
 
 	@GetMapping(path = "echeance/byCodEch/{id}")
 	public Optional<Echeance> getEcheanceById(@PathVariable(name = "id") Long id) {

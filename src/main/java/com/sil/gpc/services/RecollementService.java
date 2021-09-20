@@ -23,30 +23,22 @@ public class RecollementService {
 	// Sauvegarder
 	public Recollement save(Recollement recolle) {
 		recolle.setValideRecol(true);
-
-		Integer val = 1, nbrMaxCaract = 6;
+		Integer val = 1;
+		int nbrMaxCaract = 6;
 		String code = "RL-";
 		if (this.recollementRepository.findLastNumUsed(recolle.getExercice().getCodeExercice()) != null) {
 			val = this.recollementRepository.findLastNumUsed(recolle.getExercice().getCodeExercice());
 			val++;
-
 		}
-
 		recolle.setValeur(val);
-
 		code = code + recolle.getExercice().getCodeExercice();
-
 		for (int i = 0; i < nbrMaxCaract - (val + "").length(); i++) {
 			code += "0";
 		}
-
 		recolle.setNumRecollement(code + val);
-
 		if (recollementRepository.existsById(recolle.getNumRecollement()) == false)
 			return this.recollementRepository.save(recolle);
-
 		return null;
-
 	}
 
 	// Editer

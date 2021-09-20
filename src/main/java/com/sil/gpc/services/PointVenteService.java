@@ -24,7 +24,6 @@ public class PointVenteService {
 	// Sauvegarder
 	public PointVente save(PointVente pv) {
 		pv.setValidePoint(true);
-		System.out.println(pv);
 
 		Integer val = 1, nbrMaxCaract = 6;
 		String code = "PV-";

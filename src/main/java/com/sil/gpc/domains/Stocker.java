@@ -13,7 +13,7 @@ import javax.persistence.ManyToOne;
 
 @SuppressWarnings("serial")
 @Entity
-public class Stocker implements Serializable{
+public class Stocker implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,16 +23,16 @@ public class Stocker implements Serializable{
 	private Long stockMinimal;
 	private Long cmup;
 
-	//Liaison à l'article
-	@ManyToOne(fetch = FetchType.EAGER,targetEntity = Article.class)
-	@JoinColumn(name = "codeArticle",referencedColumnName = "codeArticle",nullable = false)
+	// Liaison à l'article
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Article.class)
+	@JoinColumn(name = "codeArticle", referencedColumnName = "codeArticle", nullable = false)
 	private Article article;
 
-	//Liaison à l'article
-	@ManyToOne(fetch = FetchType.EAGER,targetEntity = Magasin.class)
-	@JoinColumn(name = "codeMagasin",referencedColumnName = "codeMagasin",nullable = false)
+	// Liaison à l'article
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Magasin.class)
+	@JoinColumn(name = "codeMagasin", referencedColumnName = "codeMagasin", nullable = false)
 	private Magasin magasin;
-	
+
 	public Stocker() {
 		super();
 	}
@@ -48,7 +48,7 @@ public class Stocker implements Serializable{
 		this.article = article;
 		this.magasin = magasin;
 	}
-	
+
 	/**
 	 * @return the numRecollement
 	 */
@@ -62,66 +62,63 @@ public class Stocker implements Serializable{
 	public void setIdStocker(Long idStocker) {
 		this.idStocker = idStocker;
 	}
-	
-	
+
 	/**
-	 * @return 
+	 * @return
 	 */
 	public Long getStockDeSecuriter() {
 		return stockDeSecuriter;
 	}
 
 	/**
-	 * @param 
+	 * @param
 	 */
 	public void setStockDeSecuriter(Long stockDeSecuriter) {
 		this.stockDeSecuriter = stockDeSecuriter;
 	}
-	
+
 	/**
-	 * @return 
+	 * @return
 	 */
 	public Long getCmup() {
 		return cmup;
 	}
 
 	/**
-	 * @param 
+	 * @param
 	 */
 	public void setCmup(Long cmup) {
 		this.cmup = cmup;
 	}
-	
+
 	/**
-	 * @return 
+	 * @return
 	 */
 	public Long getStockMinimal() {
 		return stockMinimal;
 	}
 
 	/**
-	 * @param 
+	 * @param
 	 */
 	public void setstockMinimal(Long stockMinimal) {
 		this.stockMinimal = stockDeSecuriter;
 	}
-	
+
 	/**
-	 * @return 
+	 * @return
 	 */
 	public Long getQuantiterStocker() {
 		return quantiterStocker;
 	}
 
 	/**
-	 * @param 
+	 * @param
 	 */
 	public void setQuantiterStocker(Long quantiterStocker) {
 		this.quantiterStocker = quantiterStocker;
 	}
-	
-	
-	
+
 	/**
 	 * @return the magasin
 	 */
@@ -135,19 +132,17 @@ public class Stocker implements Serializable{
 	public void setMagasin(Magasin magasin) {
 		this.magasin = magasin;
 	}
-	
+
 	//
 	public Article getArticle() {
 		return article;
 	}
-	
+
 	//
 	public void setArticle(Article article) {
 		this.article = article;
 	}
-	
-	
-	
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(article, cmup, idStocker, magasin, quantiterStocker, stockDeSecuriter, stockMinimal);

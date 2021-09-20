@@ -7,17 +7,12 @@ import org.springframework.stereotype.Service;
 
 import com.sil.gpc.domains.Article;
 import com.sil.gpc.domains.LignePlacement;
-import com.sil.gpc.repositories.GererRepository;
 import com.sil.gpc.repositories.LignePlacementRepository;
-import com.sil.gpc.repositories.PlageNumDispoRepository;
 
 @Service
 public class LignePlacementService {
 
 	private final LignePlacementRepository repos;
-	private static PlageNumDispoRepository p;
-	private static PlageNumArticleService pas;
-	private static GererRepository ger;
 
 	/**
 	 * @param repos

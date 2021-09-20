@@ -24,8 +24,8 @@ public class Utilisateur {
 	private String prenomUtilisateur;
 
 	@ManyToOne(targetEntity = Fonction.class, fetch = FetchType.EAGER)
-	@JoinColumn(name = "codeFonction", referencedColumnName = "codeFonction")
-	private Fonction fonctionUtilisateur;
+	@JoinColumn(name = "codFonction", referencedColumnName = "codFonction")
+	public Fonction fonctionUtilisateur;
 	private boolean activeUtilisateur;
 	private String dateLastConnex;
 	private boolean askMdp1erLance;

@@ -7,23 +7,28 @@ import com.sil.gpc.domains.Fonction;
 import com.sil.gpc.domains.Service;
 import com.sil.gpc.domains.Utilisateur;
 import com.sil.gpc.repositories.FonctionRepository;
+import com.sil.gpc.repositories.ServiceRepository;
 import com.sil.gpc.repositories.UtilisateurRepository;
 
 @org.springframework.stereotype.Service
 public class UtilisateurService {
 
 	private final UtilisateurRepository userRepository;
-	private final FonctionRepository repos;
+	private final FonctionRepository repof;
+	private final ServiceRepository repos;
 
-	public UtilisateurService(UtilisateurRepository userRepository, FonctionRepository repos) {
+	public UtilisateurService(UtilisateurRepository userRepository, FonctionRepository repof, ServiceRepository repos) {
 		super();
 		this.userRepository = userRepository;
+		this.repof = repof;
 		this.repos = repos;
 	}
 
 	// Sauvegarder
 	public Utilisateur save(Utilisateur user) {
-		return this.userRepository.save(user);
+		System.out.println(user);
+		Utilisateur u = this.userRepository.save(user);
+		return u;
 	}
 
 	// Editer
@@ -68,13 +73,13 @@ public class UtilisateurService {
 	public List<Utilisateur> getAll() {
 		if (this.userRepository.findAll().size() == 0) {
 			if (repos.findAll().size() == 0) {
-				repos.saveAndFlush(new Fonction("S1", "Caissier"));
-				repos.saveAndFlush(new Fonction("S2", "Regisseur"));
-				repos.saveAndFlush(new Fonction("S3", "Livreur"));
-				repos.saveAndFlush(new Fonction("S4", "Admin"));
+				repof.saveAndFlush(new Fonction("S1", "Caissier"));
+				repof.saveAndFlush(new Fonction("S2", "Regisseur"));
+				repof.saveAndFlush(new Fonction("S3", "Livreur"));
+				repof.saveAndFlush(new Fonction("S4", "Admin"));
 			}
 			userRepository.save(new Utilisateur("Admin", "admin", "Administrateur", "",
-					new Fonction("S4", "Administrateur"), true, new Service("S4", "Admin")));
+					new Fonction("S4", "Administrateur"), true, null));
 		}
 		return this.userRepository.findAll();
 	}

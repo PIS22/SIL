@@ -76,7 +76,7 @@ public class UtilisateurService {
 				repof.saveAndFlush(new Fonction("S1", "Caissier"));
 				repof.saveAndFlush(new Fonction("S2", "Regisseur"));
 				repof.saveAndFlush(new Fonction("S3", "Livreur"));
-				repof.saveAndFlush(new Fonction("S4", "Admin"));
+				repof.saveAndFlush(new Fonction("S4", "Administrateur"));
 			}
 			userRepository.save(new Utilisateur("Admin", "admin", "Administrateur", "",
 					new Fonction("S4", "Administrateur"), true, null));

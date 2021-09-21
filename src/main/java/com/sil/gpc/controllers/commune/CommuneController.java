@@ -482,7 +482,8 @@ public class CommuneController {
 	}
 
 	@PutMapping(path = "post/byId/{id}")
-	public Poste editPoste(@PathVariable(name = "id") Long id, @RequestParam Poste p) {
+	public Poste updatePoste(@PathVariable(name = "id") Long id, @RequestBody Poste p) {
+
 		return this.posts.edit(id, p);
 	}
 

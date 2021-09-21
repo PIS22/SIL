@@ -14,9 +14,6 @@ public class RapportService {
 	public RapportService(RapportRepository repo) {
 		super();
 		this.repo = repo;
-	}
-
-	public List<Rapport> getAll() {
 		if (repo.findAll().size() == 0) {
 			this.add(new Rapport("BC", "Bon de commande"));
 			this.add(new Rapport("PR", "PV de réception"));
@@ -26,6 +23,9 @@ public class RapportService {
 			// this.add(new Rapport("PV de recollement"));
 			this.add(new Rapport("PVR", "PV de reconduction"));
 		}
+	}
+
+	public List<Rapport> getAll() {
 		return repo.findAll();
 	}
 

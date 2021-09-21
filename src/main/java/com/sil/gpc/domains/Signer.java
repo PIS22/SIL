@@ -24,7 +24,7 @@ public class Signer implements Serializable {
 	private Poste poste;
 
 	@ManyToOne(targetEntity = Rapport.class, fetch = FetchType.EAGER)
-	@JoinColumn(name = "rappor", referencedColumnName = "idRap")
+	@JoinColumn(name = "rapport", referencedColumnName = "idRap")
 	private Rapport rapport;
 
 	public Signer() {

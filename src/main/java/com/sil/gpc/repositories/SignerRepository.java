@@ -10,7 +10,7 @@ import com.sil.gpc.domains.Signer;
 
 @Repository
 public interface SignerRepository extends JpaRepository<Signer, Long> {
-	@Query(value = "Select * from signer WHERE dat_fin=null", nativeQuery = true)
+	@Query(value = "Select * from signer WHERE dat_fin ISNULL", nativeQuery = true)
 	public List<Signer> signatairesActuel();
 
 }

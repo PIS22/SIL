@@ -11,7 +11,7 @@ import com.sil.gpc.domains.Occuper;
 @Repository
 public interface OccuperRepository extends JpaRepository<Occuper, Long> {
 
-	@Query(value = "SELECT * FROM occuper WHERE dat_fin=null", nativeQuery = true)
+	@Query(value = "SELECT * FROM occuper WHERE dat_fin ISNULL", nativeQuery = true)
 	public List<Occuper> occupantsActuels();
 
 }

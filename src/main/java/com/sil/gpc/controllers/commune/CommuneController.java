@@ -602,7 +602,7 @@ public class CommuneController {
 	}
 
 	@PutMapping(path = "pers/byId/{id}")
-	public Personne editPersonne(@PathVariable(name = "id") Long id, @RequestParam Personne p) {
+	public Personne editPersonne(@PathVariable(name = "id") Long id, @RequestBody Personne p) {
 		return this.pers.edit(id, p);
 	}
 

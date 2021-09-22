@@ -39,12 +39,12 @@ public class Signer implements Serializable {
 		this.rapport = rapport;
 	}
 
-	public Long getIdSignature() {
+	public Long getIdSign() {
 		return idSign;
 	}
 
-	public void setIdSignature(Long idSignature) {
-		this.idSign = idSignature;
+	public void setIdSign(Long idSign) {
+		this.idSign = idSign;
 	}
 
 	public Date getDatDeb() {
@@ -81,8 +81,13 @@ public class Signer implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Signer [idSignature=" + idSign + ", datDeb=" + datDeb + ", datFin=" + datFin + ", poste=" + poste
-				+ ", rapport=" + rapport + "]";
+		return "Signer{" +
+				"idSign=" + idSign +
+				", datDeb=" + datDeb +
+				", datFin=" + datFin +
+				", poste=" + poste +
+				", rapport=" + rapport +
+				'}';
 	}
 
 }

@@ -14,27 +14,27 @@ import javax.persistence.ManyToOne;
 @SuppressWarnings("serial")
 @Entity
 public class LigneOpCaisse implements Serializable {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long idLigneOperCaisse;
-	private Long qteLigneOperCaisse;
-	private Long prixLigneOperCaisse;
+	private double qteLigneOperCaisse;
+	private double prixLigneOperCaisse;
 	private String CommentaireLigneOperCaisse;
 	private boolean livre;
 
-	//Liaison à la table OpCaisse
+	// Liaison à la table OpCaisse
 	@ManyToOne(fetch = FetchType.EAGER, targetEntity = OpCaisse.class)
 	@JoinColumn(name = "numOpCaisse", nullable = false, referencedColumnName = "numOpCaisse")
 	public OpCaisse opCaisse;
 
-	//Liaison à la table Article
-	@ManyToOne(fetch = FetchType.EAGER,targetEntity = Article.class)
+	// Liaison à la table Article
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Article.class)
 	@JoinColumn(name = "codeArticle", nullable = false, referencedColumnName = "codeArticle")
 	public Article article;
 
-	//Liaison à la table Magasin
-	@ManyToOne(fetch = FetchType.EAGER,targetEntity = Magasin.class)
+	// Liaison à la table Magasin
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Magasin.class)
 	@JoinColumn(name = "codeMagasin", nullable = true, referencedColumnName = "codeMagasin")
 	public Magasin magasin;
 
@@ -43,15 +43,15 @@ public class LigneOpCaisse implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public LigneOpCaisse(Long qteLigneOperCaisse, Long prixLigneOperCaisse,
-			String commentaireLigneOperCaisse, OpCaisse opCaisse, Article article) {
+	public LigneOpCaisse(Long qteLigneOperCaisse, Long prixLigneOperCaisse, String commentaireLigneOperCaisse,
+			OpCaisse opCaisse, Article article) {
 		this.qteLigneOperCaisse = qteLigneOperCaisse;
 		this.prixLigneOperCaisse = prixLigneOperCaisse;
 		CommentaireLigneOperCaisse = commentaireLigneOperCaisse;
 		this.opCaisse = opCaisse;
 		this.article = article;
 		this.livre = false;
-		this.magasin=null;
+		this.magasin = null;
 	}
 
 	/**
@@ -71,28 +71,28 @@ public class LigneOpCaisse implements Serializable {
 	/**
 	 * @return the qteLigneOperCaisse
 	 */
-	public Long getQteLigneOperCaisse() {
+	public double getQteLigneOperCaisse() {
 		return qteLigneOperCaisse;
 	}
 
 	/**
 	 * @param qteLigneOperCaisse the qteLigneOperCaisse to set
 	 */
-	public void setQteLigneOperCaisse(Long qteLigneOperCaisse) {
+	public void setQteLigneOperCaisse(double qteLigneOperCaisse) {
 		this.qteLigneOperCaisse = qteLigneOperCaisse;
 	}
 
 	/**
 	 * @return the prixLigneOperCaisse
 	 */
-	public Long getPrixLigneOperCaisse() {
+	public double getPrixLigneOperCaisse() {
 		return prixLigneOperCaisse;
 	}
 
 	/**
 	 * @param prixLigneOperCaisse the prixLigneOperCaisse to set
 	 */
-	public void setPrixLigneOperCaisse(Long prixLigneOperCaisse) {
+	public void setPrixLigneOperCaisse(double prixLigneOperCaisse) {
 		this.prixLigneOperCaisse = prixLigneOperCaisse;
 	}
 
@@ -145,6 +145,14 @@ public class LigneOpCaisse implements Serializable {
 		return article;
 	}
 
+	public Magasin getMagasin() {
+		return magasin;
+	}
+
+	public void setMagasin(Magasin magasin) {
+		this.magasin = magasin;
+	}
+
 	/**
 	 * @param article the article to set
 	 */
@@ -179,9 +187,10 @@ public class LigneOpCaisse implements Serializable {
 
 	@Override
 	public String toString() {
-		return "LigneOpCaisseRepository [idLigneOperCaisse=" + idLigneOperCaisse + ", qteLigneOperCaisse=" + qteLigneOperCaisse
+		return "LigneOpCaisse [idLigneOperCaisse=" + idLigneOperCaisse + ", qteLigneOperCaisse=" + qteLigneOperCaisse
 				+ ", prixLigneOperCaisse=" + prixLigneOperCaisse + ", CommentaireLigneOperCaisse="
-				+ CommentaireLigneOperCaisse + ", opCaisse=" + opCaisse + ", article=" + article + "]";
+				+ CommentaireLigneOperCaisse + ", livre=" + livre + ", opCaisse=" + opCaisse + ", article=" + article
+				+ ", magasin=" + magasin + "]";
 	}
 
 }

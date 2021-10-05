@@ -20,58 +20,62 @@ public class AffecterService {
 		super();
 		this.repos = repos;
 	}
-	
+
 	public Affecter save(Affecter affecter) {
 
 		return this.repos.save(affecter);
 	}
-	
+
 	public Affecter edit(Long id, Affecter affecter) {
 		Affecter entiter = this.repos.getOne(id);
-		
-		if(entiter != null) {
+
+		if (entiter != null) {
 			entiter.setUtilisateur(affecter.getUtilisateur());
 			entiter.setCaisse(affecter.getCaisse());
 			entiter.setDateDebAffecter(affecter.getDateDebAffecter());
 			entiter.setDateFinAffecter(affecter.getDateFinAffecter());
-			
+
 			return this.repos.save(entiter);
 		}
-		
+
 		return null;
 	}
-	
+
 	public boolean delete(Long id) {
-		
+
 		Affecter entiter = this.repos.getOne(id);
-		if(entiter != null) {
+		if (entiter != null) {
 			this.repos.deleteById(id);
 		}
 		return !this.repos.existsById(id);
 	}
-	
-	public Optional<Affecter> getByid(Long id){
-		
+
+	public Optional<Affecter> getByid(Long id) {
+
 		return this.repos.findById(id);
 	}
-	
-	public List<Affecter> getAll(){
+
+	public List<Affecter> getAll() {
 		return this.repos.findAll();
 	}
-	
-	public List<Affecter> findByUtilisateur(Utilisateur utilisateur){
+
+	public List<Affecter> getUserCaisseActu(Long id) {
+		return this.repos.userCaisseActu(id);
+	}
+
+	public List<Affecter> findByUtilisateur(Utilisateur utilisateur) {
 		return this.repos.findByUtilisateur(utilisateur);
 	}
-	
-	public List<Affecter> findByCaisse(Caisse caisse){
+
+	public List<Affecter> findByCaisse(Caisse caisse) {
 		return this.repos.findByCaisse(caisse);
 	}
-	
-	public List<Affecter> findByDateDebAffecter(Date date){
+
+	public List<Affecter> findByDateDebAffecter(Date date) {
 		return this.repos.findByDateDebAffecter(date);
 	}
-	
-	public List<Affecter> findByDateFinAffecter(Date date){
+
+	public List<Affecter> findByDateFinAffecter(Date date) {
 		return this.repos.findByDateFinAffecter(date);
 	}
 }

@@ -27,6 +27,16 @@ public interface EcheanceRepository extends JpaRepository<Echeance, Long> {
 
 	public List<Echeance> findByPayeEcheance(boolean payeEcheance);
 
+	@Query(value = "SELECT echeance.* FROM echeance, op_caisse\r\n"
+			+ "where op_caisse.num_op_caisse=echeance.num_op_caisse  and\r\n"
+			+ "op_caisse.valide_op_caisse=false", nativeQuery = true)
+	public List<Echeance> echeancesAnnules();
+
+	@Query(value = "SELECT echeance.* FROM echeance, op_caisse\r\n"
+			+ "where op_caisse.num_op_caisse=echeance.num_op_caisse  and\r\n"
+			+ "op_caisse.valide_op_caisse=true", nativeQuery = true)
+	public List<Echeance> echeancesValides();
+
 	@Query(value = "SELECT SUM(E.prix) From Echeance AS E, OpCaisse AS OP WHERE("
 			+ "			OP.numOpCaisse= E.numOpCaisse AND OP.codeModPay= ?1 AND OP.codeCaisse=?2"
 			+ "			AND OP.dateSaisie BETWEEN ?3 AND ?4)", nativeQuery = true)
@@ -36,5 +46,8 @@ public interface EcheanceRepository extends JpaRepository<Echeance, Long> {
 			+ " And OpCaisse.codeCaisse= Caisse.codeCaisse AND OpCaisse.codeModPay= ?1 AND "
 			+ "Caisse.codeArrondi=?2 AND OpCaisse.DateSaisie BETWEEN ?3 AND ?4)", nativeQuery = true)
 	public double arrModLoca(String cMode, String cCaisse, Timestamp dDeb, Timestamp dFin);
+
+	@Query(value = "Select E.* From echeance E Where E.num_op_caisse=?", nativeQuery = true)
+	public List<Echeance> lignesOP(String numop);
 
 }

@@ -138,6 +138,18 @@ public class LocationController {
 		return this.echeanceService.findByContrat(contrat);
 	}
 
+	@GetMapping(path = "echeance/list/vld")
+	public List<Echeance> echeancesValides() {
+
+		return this.echeanceService.getEchenceValide();
+	}
+
+	@GetMapping(path = "echeance/list/anl")
+	public List<Echeance> echeanceAnnulees() {
+
+		return this.echeanceService.getEchencesAnnulees();
+	}
+
 	@GetMapping(path = "echeancesPayeesParContrat")
 	public List<Echeance> findByEcheancesPayees() {
 
@@ -165,6 +177,11 @@ public class LocationController {
 	public Boolean deleteEcheance(@PathVariable(name = "id") Long id) {
 
 		return this.echeanceService.delete(id);
+	}
+
+	@GetMapping(path = "echeance/byOp/{id}")
+	List<Echeance> echeanceByOpCaisse(@PathVariable(name = "id") String id) {
+		return echeanceService.echeanceByOp(id);
 	}
 
 	/*

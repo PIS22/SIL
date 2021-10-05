@@ -8,6 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.sil.gpc.domains.Correspondant;
 import com.sil.gpc.domains.Exercice;
+import com.sil.gpc.domains.LigneOpCaisse;
+import com.sil.gpc.domains.LignePointBlock;
+import com.sil.gpc.domains.LignePointVente;
+import com.sil.gpc.domains.OpPointBlock;
 import com.sil.gpc.domains.PointVente;
 import com.sil.gpc.domains.Regisseur;
 import com.sil.gpc.repositories.PointVenteRepository;
@@ -15,10 +19,38 @@ import com.sil.gpc.repositories.PointVenteRepository;
 @Service
 public class PointVenteService {
 
+	private final OpCaisseService opc;
 	private final PointVenteRepository pointVenteRepository;
+	private final LignePointVenteService lpv;
+	private final LigneOpCaisseService lopc;
 
-	public PointVenteService(PointVenteRepository pointVenteRepository) {
+	public PointVenteService(OpCaisseService opc, PointVenteRepository pointVenteRepository, LignePointVenteService lpv,
+			LigneOpCaisseService lopc) {
+		super();
+		this.opc = opc;
 		this.pointVenteRepository = pointVenteRepository;
+		this.lpv = lpv;
+		this.lopc = lopc;
+	}
+
+	public PointVente imputPoint(OpPointBlock pb) {
+		PointVente pv = pb.getPv();
+		pv.setOpCaisse(opc.save(pb.getOpc()));
+		return pointVenteRepository.save(pv);
+
+	}
+
+	public LignePointVente imputLignePoint(LignePointBlock lpb) {
+		LigneOpCaisse lop = new LigneOpCaisse();
+		lop.setArticle(lpb.getLpv().getArticle());
+		lop.setCommentaireLigneOperCaisse("");
+		lop.setLivre(true);
+		lop.setMagasin(lpb.getMg());
+		lop.setOpCaisse(lpb.getLpv().getPointVente().getOpCaisse());
+		lop.setPrixLigneOperCaisse(lpb.getLpv().getPULignePointVente());
+		lop.setQteLigneOperCaisse(lpb.getLpv().getQuantiteLignePointVente());
+		lopc.save(lop);
+		return lpv.saveAndFlush(lpb.getLpv(), lpb.getMg().getCodeMagasin());
 	}
 
 	// Sauvegarder
@@ -118,4 +150,10 @@ public class PointVenteService {
 		return this.pointVenteRepository.findByRegisseur(reg);
 	}
 
+	/*
+	 * public List<LignePointVente> pointOp(String numop) { List<String> nums =
+	 * pointVenteRepository.pointByOp(numop); lpv = null; for (String num : nums) {
+	 * for (LignePointVente l : pointVenteRepository.ligneByPv(num)) { lpv.(l); } }
+	 * return lpv; }
+	 */
 }

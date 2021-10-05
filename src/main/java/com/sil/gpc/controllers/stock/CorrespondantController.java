@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sil.gpc.domains.Correspondant;
+import com.sil.gpc.domains.LignePointBlock;
 import com.sil.gpc.domains.LignePointVente;
 import com.sil.gpc.domains.PointVente;
 import com.sil.gpc.domains.TypCorres;
@@ -31,7 +32,7 @@ public class CorrespondantController {
 	private final TypCorresService typCorresService;
 	private final PointVenteService pointVenteService;
 	private final LignePointVenteService lignePointVenteService;
-	
+
 	public CorrespondantController(CorrespondantService correspondantService, TypCorresService typCorresService,
 			PointVenteService pointVenteService, LignePointVenteService lignePointVenteService) {
 		super();
@@ -39,154 +40,167 @@ public class CorrespondantController {
 		this.typCorresService = typCorresService;
 		this.pointVenteService = pointVenteService;
 		this.lignePointVenteService = lignePointVenteService;
-		
+
 	}
-	
-	/*###########################################################
-	#############	Partie réservée pour Correspondant
-	###########################################################
-	*/
-	
+
+	/*
+	 * ########################################################### #############
+	 * Partie réservée pour Correspondant
+	 * ###########################################################
+	 */
+
 	@GetMapping(path = "correspondant/list")
-	public List<Correspondant> getAllCorrespondant(){
-		
+	public List<Correspondant> getAllCorrespondant() {
+
 		return this.correspondantService.getAll();
 	}
-	
+
 	@GetMapping(path = "correspondant/byCodCor/{id}")
-	public Optional<Correspondant> getCorrespondantById(@PathVariable(name = "id") String id){
-		
+	public Optional<Correspondant> getCorrespondantById(@PathVariable(name = "id") String id) {
+
 		return this.correspondantService.getById(id);
 	}
 
 	@GetMapping(path = "correspondant/imputable")
-	public List<Correspondant> getCorrespondantImput(){
-		
+	public List<Correspondant> getCorrespondantImput() {
+
 		return this.correspondantService.findByImputableCorres(true);
 	}
-	
+
 	@PostMapping(path = "correspondant/list")
-	public Correspondant createCorrespondant( @RequestBody Correspondant correspondant) {
-		
+	public Correspondant createCorrespondant(@RequestBody Correspondant correspondant) {
+
 		return this.correspondantService.save(correspondant);
 	}
-	
+
 	@PutMapping(path = "correspondant/byCodCor/{id}")
-	public Correspondant updateCorrespondant(@PathVariable(name = "id") String id, @RequestBody Correspondant correspondant) {
-		
+	public Correspondant updateCorrespondant(@PathVariable(name = "id") String id,
+			@RequestBody Correspondant correspondant) {
+
 		return this.correspondantService.edit(id, correspondant);
 	}
-	
+
 	@DeleteMapping(path = "correspondant/byCodCor/{id}")
 	public Boolean deleteCorrespondant(@PathVariable(name = "id") String id) {
-		
+
 		return this.correspondantService.delete(id);
 	}
-	
-	
-	/*###########################################################
-	#############	Partie réservée pour type Correspondant
-	###########################################################
-	*/
-	
+
+	/*
+	 * ########################################################### #############
+	 * Partie réservée pour type Correspondant
+	 * ###########################################################
+	 */
+
 	@GetMapping(path = "typecorrespondant/list")
-	public List<TypCorres> getAllTypeCorrespondant(){
-		
+	public List<TypCorres> getAllTypeCorrespondant() {
+
 		return this.typCorresService.getAll();
 	}
-	
+
 	@GetMapping(path = "typecorrespondant/byCodTypCor/{id}")
-	public Optional<TypCorres> getTypeCorrespondantById(@PathVariable(name = "id") String id){
-		
+	public Optional<TypCorres> getTypeCorrespondantById(@PathVariable(name = "id") String id) {
+
 		return this.typCorresService.findById(id);
 	}
-	
+
 	@PostMapping(path = "typecorrespondant/list")
-	public TypCorres createTypeCorrespondant( @RequestBody TypCorres correspondant) {
-		
+	public TypCorres createTypeCorrespondant(@RequestBody TypCorres correspondant) {
+
 		return this.typCorresService.save(correspondant);
 	}
-	
+
 	@PutMapping(path = "typecorrespondant/byCodTypCor/{id}")
 	public TypCorres updateTypeCorrespondant(@PathVariable(name = "id") String id, @RequestBody TypCorres typCorres) {
-		
+
 		return this.typCorresService.edit(id, typCorres);
 	}
-	
+
 	@DeleteMapping(path = "typecorrespondant/byCodCor/{id}")
 	public Boolean deleteTypeCorrespondant(@PathVariable(name = "id") String id) {
-		
+
 		return this.typCorresService.delete(id);
 	}
-	
-	/*###########################################################
-	#############	Partie réservée pour point Vente
-	###########################################################
-	*/
-	
+
+	/*
+	 * ########################################################### #############
+	 * Partie réservée pour point Vente
+	 * ###########################################################
+	 */
+
 	@GetMapping(path = "pointvente/list")
-	public List<PointVente> getAllPointVente(){
-		
+	public List<PointVente> getAllPointVente() {
+
 		return this.pointVenteService.getAll();
 	}
-	
+
 	@GetMapping(path = "pointvente/byCodPvt/{id}")
-	public Optional<PointVente> getPointVenteById(@PathVariable(name = "id") String id){
-		
+	public Optional<PointVente> getPointVenteById(@PathVariable(name = "id") String id) {
+
 		return this.pointVenteService.findById(id);
 	}
-	
+
 	@PostMapping(path = "pointvente/list")
-	public PointVente createPointVente( @RequestBody PointVente pv) {
-		
+	public PointVente createPointVente(@RequestBody PointVente pv) {
+		System.out.print(pv);
 		return this.pointVenteService.save(pv);
 	}
-	
+
 	@PutMapping(path = "pointvente/byCodPvt/{id}")
 	public PointVente updatePointVente(@PathVariable(name = "id") String id, @RequestBody PointVente pv) {
 		return this.pointVenteService.edit(id, pv);
 	}
-	
+
 	@DeleteMapping(path = "pointvente/byCodPvt/{id}")
 	public Boolean delete(@PathVariable(name = "id") String id) {
-		
+
 		return this.typCorresService.delete(id);
 	}
 
+	/*
+	 * ########################################################### #############
+	 * Partie réservée pour ligne point Vente
+	 * ###########################################################
+	 */
 
-	/*###########################################################
-	#############	Partie réservée pour ligne point Vente
-	###########################################################
-	*/
+	@GetMapping(path = "lignepointvente/byOp/{numop}")
+	public List<LignePointVente> getLignePointVenteOP(@PathVariable(name = "numop") String numop) {
+		return this.lignePointVenteService.pointByOp(numop);
+	}
 
-	
 	@GetMapping(path = "lignepointvente/list")
-	public List<LignePointVente> getAllLignePointVente(){
-		
+	public List<LignePointVente> getAllLignePointVente() {
+
 		return this.lignePointVenteService.findAll();
 	}
-	
+
 	@GetMapping(path = "lignepointvente/byCodLpv/{id}")
-	public Optional<LignePointVente> getLignePointVenteById(@PathVariable(name = "id") Long id){
+	public Optional<LignePointVente> getLignePointVenteById(@PathVariable(name = "id") Long id) {
 		return this.lignePointVenteService.findById(id);
 	}
-	
+
 	@PostMapping(path = "lignepointvente/list")
-	public LignePointVente createLignePointVente( @RequestBody LignePointVente lpv) {
-		
+	public LignePointVente createLignePointVente(@RequestBody LignePointVente lpv) {
+
 		return this.lignePointVenteService.save(lpv);
 	}
-	
+
+	@PostMapping(path = "lignepointvente/list/PvO")
+	public LignePointVente createImputLignePointVente(@RequestBody LignePointBlock lpv) {
+
+		return this.lignePointVenteService.saveAndFlush(lpv.getLpv(), lpv.getMg().getCodeMagasin());
+	}
+
 	@PutMapping(path = "lignepointvente/byCodLpv/{id}")
 	public LignePointVente updateLignePointVente(@PathVariable(name = "id") Long id, @RequestBody LignePointVente lpv) {
-		
+
 		return this.lignePointVenteService.edit(lpv, id);
 	}
-	
+
 	@DeleteMapping(path = "lignepointvente/byCodLpv/{id}")
 	public Boolean deleteLignePointVente(@PathVariable(name = "id") Long id) {
-		
+
 		return this.lignePointVenteService.delete(id);
 	}
-	
+
 }

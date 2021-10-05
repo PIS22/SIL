@@ -27,6 +27,10 @@ public class EcheanceService {
 		return this.repo.save(echeance);
 	}
 
+	public List<Echeance> saving(List<Echeance> echeances) {
+		return repo.saveAll(echeances);
+	}
+
 	public Echeance edit(Long id, Echeance echeance) {
 
 		Echeance entiter = this.repo.getOne(id);
@@ -59,6 +63,16 @@ public class EcheanceService {
 	public List<Echeance> getAll() {
 
 		return this.repo.findAll();
+	}
+
+	public List<Echeance> getEchenceValide() {
+
+		return this.repo.echeancesAnnules();
+	}
+
+	public List<Echeance> getEchencesAnnulees() {
+
+		return this.repo.echeancesAnnules();
 	}
 
 	public List<Echeance> findByIdEcheance(Long idEcheance) {
@@ -102,6 +116,10 @@ public class EcheanceService {
 	public double arrLocMode(String caisse, String mode, String deb, String fin) {
 
 		return repo.arrModLoca(mode, caisse, Timestamp.valueOf(deb), Timestamp.valueOf(fin));
+	}
+
+	public List<Echeance> echeanceByOp(String num) {
+		return repo.lignesOP(num);
 	}
 
 }

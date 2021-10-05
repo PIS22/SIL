@@ -21,7 +21,6 @@ public class LignePointVenteService {
 		this.repos = lpvr;
 	}
 
-
 	public Optional<LignePointVente> findById(Long id) {
 		return repos.findById(id);
 	}
@@ -44,22 +43,39 @@ public class LignePointVenteService {
 
 	public LignePointVente save(LignePointVente ligne) {
 		return repos.save(ligne);
-		//return repos.findAll();
+		// return repos.findAll();
+	}
+
+	public LignePointVente saveAndFlush(LignePointVente ligne, String mg) {
+		LignePointVente l = repos.save(ligne);
+		if (l != null) {
+			if (repos.ajusterQuantite(l.getQuantiteLignePointVente(), mg, l.getArticle().getCodeArticle()) == null) {
+				repos.ajouteLigne(l.getArticle().getCodeArticle(), l.getPULignePointVente(), mg,
+						l.getQuantiteLignePointVente());
+			}
+		}
+		return l;
 	}
 
 	public LignePointVente edit(LignePointVente ligne, Long id) {
-		LignePointVente cible=repos.getOne(id);
-		if (cible!=null) {
+		LignePointVente cible = repos.getOne(id);
+		if (cible != null) {
 			cible.setArticle(ligne.getArticle());
-		cible.setPULignePointVente(ligne.getPULignePointVente());
-		cible.setQuantiteLignePointVente(ligne.getQuantiteLignePointVente());
-		return repos.save(cible);
-		}else
+			cible.setPULignePointVente(ligne.getPULignePointVente());
+			cible.setQuantiteLignePointVente(ligne.getQuantiteLignePointVente());
+			return repos.save(cible);
+		} else
 			return null;
 	}
 
 	public boolean delete(Long id) {
 		repos.deleteById(id);
 		return repos.existsById(id);
+	}
+
+	public List<LignePointVente> pointByOp(String numop) {
+		List<LignePointVente> lpv;
+
+		return repos.findAllById(repos.ligneByOp(numop));
 	}
 }

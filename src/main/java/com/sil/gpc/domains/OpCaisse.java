@@ -237,9 +237,8 @@ public class OpCaisse implements Serializable {
 		return "OpCaisse [numOpCaisse=" + numOpCaisse + ", dateOpCaisse=" + dateOpCaisse + ", contribuable="
 				+ contribuable + ", valideOpCaisse=" + valideOpCaisse + ", obsOpCaisse=" + obsOpCaisse + ", dateSaisie="
 				+ dateSaisie + ", valeur=" + valeur + ", mttRem=" + mttRem + ", monnai=" + monnai + ", reliquat="
-				+ reliquat + ", annulMotif=" + annulMotif + ", datAnnul=" + datAnnul + ", auteurAnnul=" + auteurAnnul
-				+ ", caisse=" + caisse + ", typeRecette=" + typeRecette + ", modePaiement=" + modePaiement
-				+ ", exercice=" + exercice + ", utilisateur=" + utilisateur + "]";
+				+ reliquat + ", annulMotif=" + annulMotif + ", datAnnul=" + datAnnul + ", caisse=" + caisse
+				+ ", typeRecette=" + typeRecette + ", modePaiement=" + modePaiement + ", exercice=" + exercice
+				+ ", utilisateur=" + utilisateur + ", auteurAnnul=" + auteurAnnul + "]";
 	}
-
 }

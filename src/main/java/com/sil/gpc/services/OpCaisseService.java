@@ -83,7 +83,6 @@ public class OpCaisseService {
 	public OpCaisse edit(OpCaisse oc, String num) {
 		System.out.printf("\n\nNouvelles valeurs ", oc.toString());
 		OpCaisse opc = repos.getOne(num);
-		System.out.println(oc.getNumOpCaisse().substring(0, 4));
 		if (opc != null) {
 			opc.setCaisse(oc.getCaisse());
 			opc.setContribuable(oc.getContribuable());
@@ -104,7 +103,6 @@ public class OpCaisseService {
 	}
 
 	public OpCaisse save(OpCaisse oc) {
-		System.out.printf("Avant manip: ", oc);
 		Integer val = 1, nbrMaxCaract = 6;
 		String code = oc.getCaisse().getCodeCaisse() + "-" + oc.getExercice().getCodeExercice();
 		if (this.repos.findLastNumUsed(oc.getCaisse().getCodeCaisse(), oc.getExercice().getCodeExercice()) != null) {
@@ -116,8 +114,6 @@ public class OpCaisseService {
 		}
 		oc.setNumOpCaisse(code + val);
 		oc.setValeur(val);
-		System.out.printf("Tout est OK: ", oc);
-		System.out.println(oc);
 		return repos.save(oc);
 
 	}

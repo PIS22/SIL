@@ -1,10 +1,12 @@
 package com.sil.gpc.repositories;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.sil.gpc.domains.OpCaisse;
@@ -40,5 +42,10 @@ public interface OpCaisseRepository extends JpaRepository<OpCaisse, String> {
 
 	@Query(value = "SELECT valeur FROM op_caisse WHERE code_caisse = ?1 AND code_exercice = ?2 ORDER BY valeur DESC LIMIT 1;", nativeQuery = true)
 	public Integer findLastNumUsed(String codeCai, String codeExo);
+
+	//Léo
+	//Liste des opCaisse valides du jour
+	@Query(value = "SELECT * FROM op_caisse WHERE valide_op_caisse = true AND date_op_caisse >= :startDate AND date_op_caisse <= :endDate", nativeQuery = true)
+	List<OpCaisse> getAllOpCaisseOfDay(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 
 }

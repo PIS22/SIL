@@ -1,6 +1,9 @@
 package com.sil.gpc.controllers.facturaction;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -37,6 +40,13 @@ import com.sil.gpc.services.ReversementService;
 import com.sil.gpc.services.TypeRecetteService;
 import com.sil.gpc.services.UtilisateurService;
 
+import  com.sil.gpc.repositories.OpCaisseRepository;
+import  com.sil.gpc.repositories.LigneOpCaisseRepository;
+
+
+import com.sil.gpc.dto.SearchLinesOpCaisseDTO;
+import com.sil.gpc.dto.SearchOpCaisseDTO;
+
 @RestController
 @CrossOrigin
 @RequestMapping(path = "/perfora-gpc/v1/facturation/")
@@ -54,12 +64,15 @@ public class FacturationController {
 	private final UtilisateurService utilisateurService;
 	private final ArticleService articleService;
 
+	private  final OpCaisseRepository opCaisseRepository;
+	private  final LigneOpCaisseRepository ligneOpCaisseRepository;
+
 	public FacturationController(CaisseService caisseService, AffecterService affecterService,
 			LigneOpCaisseService ligneOpCaisseService, LigneReversementService ligneReversementService,
 			ModePaiementService modePaiementService, OpCaisseService opCaisseService,
 			ReversementService reversementService, TypeRecetteService typeRecetteService,
 			ArrondissementService arrondissementService, UtilisateurService utilisateurService,
-			ArticleService articleService) {
+			ArticleService articleService, OpCaisseRepository opCaisseRepository , LigneOpCaisseRepository ligneOpCaisseRepository) {
 		super();
 		this.caisseService = caisseService;
 		this.affecterService = affecterService;
@@ -72,6 +85,9 @@ public class FacturationController {
 		this.arrondissementService = arrondissementService;
 		this.utilisateurService = utilisateurService;
 		this.articleService = articleService;
+
+		this.opCaisseRepository = opCaisseRepository;
+		this.ligneOpCaisseRepository = ligneOpCaisseRepository;
 
 	}
 
@@ -591,6 +607,30 @@ public class FacturationController {
 	public List<LigneReversement> getLigneReversementByDateQuittance(@PathVariable(name = "valeur") Date valeur) {
 
 		return this.ligneReversementService.findByDate(valeur);
+	}
+
+	//Léonel essaie
+	@PostMapping("/find/date-between")
+	public List<OpCaisse> findOpcaisseOfDay(@RequestBody SearchOpCaisseDTO searchOpCaisseDTO) {
+
+		LocalDateTime start = LocalDateTime.of(LocalDate.from(searchOpCaisseDTO.getStartDate()), LocalTime.of(0, 0, 0));
+		LocalDateTime end = LocalDateTime.of(LocalDate.from(searchOpCaisseDTO.getEndDate()), LocalTime.of(23, 59, 59));
+
+		List<OpCaisse> opCaisseOfDayList = opCaisseRepository.getAllOpCaisseOfDay(start, end);
+
+		return opCaisseOfDayList;
+	}
+
+	//Léonel essaie 2
+	@PostMapping("/find/lines-opcaisse-by-periode-caisse")
+	public List<LigneOpCaisse> findLinesOpcaisseByPeriode(@RequestBody SearchLinesOpCaisseDTO searchLinesOpCaisseDTO) {
+
+		//LocalDateTime start = LocalDateTime.of(LocalDate.from(searchOpCaisseDTO.getStartDate()), LocalTime.of(0, 0, 0));
+		//LocalDateTime end = LocalDateTime.of(LocalDate.from(searchOpCaisseDTO.getEndDate()), LocalTime.of(23, 59, 59));
+
+		List<LigneOpCaisse> LinesOpCaisseByPeriodeList = ligneOpCaisseRepository.getAllLinesOpCaisseBetweenTwoPeriodeAndCaisse(searchLinesOpCaisseDTO.getStartDateTime(),searchLinesOpCaisseDTO.getEndDateTime(),searchLinesOpCaisseDTO.getCodeCaisse());
+
+		return LinesOpCaisseByPeriodeList;
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.sil.gpc.services;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -82,6 +83,13 @@ public class GererService {
 	public List<Gerer> findByMagasin(Magasin magasin){
 		
 		return this.repo.findByMagasin(magasin);
+	}
+
+	//Léo
+	public Magasin findMagasinByNumMagasinier(Long numMagasinier){
+		Gerer gerer = this.repo.findByMagasinier_NumMAgasinier(numMagasinier).get();
+
+		return  gerer.getMagasin();
 	}
 	
 }

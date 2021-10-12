@@ -37,4 +37,6 @@ public interface PointVenteRepository extends JpaRepository<PointVente, String> 
 	@Query(value = "Select p.num_point_vente From point_vente p Where p.num_op_caisse =?", nativeQuery = true)
 	public List<String> pointByOp(String numop);
 
+	List<PointVente> findAllByCorrespondant_IdCorrespondantAndPayerPointIsFalse(String codeCorres);
+
 }

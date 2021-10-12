@@ -462,4 +462,18 @@ public class MagasinController {
 		return this.lInvServ.delete(id);
 	}
 
+	//Léo
+	@GetMapping(path = "magasinByMagasinier/{id}")
+	public Magasin getMagasinByMagasinier(@PathVariable(name = "id") Long id) {
+		return this.gererService.findMagasinByNumMagasinier(id);
+	}
+
+	//Léo
+	@GetMapping(path = "stocker/list/{codeArticle}/{numMag}/{quant}")
+	public Boolean  getAndUpdatedOrAddStokerLine(@PathVariable(name = "codeArticle") String codeArticle, @PathVariable(name = "numMag") String numMag, @PathVariable(name = "quant") Long quant) {
+
+		return this.stockerService.updateStockByArticleAndMagasin(codeArticle, numMag, quant);
+	}
+
+
 }

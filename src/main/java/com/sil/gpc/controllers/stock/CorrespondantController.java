@@ -3,6 +3,7 @@ package com.sil.gpc.controllers.stock;
 import java.util.List;
 import java.util.Optional;
 
+import com.sil.gpc.domains.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,11 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sil.gpc.domains.Correspondant;
-import com.sil.gpc.domains.LignePointBlock;
-import com.sil.gpc.domains.LignePointVente;
-import com.sil.gpc.domains.PointVente;
-import com.sil.gpc.domains.TypCorres;
 import com.sil.gpc.services.CorrespondantService;
 import com.sil.gpc.services.LignePointVenteService;
 import com.sil.gpc.services.PointVenteService;
@@ -201,6 +197,17 @@ public class CorrespondantController {
 	public Boolean deleteLignePointVente(@PathVariable(name = "id") Long id) {
 
 		return this.lignePointVenteService.delete(id);
+	}
+
+	//Léo
+	@GetMapping(path = "correspondant-imputable/list")
+	public List<Correspondant> getAllMagasinierImputable() {
+		return this.correspondantService.findAllMagasinierImputable();
+	}
+
+	@GetMapping(path = "correspondant-imputable/list-point-vente-non-payer/{codeCorres}")
+	public List<PointVente> getAllPointVenteNonPayerForCorrespondant(@PathVariable(name = "codeCorres") String codeCorres) {
+		return this.pointVenteService.getAllByIdCorrespondantAndPayerFalse(codeCorres);
 	}
 
 }

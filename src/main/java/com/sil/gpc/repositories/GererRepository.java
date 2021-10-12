@@ -2,6 +2,7 @@ package com.sil.gpc.repositories;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -26,5 +27,7 @@ public interface GererRepository extends JpaRepository<Gerer, Long> {
 
 	@Query(value = "SELECT codeMagasin FROM Gerer WHERE numMagasinier=?1 AND dateFinGerer=null", nativeQuery = true)
 	Magasin mag(Long idMag);
+
+	Optional<Gerer> findByMagasinier_NumMAgasinier(Long numMagasinier);
 
 }

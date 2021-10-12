@@ -2,6 +2,7 @@
 package com.sil.gpc.repositories;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -30,5 +31,8 @@ public interface StockerRepository extends JpaRepository<Stocker, Long> {
 
 	@Query(value = "SELECT * FROM Stocker WHERE codeArticle=?1 AND codeMagasin=?2", nativeQuery = true)
 	public Stocker ligneStocker(String cArt, String cMag);
+
+	//Léo
+	Optional<Stocker> findByArticle_CodeArticleAndMagasin_CodeMagasin(String codeArticle, String codeMagasin);
 
 }

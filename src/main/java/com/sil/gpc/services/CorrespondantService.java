@@ -1,5 +1,6 @@
  package com.sil.gpc.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -84,6 +85,12 @@ public class CorrespondantService {
 	public List<Correspondant> findByImputableCorres(boolean imputableCorres){
 		
 		return this.findByImputableCorres(imputableCorres);
+	}
+
+	//Léo
+	public  List<Correspondant> findAllMagasinierImputable(){
+
+		return  repo.findAllByImputableCorresIsTrue();
 	}
 	
 }

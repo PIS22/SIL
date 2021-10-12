@@ -436,4 +436,5 @@ public class MairieController {
 		return this.regisseurService.delete(id);
 	}
 
+
 }

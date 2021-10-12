@@ -1,23 +1,31 @@
 package com.sil.gpc.services;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 
+import com.sil.gpc.domains.Gerer;
 import org.springframework.stereotype.Service;
 
 import com.sil.gpc.domains.Article;
 import com.sil.gpc.domains.Magasin;
 import com.sil.gpc.domains.Stocker;
 import com.sil.gpc.repositories.StockerRepository;
+import com.sil.gpc.repositories.ArticleRepository;
+import com.sil.gpc.repositories.MagasinRepository;
 
 @Service
 public class StockerService {
 
 	// @Autowired
 	private final StockerRepository stockerRepository;
+	private final ArticleRepository articleRepository;
+	private final MagasinRepository magasinRepository;
 
-	public StockerService(StockerRepository stockerRepository) {
+	public StockerService(StockerRepository stockerRepository, ArticleRepository articleRepository, MagasinRepository magasinRepository) {
 		this.stockerRepository = stockerRepository;
+		this.articleRepository = articleRepository;
+		this.magasinRepository = magasinRepository;
 	}
 
 	// Sauvegarder
@@ -103,6 +111,29 @@ public class StockerService {
 
 	public Stocker ligneStocker(Article a, String cMag) {
 		return stockerRepository.ligneStocker(a.getCodeArticle(), cMag);
+	}
+
+	//Léo
+	public Boolean updateStockByArticleAndMagasin(String codeArticle,  String numMagasin, Long quantiterStocker){
+
+      boolean check_Operation = false;
+
+		Optional<Stocker> stockerLine = stockerRepository.findByArticle_CodeArticleAndMagasin_CodeMagasin(codeArticle, numMagasin);
+		if(stockerLine.isPresent()){
+			stockerLine.get().setQuantiterStocker(stockerLine.get().getQuantiterStocker() + quantiterStocker*(-1));
+			edit(stockerLine.get().getIdStocker(), stockerLine.get());
+			check_Operation = true;
+		}
+
+		if (!stockerLine.isPresent()){
+
+			save(new Stocker(null,quantiterStocker*(-1),Long.valueOf(0),
+					Long.valueOf(0),Long.valueOf(0),articleRepository.findById(codeArticle).get(),magasinRepository.findById(numMagasin).get()));
+			check_Operation = true;
+
+		}
+		return  check_Operation;
+
 	}
 
 }

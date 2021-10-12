@@ -22,5 +22,8 @@ public interface CorrespondantRepository extends JpaRepository<Correspondant, St
 	public List<Correspondant> findByUtilisateur(Utilisateur utilisateur);
 	
 	public List<Correspondant> findByImputableCorres(boolean imputableCorres);
+
+	//Léo
+	List<Correspondant> findAllByImputableCorresIsTrue();
 	
 }

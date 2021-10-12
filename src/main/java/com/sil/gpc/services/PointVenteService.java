@@ -156,4 +156,9 @@ public class PointVenteService {
 	 * for (LignePointVente l : pointVenteRepository.ligneByPv(num)) { lpv.(l); } }
 	 * return lpv; }
 	 */
+
+	//Léo
+	public  List<PointVente> getAllByIdCorrespondantAndPayerFalse(String codeCorres){
+		return  pointVenteRepository.findAllByCorrespondant_IdCorrespondantAndPayerPointIsFalse(codeCorres);
+	}
 }

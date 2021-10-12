@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import com.sil.gpc.domains.*;
+import com.sil.gpc.dto.SearchLinesOpCaisseDTO;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,7 @@ import com.sil.gpc.services.CorrespondantService;
 import com.sil.gpc.services.LignePointVenteService;
 import com.sil.gpc.services.PointVenteService;
 import com.sil.gpc.services.TypCorresService;
+import com.sil.gpc.repositories.LignePointVenteRepository;
 
 @CrossOrigin
 @RestController
@@ -28,14 +31,16 @@ public class CorrespondantController {
 	private final TypCorresService typCorresService;
 	private final PointVenteService pointVenteService;
 	private final LignePointVenteService lignePointVenteService;
+	private  final LignePointVenteRepository lignePointVenteRepository;
 
 	public CorrespondantController(CorrespondantService correspondantService, TypCorresService typCorresService,
-			PointVenteService pointVenteService, LignePointVenteService lignePointVenteService) {
+			PointVenteService pointVenteService, LignePointVenteService lignePointVenteService, LignePointVenteRepository lignePointVenteRepository) {
 		super();
 		this.correspondantService = correspondantService;
 		this.typCorresService = typCorresService;
 		this.pointVenteService = pointVenteService;
 		this.lignePointVenteService = lignePointVenteService;
+		this.lignePointVenteRepository = lignePointVenteRepository;
 
 	}
 
@@ -215,5 +220,20 @@ public class CorrespondantController {
 	public List<LignePointVente> getAllLignePointVenteByNumPointVente(@PathVariable(name = "numPointVente") String numPointVente) {
 		return this.lignePointVenteService.findAllLignePointVenteByNumPointVente(numPointVente);
 	}
+
+	//Léo
+	@PostMapping(path = "add-imput/{numPointVente}")
+	public Boolean saveAndUpdated(@PathVariable(name = "numPointVente") String numPointVente, @RequestBody OpCaisse opcInmput){
+		return  pointVenteService.addAndUpdatedFotImputation(opcInmput, numPointVente);
+	}
+
+	//Léo
+	@PostMapping(path = "ligne-point-vente/list-imput")
+	public List<LignePointVente> getAllLignePointVenteImput(@RequestBody SearchLinesOpCaisseDTO searchLinesOpCaisseDTO) {
+		return this.lignePointVenteRepository.getAllLignePvImput(searchLinesOpCaisseDTO.getStartDateTime(), searchLinesOpCaisseDTO.getEndDateTime(), searchLinesOpCaisseDTO.getCodeCaisse());
+	}
+
+
+
 
 }

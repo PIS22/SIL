@@ -1,6 +1,8 @@
 package com.sil.gpc.repositories;
 
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,5 +42,6 @@ public interface PointVenteRepository extends JpaRepository<PointVente, String> 
 	public List<String> pointByOp(String numop);
 
 	List<PointVente> findAllByCorrespondant_IdCorrespondantAndPayerPointIsFalse(String codeCorres);
+	List<PointVente> findAllByPayerPointIsTrueAndDateSaisieBetween(LocalDateTime dateSaisie, LocalDateTime dateSaisie2);
 
 }

@@ -1,6 +1,8 @@
 package com.sil.gpc.services;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -173,6 +175,18 @@ public class PointVenteService {
 		}
 
 		return  check;
+
+	}
+
+	//Léo
+	public List<LignePointVente> find(LocalDateTime startDate, LocalDateTime endDate){
+		List<LignePointVente> lignePointVente = new ArrayList<>();
+		//Pvente = pointVenteRepository.findAllByPayerPointIsTrueAndDateSaisieBetween(startDate, endDate);
+		for (PointVente pv : pointVenteRepository.findAllByPayerPointIsTrueAndDateSaisieBetween(startDate, endDate)){
+			lignePointVente.add((LignePointVente) lpv.findAllLignePointVenteByNumPointVente(pv.getNumPointVente()));
+
+		}
+		return  lignePointVente;
 
 	}
 }

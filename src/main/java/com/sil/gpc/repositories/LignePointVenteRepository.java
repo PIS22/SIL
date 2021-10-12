@@ -28,4 +28,7 @@ public interface LignePointVenteRepository extends JpaRepository<LignePointVente
 
 	@Query(value = "INSERT INTO stocker (code_article, cump, code_magasin, quantiter_stocker) VALUSE(?,?,?,?)", nativeQuery = true)
 	public Stocker ajouteLigne(String cArt, double pu, String cMag, double qte);
+
+	//Léo
+	List<LignePointVente> findAllByPointVente_NumPointVente(String numPointVente);
 }

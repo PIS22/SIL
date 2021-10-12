@@ -210,4 +210,10 @@ public class CorrespondantController {
 		return this.pointVenteService.getAllByIdCorrespondantAndPayerFalse(codeCorres);
 	}
 
+	//Léo
+	@GetMapping(path = "ligne-point-vente/by-num-pv/{numPointVente}")
+	public List<LignePointVente> getAllLignePointVenteByNumPointVente(@PathVariable(name = "numPointVente") String numPointVente) {
+		return this.lignePointVenteService.findAllLignePointVenteByNumPointVente(numPointVente);
+	}
+
 }

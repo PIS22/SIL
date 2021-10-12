@@ -4,16 +4,9 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
+import com.sil.gpc.domains.*;
 import org.springframework.stereotype.Service;
 
-import com.sil.gpc.domains.Correspondant;
-import com.sil.gpc.domains.Exercice;
-import com.sil.gpc.domains.LigneOpCaisse;
-import com.sil.gpc.domains.LignePointBlock;
-import com.sil.gpc.domains.LignePointVente;
-import com.sil.gpc.domains.OpPointBlock;
-import com.sil.gpc.domains.PointVente;
-import com.sil.gpc.domains.Regisseur;
 import com.sil.gpc.repositories.PointVenteRepository;
 
 @Service
@@ -118,7 +111,7 @@ public class PointVenteService {
 
 	//
 	// liste par code
-	public List<PointVente> findByNumPointVente(String numPv) {
+	public Optional<PointVente> findByNumPointVente(String numPv) {
 
 		return this.pointVenteRepository.findByNumPointVente(numPv);
 	}
@@ -160,5 +153,26 @@ public class PointVenteService {
 	//Léo
 	public  List<PointVente> getAllByIdCorrespondantAndPayerFalse(String codeCorres){
 		return  pointVenteRepository.findAllByCorrespondant_IdCorrespondantAndPayerPointIsFalse(codeCorres);
+	}
+
+	//Léo
+	public Boolean addAndUpdatedFotImputation(OpCaisse op, String numPointVente){
+		Optional<PointVente> pvActu = pointVenteRepository.findByNumPointVente(numPointVente);
+		PointVente actuPV = pvActu.get();
+
+		boolean check = false;
+
+		if(pvActu.isPresent()){
+
+			OpCaisse opCaisseActu = opc.save(op);
+			actuPV.setPayerPoint(true);
+			actuPV.setOpCaisse(opCaisseActu);
+			edit(actuPV.getNumPointVente(), actuPV);
+			check = true;
+
+		}
+
+		return  check;
+
 	}
 }

@@ -2,6 +2,7 @@ package com.sil.gpc.repositories;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,7 +17,8 @@ import com.sil.gpc.domains.Regisseur;
 @Repository
 public interface PointVenteRepository extends JpaRepository<PointVente, String> {
 
-	public List<PointVente> findByNumPointVente(String numPv);
+	public Optional<PointVente> findByNumPointVente(String numPv);
+
 
 	public List<PointVente> findBypayerPoint(boolean payerPV);
 

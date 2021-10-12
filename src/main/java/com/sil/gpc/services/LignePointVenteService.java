@@ -78,4 +78,9 @@ public class LignePointVenteService {
 
 		return repos.findAllById(repos.ligneByOp(numop));
 	}
+
+	//Léo
+	public  List<LignePointVente> findAllLignePointVenteByNumPointVente(String numPointVente){
+		return repos.findAllByPointVente_NumPointVente(numPointVente);
+	}
 }

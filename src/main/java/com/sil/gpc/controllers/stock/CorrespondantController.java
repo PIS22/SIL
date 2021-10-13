@@ -223,7 +223,7 @@ public class CorrespondantController {
 
 	//Léo
 	@PostMapping(path = "add-imput/{numPointVente}")
-	public Boolean saveAndUpdated(@PathVariable(name = "numPointVente") String numPointVente, @RequestBody OpCaisse opcInmput){
+	public OpCaisse saveAndUpdated(@PathVariable(name = "numPointVente") String numPointVente, @RequestBody OpCaisse opcInmput){
 		return  pointVenteService.addAndUpdatedFotImputation(opcInmput, numPointVente);
 	}
 

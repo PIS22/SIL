@@ -158,23 +158,18 @@ public class PointVenteService {
 	}
 
 	//Léo
-	public Boolean addAndUpdatedFotImputation(OpCaisse op, String numPointVente){
+	public OpCaisse addAndUpdatedFotImputation(OpCaisse op, String numPointVente){
 		Optional<PointVente> pvActu = pointVenteRepository.findByNumPointVente(numPointVente);
 		PointVente actuPV = pvActu.get();
 
-		boolean check = false;
+		OpCaisse opCaisseActu;
 
-		if(pvActu.isPresent()){
+		opCaisseActu = opc.save(op);
+		actuPV.setPayerPoint(true);
+		actuPV.setOpCaisse(opCaisseActu);
+		edit(actuPV.getNumPointVente(), actuPV);
 
-			OpCaisse opCaisseActu = opc.save(op);
-			actuPV.setPayerPoint(true);
-			actuPV.setOpCaisse(opCaisseActu);
-			edit(actuPV.getNumPointVente(), actuPV);
-			check = true;
-
-		}
-
-		return  check;
+		    return  opCaisseActu;
 
 	}
 

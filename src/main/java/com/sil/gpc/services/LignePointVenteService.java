@@ -74,9 +74,7 @@ public class LignePointVenteService {
 	}
 
 	public List<LignePointVente> pointByOp(String numop) {
-		List<LignePointVente> lpv;
-
-		return repos.findAllById(repos.ligneByOp(numop));
+		return repos.ligneByOp(numop);
 	}
 
 	//Léo

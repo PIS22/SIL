@@ -3,7 +3,6 @@ package com.sil.gpc.repositories;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.sil.gpc.domains.OpCaisse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -24,7 +23,7 @@ public interface LignePointVenteRepository extends JpaRepository<LignePointVente
 
 	@Query(value = "SELECT l.* FROM ligne_point_vente l where l.num_point_vente in\r\n"
 			+ "	(SELECT p.num_point_vente from point_vente p Where p.num_op_caisse = ?)", nativeQuery = true)
-	public List<Long> ligneByOp(String numop);
+	public List<LignePointVente> ligneByOp(String numop);
 
 	@Query(value = "UPDATE stocker set quantiter_stocker = quantiter_stocker- ? where code_magasin=? and code_article=?", nativeQuery = true)
 	public Stocker ajusterQuantite(double qtv, String cMag, String cArt);

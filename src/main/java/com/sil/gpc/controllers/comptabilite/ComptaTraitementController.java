@@ -2,6 +2,8 @@ package com.sil.gpc.controllers.comptabilite;
 
 import java.util.List;
 
+import com.sil.gpc.domains.LigneBudgetaire;
+import com.sil.gpc.services.LigneBudgetaireService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,17 +29,16 @@ public class ComptaTraitementController {
 	private final ImmoService immoService;
 	private final EcritureService ecritureService;
 	private final LigneEcritureService ligneEcritureService;
-	
-	public ComptaTraitementController(ImmoService immoService, EcritureService ecritureService,
-			LigneEcritureService ligneEcritureService) {
-		super();
+	private final LigneBudgetaireService ligneBudgetaireService;
+
+	public ComptaTraitementController(ImmoService immoService, EcritureService ecritureService, LigneEcritureService ligneEcritureService, LigneBudgetaireService ligneBudgetaireService) {
 		this.immoService = immoService;
 		this.ecritureService = ecritureService;
 		this.ligneEcritureService = ligneEcritureService;
+		this.ligneBudgetaireService = ligneBudgetaireService;
 	}
-	
 	/*
-	 * ####################### 
+	 * #######################
 	 * Partie réservée pour Immo
 	 * ##########################
 	 */
@@ -70,14 +71,14 @@ public class ComptaTraitementController {
 		return this.immoService.delete(id);
 	}
 
-	
+
 	/*
-	 * ####################### 
+	 * #######################
 	 * Partie réservée pour Ecriture
 	 * ##########################
 	 */
-	
-	
+
+
 	@GetMapping(path = "ecriture/list")
 	public List<Ecriture> getAllEcriture() {
 		return this.ecritureService.getAll();
@@ -105,17 +106,17 @@ public class ComptaTraitementController {
 
 		return this.ecritureService.delete(id);
 	}
-	
-	
-	
-	
+
+
+
+
 	/*
-	 * ####################### 
+	 * #######################
 	 * Partie réservée pour LigneEcriture
 	 * ##########################
 	 */
-	
-	
+
+
 	@GetMapping(path = "ligneEcriture/list")
 	public List<LigneEcriture> getAllLigneEcriture() {
 		return this.ligneEcritureService.getAll();
@@ -141,5 +142,40 @@ public class ComptaTraitementController {
 	public Boolean deleteLigneEcriture(@PathVariable(name = "id") Long id) {
 		return this.ligneEcritureService.delete(id);
 	}
-	
+
+
+
+	/*
+	 * #######################
+	 * Partie réservée pour LigneBudgetaire
+	 * ##########################
+	 */
+
+
+	@GetMapping(path = "lBdg/list")
+	public List<LigneBudgetaire> getAllLigneLBdg() {
+		return this.ligneBudgetaireService.getAll();
+	}
+
+	@GetMapping(path = "lBdg/byCodLBdg/{id}")
+	public LigneBudgetaire getLigneBudgetaire(@PathVariable(name = "id") Long id) {
+		return this.ligneBudgetaireService.getById(id);
+	}
+
+
+	@PostMapping(path = "lBdg/list")
+	public LigneBudgetaire createLigneBudgetaire(@RequestBody LigneBudgetaire lbdg) {
+		return this.ligneBudgetaireService.add(lbdg);
+	}
+
+	@PutMapping(path = "lBdg/byCodLigBdg/{id}")
+	public LigneBudgetaire updateLigneBudget(@PathVariable(name = "id") Long id, @RequestBody LigneBudgetaire lBdg) {
+		return this.ligneBudgetaireService.edit(id, lBdg);
+	}
+
+	@DeleteMapping(path = "lBdg/byCodLigBdg/{id}")
+	public Boolean deleteLigneBudgetaire(@PathVariable(name = "id") Long id) {
+		return this.ligneEcritureService.delete(id);
+	}
+
 }

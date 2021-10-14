@@ -1,6 +1,9 @@
 package com.sil.gpc.controllers.comptabilite;
 
 import java.util.List;
+
+import com.sil.gpc.domains.*;
+import com.sil.gpc.services.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,23 +13,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.sil.gpc.domains.Activite;
-import com.sil.gpc.domains.Associer;
-import com.sil.gpc.domains.Compte;
-import com.sil.gpc.domains.EtatImmo;
-import com.sil.gpc.domains.Journal;
-import com.sil.gpc.domains.Localisation;
-import com.sil.gpc.domains.NatureJournal;
-import com.sil.gpc.domains.TypeAmort;
-import com.sil.gpc.services.ActiviteService;
-import com.sil.gpc.services.AssocierService;
-import com.sil.gpc.services.CompteService;
-import com.sil.gpc.services.EtatImmoService;
-import com.sil.gpc.services.JournalService;
-import com.sil.gpc.services.LocalisationService;
-import com.sil.gpc.services.NatureJournalService;
-import com.sil.gpc.services.TypeAmortService;
 
 @RestController
 @CrossOrigin
@@ -41,10 +27,10 @@ public class ComptaBaseController {
 	private final EtatImmoService etatImmoService;
 	private final ActiviteService activiteService;
 	private final NatureJournalService natureJournalService;
+	private  final TypeBudgetService typeBudgetservice;
+	private final BudgetService budgetService;
 
-	public ComptaBaseController(CompteService compteService, TypeAmortService typeAmortService,
-			AssocierService associerService, JournalService journalService, LocalisationService localisationService, EtatImmoService etatImmoService, NatureJournalService natureJournalService, ActiviteService activiteService) {
-		super();
+	public ComptaBaseController(CompteService compteService, TypeAmortService typeAmortService, AssocierService associerService, JournalService journalService, LocalisationService localisationService, EtatImmoService etatImmoService, ActiviteService activiteService, NatureJournalService natureJournalService, TypeBudgetService typeBudgetservice, BudgetService budgetService) {
 		this.compteService = compteService;
 		this.typeAmortService = typeAmortService;
 		this.associerService = associerService;
@@ -53,9 +39,10 @@ public class ComptaBaseController {
 		this.etatImmoService = etatImmoService;
 		this.activiteService = activiteService;
 		this.natureJournalService = natureJournalService;
+		this.typeBudgetservice = typeBudgetservice;
+		this.budgetService = budgetService;
 	}
-	
-	
+
 	/*
 	 * ####################### 
 	 * Partie réservée pour Compte
@@ -307,41 +294,110 @@ public class ComptaBaseController {
 			
 					return this.activiteService.delete(id);
 				}
-				
-				
-				/*
-				 * ####################### 
-				 * Partie réservée pour NatureJournal
-				 * ##########################
-				 */
-				
 
-					@GetMapping(path = "natureJournal/list")
-					public List<NatureJournal> getAllNatureJournal() {
-						return this.natureJournalService.getAll();
-					}
-				
-					@GetMapping(path = "natureJournal/byCodNatJour/{id}")
-					public NatureJournal getNatureJournalById(@PathVariable(name = "id") Long id) {
-						return this.natureJournalService.getById(id);
-					}
-				
-				
-					@PostMapping(path = "natureJournal/list")
-					public NatureJournal createNatureJournal(@RequestBody NatureJournal natureJournal) {
-						return this.natureJournalService.add(natureJournal);
-					}
-				
-					@PutMapping(path = "natureJournal/byCodNatJour/{id}")
-					public NatureJournal updateNatureJournal(@PathVariable(name = "id") Long id, @RequestBody NatureJournal natureJournal) {
-				
-						return this.natureJournalService.edit(id, natureJournal);
-					}
-				
-					@DeleteMapping(path = "natureJournal/byCodNatJour/{id}")
-					public Boolean deleteNatureJournal(@PathVariable(name = "id") Long id) {
-				
-						return this.natureJournalService.delete(id);
-					}
+
+	/*
+	 * #######################
+	 * Partie réservée pour NatureJournal
+	 * ##########################
+	 */
+
+
+	@GetMapping(path = "natureJournal/list")
+	public List<NatureJournal> getAllNatureJournal() {
+		return this.natureJournalService.getAll();
+	}
+
+	@GetMapping(path = "natureJournal/byCodNatJour/{id}")
+	public NatureJournal getNatureJournalById(@PathVariable(name = "id") Long id) {
+		return this.natureJournalService.getById(id);
+	}
+
+
+	@PostMapping(path = "natureJournal/list")
+	public NatureJournal createNatureJournal(@RequestBody NatureJournal natureJournal) {
+		return this.natureJournalService.add(natureJournal);
+	}
+
+	@PutMapping(path = "natureJournal/byCodNatJour/{id}")
+	public NatureJournal updateNatureJournal(@PathVariable(name = "id") Long id, @RequestBody NatureJournal natureJournal) {
+
+		return this.natureJournalService.edit(id, natureJournal);
+	}
+
+	@DeleteMapping(path = "natureJournal/byCodNatJour/{id}")
+	public Boolean deleteNatureJournal(@PathVariable(name = "id") Long id) {
+
+		return this.natureJournalService.delete(id);
+	}
+	/*
+	 * #######################
+	 * Partie réservée pour typeBudget
+	 * ##########################
+	 */
+
+
+	@GetMapping(path = "natBud/list")
+	public List<TypeBudget> getAllTypeBudget() {
+		return this.typeBudgetservice.getAll();
+	}
+
+	@GetMapping(path = "natBud/byCodNat/{id}")
+	public TypeBudget getTypeBudgetById(@PathVariable(name = "id") Long id) {
+		return this.typeBudgetservice.getById(id);
+	}
+
+
+	@PostMapping(path = "natBud/list")
+	public TypeBudget createTypeBudget(@RequestBody TypeBudget tBudg) {
+		return this.typeBudgetservice.add(tBudg);
+	}
+
+	@PutMapping(path = "natBug/byCodNat/{id}")
+	public TypeBudget updateTypeBudget(@PathVariable(name = "id") Long id, @RequestBody TypeBudget tBdg) {
+
+		return this.typeBudgetservice.edit(id, tBdg);
+	}
+
+	@DeleteMapping(path = "natBug/byCodNat/{id}")
+	public Boolean deleteTypeBudget(@PathVariable(name = "id") Long id) {
+
+		return this.typeBudgetservice.delete(id);
+	}
+	/*
+	 * #######################
+	 * Partie réservée pour Budget
+	 * ##########################
+	 */
+
+
+	@GetMapping(path = "bdg/list")
+	public List<Budget> getAllBudget() {
+		return this.budgetService.getAll();
+	}
+
+	@GetMapping(path = "bdg/byIdBdg/{id}")
+	public Budget getBudgetById(@PathVariable(name = "id") Long id) {
+		return this.budgetService.getById(id);
+	}
+
+
+	@PostMapping(path = "bdg/list")
+	public Budget createBudget(@RequestBody Budget bdg) {
+		return this.budgetService.add(bdg);
+	}
+
+	@PutMapping(path = "bdg/byIdBdg/{id}")
+	public Budget updateBudget(@PathVariable(name = "id") Long id, @RequestBody Budget bdg) {
+
+		return this.budgetService.edit(id, bdg);
+	}
+
+	@DeleteMapping(path = "bdg/byIdBdg/{id}")
+	public Boolean deleteBudget(@PathVariable(name = "id") Long id) {
+
+		return this.budgetService.delete(id);
+	}
+
 
 }

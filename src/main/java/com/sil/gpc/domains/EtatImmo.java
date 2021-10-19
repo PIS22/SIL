@@ -12,15 +12,17 @@ public class EtatImmo implements Serializable {
 
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private Long idEtatImmo;
+	private String codeEtatImo;
 	private String libEtatImo;
 	
 	public EtatImmo() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public EtatImmo(Long idEtatImmo, String libEtatImo) {
+	public EtatImmo(Long idEtatImmo, String libEtatImo, String codeEtatImo) {
 		super();
 		this.idEtatImmo = idEtatImmo;
+		this.codeEtatImo = codeEtatImo;
 		this.libEtatImo = libEtatImo;
 	}
 
@@ -30,6 +32,14 @@ public class EtatImmo implements Serializable {
 
 	public void setIdEtatImmo(Long idEtatImmo) {
 		this.idEtatImmo = idEtatImmo;
+	}
+
+	public String getCodeEtatImo() {
+		return codeEtatImo;
+	}
+
+	public void setCodeEtatImo(String codeEtatImo) {
+		this.codeEtatImo = codeEtatImo;
 	}
 
 	public String getLibEtatImo() {
@@ -42,9 +52,10 @@ public class EtatImmo implements Serializable {
 
 	@Override
 	public String toString() {
-		return "EtatImmo [idEtatImmo=" + idEtatImmo + ", libEtatImo=" + libEtatImo + "]";
+		return "EtatImmo{" +
+				"idEtatImmo=" + idEtatImmo +
+				", codeEtatImo='" + codeEtatImo + '\'' +
+				", libEtatImo='" + libEtatImo + '\'' +
+				'}';
 	}
-	
-	
-
 }

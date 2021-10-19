@@ -12,15 +12,17 @@ public class TypeAmort implements Serializable {
 
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private Long idTypAmo;
+	private String codeTypAmor;
 	private String libTypAmo;
 	
 	public TypeAmort() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public TypeAmort(Long idTypAmo, String libTypAmo) {
+	public TypeAmort(Long idTypAmo, String codeTypAmor, String libTypAmo) {
 		super();
 		this.idTypAmo = idTypAmo;
+		this.codeTypAmor = codeTypAmor;
 		this.libTypAmo = libTypAmo;
 	}
 
@@ -30,6 +32,14 @@ public class TypeAmort implements Serializable {
 
 	public void setIdTypAmo(Long idTypAmo) {
 		this.idTypAmo = idTypAmo;
+	}
+
+	public String getCodeTypAmor() {
+		return codeTypAmor;
+	}
+
+	public void setCodeTypAmor(String codeTypAmor) {
+		this.codeTypAmor = codeTypAmor;
 	}
 
 	public String getLibTypAmo() {
@@ -42,9 +52,10 @@ public class TypeAmort implements Serializable {
 
 	@Override
 	public String toString() {
-		return "TypeAmort [idTypAmo=" + idTypAmo + ", libTypAmo=" + libTypAmo + "]";
+		return "TypeAmort{" +
+				"idTypAmo=" + idTypAmo +
+				", codeTypAmor='" + codeTypAmor + '\'' +
+				", libTypAmo='" + libTypAmo + '\'' +
+				'}';
 	}
-	
-	
-
 }

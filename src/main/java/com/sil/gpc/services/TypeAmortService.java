@@ -34,6 +34,7 @@ public class TypeAmortService {
 		if(repo.existsById(id)) {
 			TypeAmort entiter = repo.getOne(id);
 			
+			entiter.setCodeTypAmor(typeAmort.getCodeTypAmor());
 			entiter.setLibTypAmo(typeAmort.getLibTypAmo());
 			
 			return repo.save(entiter);

@@ -33,7 +33,8 @@ public class EtatImmoService {
 		
 		if(repo.existsById(id)) {
 			EtatImmo entiter = repo.getOne(id);
-			
+
+			entiter.setCodeEtatImo(etatImmo.getCodeEtatImo());
 			entiter.setLibEtatImo(etatImmo.getLibEtatImo());
 			
 			return repo.save(entiter);

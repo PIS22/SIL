@@ -1,13 +1,16 @@
 package com.sil.gpc.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.sil.gpc.dto.SearchLinesOpCaisseDTO;
 import org.springframework.stereotype.Service;
 
 import com.sil.gpc.domains.Article;
 import com.sil.gpc.domains.LignePointVente;
 import com.sil.gpc.repositories.LignePointVenteRepository;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 public class LignePointVenteService {
@@ -80,5 +83,42 @@ public class LignePointVenteService {
 	//Léo
 	public  List<LignePointVente> findAllLignePointVenteByNumPointVente(String numPointVente){
 		return repos.findAllByPointVente_NumPointVente(numPointVente);
+	}
+
+	//Léo
+	public  List<LignePointVente> findPointVenteImputGroupByArticle(@RequestBody SearchLinesOpCaisseDTO searchLinesOpCaisseDTO){
+
+		List<LignePointVente> lignePointVenteGroupList = new ArrayList<>();
+
+		List<LignePointVente> lignePointVenteList = repos.getAllLignePvImput(searchLinesOpCaisseDTO.getStartDateTime(), searchLinesOpCaisseDTO.getEndDateTime(), searchLinesOpCaisseDTO.getCodeCaisse());
+		System.out.println("taille"+lignePointVenteList.size());
+		System.out.println("taille Groupe"+lignePointVenteGroupList.size());
+		lignePointVenteGroupList.add(lignePointVenteList.get(0));
+
+
+		for ( int i = 1; i < lignePointVenteList.size() ; i++){
+			System.out.println("ele"+lignePointVenteList.get(i));
+
+				for ( int p = 0; p <= lignePointVenteGroupList.size() ; p++ ){
+					System.out.println("element"+lignePointVenteList.get(i).getArticle().getCodeArticle());
+
+
+					if(lignePointVenteList.get(i).getArticle().getCodeArticle() == lignePointVenteGroupList.get(p).getArticle().getCodeArticle()){
+
+						lignePointVenteGroupList.get(p).setQuantiteLignePointVente(lignePointVenteGroupList.get(p).getQuantiteLignePointVente()+ lignePointVenteList.get(i).getQuantiteLignePointVente());
+						//break;
+					}
+					else {
+						lignePointVenteGroupList.add(lignePointVenteList.get(i));
+					}
+
+				}
+
+
+		}
+
+		return  lignePointVenteGroupList;
+
+
 	}
 }

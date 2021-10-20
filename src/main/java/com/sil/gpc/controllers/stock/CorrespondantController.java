@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.sil.gpc.domains.*;
+import com.sil.gpc.dto.ImputByArticle;
 import com.sil.gpc.dto.SearchLinesOpCaisseDTO;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -231,6 +232,13 @@ public class CorrespondantController {
 	@PostMapping(path = "ligne-point-vente/list-imput")
 	public List<LignePointVente> getAllLignePointVenteImput(@RequestBody SearchLinesOpCaisseDTO searchLinesOpCaisseDTO) {
 		return this.lignePointVenteRepository.getAllLignePvImput(searchLinesOpCaisseDTO.getStartDateTime(), searchLinesOpCaisseDTO.getEndDateTime(), searchLinesOpCaisseDTO.getCodeCaisse());
+	}
+
+	//Léo2
+	@PostMapping(path = "ligne-point-vente/list-imput-by-article")
+	public List<ImputByArticle> getAllLignePointVenteImputByGroupArticle(@RequestBody SearchLinesOpCaisseDTO searchLinesOpCaisseDTO) {
+		//return lignePointVenteService.findPointVenteImputGroupByArticle(searchLinesOpCaisseDTO);
+		return  this.lignePointVenteRepository.getAllLignePvImputGroupByArticle(searchLinesOpCaisseDTO.getStartDateTime(), searchLinesOpCaisseDTO.getEndDateTime(), searchLinesOpCaisseDTO.getCodeCaisse());
 	}
 
 

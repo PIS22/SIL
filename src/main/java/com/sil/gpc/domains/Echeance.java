@@ -24,6 +24,8 @@ public class Echeance implements Serializable {
 	private Date dateEcheance;
 	private boolean payeEcheance;
 	private double prix;
+	private Date datPaiement;
+	private String typPaiement;
 	@ManyToOne(targetEntity = Contrat.class,fetch = FetchType.EAGER)
 	@JoinColumn(name = "numContrat",referencedColumnName = "numContrat", nullable = false)
 	private Contrat contrat;
@@ -38,13 +40,14 @@ public class Echeance implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Echeance(String moisEcheance, int annee, Date dateEcheance, boolean payeEcheance, double prix,
-			Contrat contrat, OpCaisse opCaisse) {
+	public Echeance(String moisEcheance, int annee, Date dateEcheance, boolean payeEcheance, double prix, Date datPaiement, String typPaiement, Contrat contrat, OpCaisse opCaisse) {
 		this.moisEcheance = moisEcheance;
 		this.annee = annee;
 		this.dateEcheance = dateEcheance;
 		this.payeEcheance = payeEcheance;
 		this.prix = prix;
+		this.datPaiement = datPaiement;
+		this.typPaiement = typPaiement;
 		this.contrat = contrat;
 		this.opCaisse = opCaisse;
 	}
@@ -55,6 +58,26 @@ public class Echeance implements Serializable {
 
 	public void setMoisEcheance(String moisEcheance) {
 		this.moisEcheance = moisEcheance;
+	}
+
+	public void setIdEcheance(Long idEcheance) {
+		this.idEcheance = idEcheance;
+	}
+
+	public Date getDatPaiement() {
+		return datPaiement;
+	}
+
+	public void setDatPaiement(Date datPaiement) {
+		this.datPaiement = datPaiement;
+	}
+
+	public String getTypPaiement() {
+		return typPaiement;
+	}
+
+	public void setTypPaiement(String typPaiement) {
+		this.typPaiement = typPaiement;
 	}
 
 	public int getAnnee() {

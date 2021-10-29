@@ -36,8 +36,10 @@ public class LigneEcritureService {
 			
 			entiter.setCompte(ligneEcriture.getCompte());
 			entiter.setCredit(ligneEcriture.getCredit());
+			entiter.setObservation(ligneEcriture.getObservation());
 			entiter.setDebit(ligneEcriture.getDebit());
 			entiter.setEcriture(ligneEcriture.getEcriture());
+			//entiter.setReference(ligneEcriture.getReference());
 			
 			return repo.save(entiter);
 		}

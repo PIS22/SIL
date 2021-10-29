@@ -1,5 +1,7 @@
 package com.sil.gpc.services;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -19,6 +21,15 @@ public class NatureJournalService {
 	
 	
 	public List<NatureJournal> getAll(){
+		if(repo.findAll().isEmpty()) {
+			List<NatureJournal> nj = new ArrayList<>();
+			nj.add(new NatureJournal("N1", "Amortissement"));
+			nj.add(new NatureJournal("N2", "Engagement"));
+			nj.add(new NatureJournal("N3", "Report"));
+			nj.add(new NatureJournal("N4", "Resultat"));
+			nj.add(new NatureJournal("N5", "Fonctionnement"));
+			repo.saveAll(nj);
+		}
 		return repo.findAll();
 	}
 	

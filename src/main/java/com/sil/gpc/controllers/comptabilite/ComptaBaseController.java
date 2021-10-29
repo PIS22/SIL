@@ -29,8 +29,9 @@ public class ComptaBaseController {
 	private final NatureJournalService natureJournalService;
 	private  final TypeBudgetService typeBudgetservice;
 	private final BudgetService budgetService;
+	private  final  AffectComptToCaisseService affectComptToCaisseService;
 
-	public ComptaBaseController(CompteService compteService, TypeAmortService typeAmortService, AssocierService associerService, JournalService journalService, LocalisationService localisationService, EtatImmoService etatImmoService, ActiviteService activiteService, NatureJournalService natureJournalService, TypeBudgetService typeBudgetservice, BudgetService budgetService) {
+	public ComptaBaseController(CompteService compteService, TypeAmortService typeAmortService, AssocierService associerService, JournalService journalService, LocalisationService localisationService, EtatImmoService etatImmoService, ActiviteService activiteService, NatureJournalService natureJournalService, TypeBudgetService typeBudgetservice, BudgetService budgetService, AffectComptToCaisseService affecteCompteToCaisseService) {
 		this.compteService = compteService;
 		this.typeAmortService = typeAmortService;
 		this.associerService = associerService;
@@ -41,8 +42,8 @@ public class ComptaBaseController {
 		this.natureJournalService = natureJournalService;
 		this.typeBudgetservice = typeBudgetservice;
 		this.budgetService = budgetService;
+		this.affectComptToCaisseService = affecteCompteToCaisseService;
 	}
-
 	/*
 	 * ####################### 
 	 * Partie réservée pour Compte
@@ -52,6 +53,11 @@ public class ComptaBaseController {
 	@GetMapping(path = "compte/list")
 	public List<Compte> getAllCompte() {
 		return this.compteService.getAll();
+	}
+
+	@GetMapping(path = "compte/byTyp/{t}")
+	public List<Compte> getCompteByType(String t) {
+		return this.compteService.comptesParType(t);
 	}
 
 	@GetMapping(path = "compte/byCodCom/{id}")
@@ -157,7 +163,11 @@ public class ComptaBaseController {
 	 * Partie réservée pour Journal
 	 * ##########################
 	 */
-	
+
+	@GetMapping(path = "compte/jn/{id}")
+	public List<Compte> getEligible(@PathVariable (name = "id") Long id){
+		return journalService.getEligible(id);
+	}
 	
 	@GetMapping(path = "journal/list")
 	public List<Journal> getAllJournal() {
@@ -399,5 +409,40 @@ public class ComptaBaseController {
 		return this.budgetService.delete(id);
 	}
 
+
+	/*
+	 * #######################
+	 * Partie réservée pour AffectComptToCaisse
+	 * ##########################
+	 */
+
+
+	@GetMapping(path = "affectComptToCaisse/list")
+	public List<AffectComptToCaisse> getAllAffectComptToCaisse() {
+		return this.affectComptToCaisseService.getAll();
+	}
+
+	@GetMapping(path = "affectComptToCaisse/byCodAffComToCai/{id}")
+	public AffectComptToCaisse getAffectComptToCaisseById(@PathVariable(name = "id") Long id) {
+		return this.affectComptToCaisseService.getById(id);
+	}
+
+
+	@PostMapping(path = "affectComptToCaisse/list")
+	public AffectComptToCaisse createAffectComptToCaisse(@RequestBody AffectComptToCaisse affectComptToCaisse) {
+		return this.affectComptToCaisseService.add(affectComptToCaisse);
+	}
+
+	@PutMapping(path = "affectComptToCaisse/byCodAffComToCai/{id}")
+	public AffectComptToCaisse updateAffectComptToCaisse(@PathVariable(name = "id") Long id, @RequestBody AffectComptToCaisse affectComptToCaisse) {
+
+		return this.affectComptToCaisseService.edit(id, affectComptToCaisse);
+	}
+
+	@DeleteMapping(path = "affectComptToCaisse/byCodAffComToCai/{id}")
+	public Boolean deleteAffectComptToCaisse(@PathVariable(name = "id") Long id) {
+
+		return this.affectComptToCaisseService.delete(id);
+	}
 
 }

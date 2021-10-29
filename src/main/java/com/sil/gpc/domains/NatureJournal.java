@@ -7,7 +7,8 @@ import javax.persistence.Id;
 import java.io.Serializable;
 
 @Entity
-public class NatureJournal implements Serializable {
+public class
+NatureJournal implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idNat;

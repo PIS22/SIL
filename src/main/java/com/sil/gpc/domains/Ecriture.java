@@ -3,15 +3,18 @@ package com.sil.gpc.domains;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Entity
 public class Ecriture implements Serializable {
     @Id
     private String numEcri;
-    private Date datEcri;
+    private Timestamp datEcri;
     private String descript;
     private String refIntern;
     private String refExtern;
+    private Timestamp datSaisie;
+    private int ordre;
     @ManyToOne(targetEntity = Journal.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "idJrn", referencedColumnName = "idJrn", nullable = false)
     private Journal journal;
@@ -25,7 +28,7 @@ public class Ecriture implements Serializable {
     public Ecriture() {
     }
 
-    public Ecriture(String numEcri, Date datEcri, String descript, String refInterne, String refExterne, Journal journal, Utilisateur user, Exercice exo) {
+    public Ecriture(String numEcri, Timestamp datEcri, String descript, String refInterne, String refExterne, Journal journal, Utilisateur user, Exercice exo) {
         this.numEcri = numEcri;
         this.datEcri = datEcri;
         this.descript = descript;
@@ -44,11 +47,11 @@ public class Ecriture implements Serializable {
         this.numEcri = numEcri;
     }
 
-    public Date getDatEcri() {
+    public Timestamp getDatEcri() {
         return datEcri;
     }
 
-    public void setDatEcri(Date datEcri) {
+    public void setDatEcri(Timestamp datEcri) {
         this.datEcri = datEcri;
     }
 
@@ -58,6 +61,22 @@ public class Ecriture implements Serializable {
 
     public void setDescipt(String descript) {
         this.descript = descript;
+    }
+
+    public String getDescript() {
+        return descript;
+    }
+
+    public void setDescript(String descript) {
+        this.descript = descript;
+    }
+
+    public int getOrdre() {
+        return ordre;
+    }
+
+    public void setOrdre(int ordre) {
+        this.ordre = ordre;
     }
 
     public String getRefIntern() {
@@ -98,6 +117,14 @@ public class Ecriture implements Serializable {
 
     public void setExo(Exercice exo) {
         this.exo = exo;
+    }
+
+    public Timestamp getDatSaisie() {
+        return datSaisie;
+    }
+
+    public void setDatSaisie(Timestamp datSaisie) {
+        this.datSaisie = datSaisie;
     }
 
     @Override

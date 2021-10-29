@@ -17,42 +17,42 @@ public class TypeBudget implements Serializable {
     public TypeBudget() {
     }
 
-    public TypeBudget(Long idTypBdg, String codTypBudg, String libTypBudg) {
+    public TypeBudget(Long idTypBdg, String codTypBdg, String libTypBdg) {
         this.idTypBdg = idTypBdg;
-        this.codTypBdg = codTypBudg;
-        this.libTypBdg = libTypBudg;
+        this.codTypBdg = codTypBdg;
+        this.libTypBdg = libTypBdg;
     }
 
-    public Long getIdTypBudg() {
+    public Long getIdTypBdg() {
         return idTypBdg;
     }
 
-    public void setIdTypBdg(Long idTypBudg) {
-        this.idTypBdg = idTypBudg;
+    public void setIdTypBdg(Long idTypBdg) {
+        this.idTypBdg = idTypBdg;
     }
 
-    public String getCodTypBudg() {
+    public String getCodTypBdg() {
         return codTypBdg;
     }
 
-    public void setCodTypBudg(String codTypBudg) {
-        this.codTypBdg = codTypBudg;
+    public void setCodTypBdg(String codTypBdg) {
+        this.codTypBdg = codTypBdg;
     }
 
-    public String getLibTypBudg() {
+    public String getLibTypBdg() {
         return libTypBdg;
     }
 
-    public void setLibTypBudg(String libTypBudg) {
-        this.libTypBdg = libTypBudg;
+    public void setLibTypBdg(String libTypBdg) {
+        this.libTypBdg = libTypBdg;
     }
 
     @Override
     public String toString() {
         return "TypeBudget{" +
-                "idTypBudg=" + idTypBdg +
-                ", codTypBudg='" + codTypBdg + '\'' +
-                ", libTypBudg='" + libTypBdg + '\'' +
+                "idTypBdg=" + idTypBdg +
+                ", codTypBdg='" + codTypBdg + '\'' +
+                ", libTypBdg='" + libTypBdg + '\'' +
                 '}';
     }
 }

@@ -1,8 +1,14 @@
 package com.sil.gpc.controllers.comptabilite;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
-import com.sil.gpc.domains.LigneBudgetaire;
+import com.sil.gpc.domains.*;
+import com.sil.gpc.dto.EcriJour;
+import com.sil.gpc.dto.SearchOpCaisseDTO;
+import com.sil.gpc.repositories.EcritureRepository;
 import com.sil.gpc.services.LigneBudgetaireService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,9 +20,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sil.gpc.domains.Ecriture;
-import com.sil.gpc.domains.Immo;
-import com.sil.gpc.domains.LigneEcriture;
 import com.sil.gpc.services.EcritureService;
 import com.sil.gpc.services.ImmoService;
 import com.sil.gpc.services.LigneEcritureService;
@@ -30,12 +33,16 @@ public class ComptaTraitementController {
 	private final EcritureService ecritureService;
 	private final LigneEcritureService ligneEcritureService;
 	private final LigneBudgetaireService ligneBudgetaireService;
+	private final EcritureRepository ecrire;
 
-	public ComptaTraitementController(ImmoService immoService, EcritureService ecritureService, LigneEcritureService ligneEcritureService, LigneBudgetaireService ligneBudgetaireService) {
+	public ComptaTraitementController(ImmoService immoService, EcritureService ecritureService,
+		LigneEcritureService ligneEcritureService, LigneBudgetaireService ligneBudgetaireService,
+		EcritureRepository er ) {
 		this.immoService = immoService;
 		this.ecritureService = ecritureService;
 		this.ligneEcritureService = ligneEcritureService;
 		this.ligneBudgetaireService = ligneBudgetaireService;
+		this.ecrire = er;
 	}
 	/*
 	 * #######################
@@ -78,6 +85,16 @@ public class ComptaTraitementController {
 	 * ##########################
 	 */
 
+	@PostMapping("ecriture/list/ojd")
+	public List<Ecriture> findOpcaisseOfDay(@RequestBody EcriJour ej) {
+
+		Long us = ej.getUser();
+		Long jn = ej.getJrn();
+
+		List<Ecriture> ecritures = ecrire.getAllEcritureOfDay(us,jn);
+
+		return ecritures;
+	}
 
 	@GetMapping(path = "ecriture/list")
 	public List<Ecriture> getAllEcriture() {
@@ -89,10 +106,14 @@ public class ComptaTraitementController {
 		return this.ecritureService.getById(id);
 	}
 
-
 	@PostMapping(path = "ecriture/list")
 	public Ecriture createEcriture(@RequestBody Ecriture ecriture) {
 		return this.ecritureService.add(ecriture);
+	}
+
+	@PostMapping(path = "ecriture/blk")
+	public Ecriture addBlock(@RequestBody EcritureBlock block) {
+		return this.ecritureService.addEriture(block);
 	}
 
 	@PutMapping(path = "ecriture/byCodEcri/{id}")
@@ -103,7 +124,6 @@ public class ComptaTraitementController {
 
 	@DeleteMapping(path = "ecriture/byCodEcri/{id}")
 	public Boolean deleteEcriture(@PathVariable(name = "id") String id) {
-
 		return this.ecritureService.delete(id);
 	}
 

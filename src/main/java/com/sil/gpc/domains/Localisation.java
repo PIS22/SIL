@@ -12,7 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Localisation implements Serializable {
+public class  Localisation implements Serializable {
 
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private Long idLoc;

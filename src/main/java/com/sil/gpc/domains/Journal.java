@@ -28,9 +28,11 @@ public class Journal implements Serializable {
     public Journal(NatureJournal natJrn) {
     }
 
+    public Journal() {
+    }
 
     public Journal(Long idJrn, String codJrn, String libJrn, List<Compte> compteAutorises, Compte autoContrepart,
-			NatureJournal natJrn) {
+                   NatureJournal natJrn) {
 		super();
 		this.idJrn = idJrn;
 		this.codJrn = codJrn;

@@ -31,8 +31,8 @@ public class TypeBudgetService {
 
             if(repo.existsById(id)) {
                 TypeBudget entiter = repo.getOne(id);
-                entiter.setCodTypBudg(tBdg.getCodTypBudg());
-                entiter.setLibTypBudg(tBdg.getLibTypBudg());
+                entiter.setCodTypBdg(tBdg.getCodTypBdg());
+                entiter.setLibTypBdg(tBdg.getLibTypBdg());
 
                 return repo.save(entiter);
             }

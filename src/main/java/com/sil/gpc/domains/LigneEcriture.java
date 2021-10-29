@@ -9,10 +9,10 @@ public class LigneEcriture implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long idLigEcri;
-    private Date datEcri;
+    //private String reference;
+    private String observation;
     private  double debit;
     private  double credit;
-    private String obsLigEcri;
 
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = Ecriture.class)
     @JoinColumn(nullable = false, referencedColumnName = "numEcri", name = "numEcri")
@@ -25,12 +25,12 @@ public class LigneEcriture implements Serializable {
     public LigneEcriture() {
     }
 
-    public LigneEcriture(Long idLigEcri, Date datEcri, double debit, double credit, String obsLigEcri, Ecriture ecriture, Compte compte) {
+    public LigneEcriture(Long idLigEcri, double debit, double credit, /*String reference,*/ String obs, Ecriture ecriture, Compte compte) {
         this.idLigEcri = idLigEcri;
-        this.datEcri = datEcri;
         this.debit = debit;
         this.credit = credit;
-        this.obsLigEcri = obsLigEcri;
+        //this.reference = reference;
+        this.observation = obs;
         this.ecriture = ecriture;
         this.compte = compte;
     }
@@ -43,12 +43,20 @@ public class LigneEcriture implements Serializable {
         this.idLigEcri = idLigEcri;
     }
 
-    public Date getDatEcri() {
-        return datEcri;
+    /*public String getReference() {
+        return reference;
     }
 
-    public void setDatEcri(Date datEcri) {
-        this.datEcri = datEcri;
+    public void setReference(String reference) {
+        this.reference = reference;
+    }*/
+
+    public String getObservation() {
+        return observation;
+    }
+
+    public void setObservation(String observation) {
+        this.observation = observation;
     }
 
     public double getDebit() {
@@ -67,14 +75,6 @@ public class LigneEcriture implements Serializable {
         this.credit = credit;
     }
 
-    public String getObsLigEcri() {
-        return obsLigEcri;
-    }
-
-    public void setObsLigEcri(String obsLigEcri) {
-        this.obsLigEcri = obsLigEcri;
-    }
-
     public Ecriture getEcriture() {
         return ecriture;
     }
@@ -89,5 +89,18 @@ public class LigneEcriture implements Serializable {
 
     public void setCompte(Compte compte) {
         this.compte = compte;
+    }
+
+    @Override
+    public String toString() {
+        return "LigneEcriture{" +
+                "idLigEcri=" + idLigEcri +
+                //", reference='" + reference + '\'' +
+                ", observation='" + observation + '\'' +
+                ", debit=" + debit +
+                ", credit=" + credit +
+                ", ecriture=" + ecriture +
+                ", compte=" + compte +
+                '}';
     }
 }

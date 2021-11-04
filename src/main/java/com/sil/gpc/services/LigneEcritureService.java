@@ -50,5 +50,12 @@ public class LigneEcritureService {
 		repo.deleteById(id);
 		return !repo.existsById(id);
 	}
-	
+
+	public void deleteLot(List<LigneEcriture> l){
+		repo.deleteAll(l);
+	}
+
+	public List<LigneEcriture> linesOf(String num){
+		return repo.linesOf(num);
+	}
 }

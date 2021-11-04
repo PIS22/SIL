@@ -111,6 +111,21 @@ public class ComptaTraitementController {
 		return this.ecritureService.add(ecriture);
 	}
 
+	@PostMapping(path = "ecriture/annul")
+	public Ecriture annulEcrit(@RequestBody EcritureBlock block) {
+		Ecriture e= ecritureService.getById(block.getE().getRefIntern());
+		e.setValide(false);
+		if(ecritureService.edit(e.getNumEcri(),e) !=null){
+			return this.ecritureService.addEriture(block);
+		}
+		return null;
+	}
+
+	@PostMapping(path = "ecriture/edit")
+	public Ecriture editBloc(@RequestBody EcritureBlock block) {
+		return ecritureService.editBloc(block);
+	}
+
 	@PostMapping(path = "ecriture/blk")
 	public Ecriture addBlock(@RequestBody EcritureBlock block) {
 		return this.ecritureService.addEriture(block);
@@ -128,8 +143,6 @@ public class ComptaTraitementController {
 	}
 
 
-
-
 	/*
 	 * #######################
 	 * Partie réservée pour LigneEcriture
@@ -142,11 +155,15 @@ public class ComptaTraitementController {
 		return this.ligneEcritureService.getAll();
 	}
 
+	@GetMapping(path = "ligneEcriture/list/ecriture/{num}")
+	public List<LigneEcriture> getLinesOf(@PathVariable(name = "num") String num) {
+		return this.ligneEcritureService.linesOf(num);
+	}
+
 	@GetMapping(path = "ligneEcriture/byCodLigEcr/{id}")
 	public LigneEcriture getLigneEcritureById(@PathVariable(name = "id") Long id) {
 		return this.ligneEcritureService.getById(id);
 	}
-
 
 	@PostMapping(path = "ligneEcriture/list")
 	public LigneEcriture createLigneEcriture(@RequestBody LigneEcriture ligneEcriture) {

@@ -29,11 +29,16 @@ public class JournalService {
 		}
 		return eligible;
 	}
-	
+
 	public List<Journal> getAll(){
 		return repo.findAll();
 	}
-	
+
+
+	public List<Journal> getAutre(String cjrn){
+		return repo.autreJrn(cjrn);
+	}
+
 	public Journal getById(Long id) {
 		return repo.findById(id).get();
 	}

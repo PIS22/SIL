@@ -31,24 +31,17 @@ public class EcritureService {
 	}
 	
 	public Ecriture add(Ecriture ecriture) {
-		ecriture.setDatSaisie(new Date());
-		int mois= new Date().getMonth();
+		int mois= new Date().getMonth()+1;
 		String chain;
 		if(String.valueOf(mois).length() == 1){
 			chain = ecriture.getExo()+"0"+String.valueOf(mois)+ecriture.getJournal().getIdJrn();
 		}
 		else
-			chain = ecriture.getExo()+String.valueOf(mois)+ecriture.getJournal().getIdJrn();
+			chain = ecriture.getExo().getCodeExercice()+String.valueOf(mois)+ecriture.getJournal().getIdJrn();
 
-		String num=chain;
-		System.out.println("Année: "+ecriture.getExo().getCodeExercice()+"\nMois: "+mois);
-		Ecriture dernier = repo.ordre(ecriture.getExo().getCodeExercice(),mois);
-		System.out.println("ddd: "+dernier);
-		int ordre;
-		if(dernier == null){
-			ordre=1;
-		}
-		else{
+		int ordre=1;
+		Ecriture dernier =repo.ordre(ecriture.getExo().getCodeExercice(),ecriture.getJournal().getIdJrn());
+		if(dernier != null){
 			ordre = dernier.getOrdre()+1;
 		}
 		String od= String.valueOf(ordre);
@@ -56,8 +49,10 @@ public class EcritureService {
 			od="0"+od;
 		}
 		chain+="-"+od;
+		System.out.println(chain);
 		ecriture.setNumEcri(chain);
 		ecriture.setOrdre(ordre);
+		ecriture.setValide(true);
 		return repo.save(ecriture);
 	}
 	
@@ -72,12 +67,13 @@ public class EcritureService {
 			entiter.setJournal(ecriture.getJournal());
 			entiter.setRefExtern(ecriture.getRefExtern());
 			entiter.setRefIntern(ecriture.getRefIntern());
+			entiter.setValide(ecriture.isValide());
 			
 			return repo.save(entiter);
 		}
 		return null;
 	}
-	
+
 	public boolean delete (String id) {
 		repo.deleteById(id);
 		return !repo.existsById(id);
@@ -91,6 +87,13 @@ public class EcritureService {
 			}
 			repoL.saveAll(obj.getLines());
 		}
+		return e;
+	}
+	
+	public Ecriture editBloc(EcritureBlock obj){
+		Ecriture e = edit(obj.getE().getNumEcri(), obj.getE());
+		repoL.deleteAll(repoL.linesOf(e.getNumEcri()));
+		repoL.saveAll(obj.getLines());
 		return e;
 	}
 

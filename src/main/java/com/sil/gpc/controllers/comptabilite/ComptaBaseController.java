@@ -168,7 +168,12 @@ public class ComptaBaseController {
 	public List<Compte> getEligible(@PathVariable (name = "id") Long id){
 		return journalService.getEligible(id);
 	}
-	
+
+	@GetMapping(path = "journal/!cod/{cjrn}")
+	public List<Journal> getAutresJournaux(@PathVariable(name = "cjrn") String cjrn) {
+		return this.journalService.getAutre(cjrn);
+	}
+
 	@GetMapping(path = "journal/list")
 	public List<Journal> getAllJournal() {
 		return this.journalService.getAll();

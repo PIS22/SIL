@@ -14,6 +14,7 @@ public class Ecriture implements Serializable {
     private String refIntern;
     private String refExtern;
     private Timestamp datSaisie;
+    private  boolean valide;
     private int ordre;
     @ManyToOne(targetEntity = Journal.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "idJrn", referencedColumnName = "idJrn", nullable = false)
@@ -125,6 +126,14 @@ public class Ecriture implements Serializable {
 
     public void setDatSaisie(Timestamp datSaisie) {
         this.datSaisie = datSaisie;
+    }
+
+    public boolean isValide() {
+        return valide;
+    }
+
+    public void setValide(boolean valide) {
+        this.valide = valide;
     }
 
     @Override

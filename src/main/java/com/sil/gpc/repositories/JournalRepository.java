@@ -13,4 +13,7 @@ import java.util.List;
 public interface JournalRepository extends JpaRepository<Journal, Long> {
     @Query(value="select * FROM compte WHERE typ_cpte like 'E' AND num_cpte like ?", nativeQuery=true)
     public List<Compte> eligible(String nCpte);
+
+    @Query(value="select * from journal where cod_jrn not like ?", nativeQuery=true)
+    public List<Journal> autreJrn(String cjrn);
 }

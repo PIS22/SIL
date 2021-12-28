@@ -25,20 +25,32 @@ public class PrixImmeuble implements Serializable {
 
 	//Liaison avec immeuble
 	@ManyToOne(fetch = FetchType.EAGER,targetEntity = Immeuble.class)
-	@JoinColumn(name = "codeIm",referencedColumnName = "codeIm",nullable = false)
+	@JoinColumn(name = "codeIm",referencedColumnName = "codeIm",nullable = true)
 	private Immeuble immeuble;
+	
+	//Liaison avec typeImmeuble
+	@ManyToOne(fetch = FetchType.EAGER,targetEntity = TypeImmeuble.class)
+	@JoinColumn(name = "codeTypIm",referencedColumnName = "codeTypIm",nullable = false)
+	private TypeImmeuble typeImmeuble;
 	
 	public PrixImmeuble() {
 		super();
 	}
 
-	public PrixImmeuble(Date dateDebPrixIm, Date dateFinPrixIm, Long prixIm, Immeuble immeuble) {
+	
+
+	public PrixImmeuble(Long idPrixIm, Date dateDebPrixIm, Date dateFinPrixIm, Long prixIm, Immeuble immeuble,
+			TypeImmeuble typeImmeuble) {
 		super();
+		this.idPrixIm = idPrixIm;
 		this.dateDebPrixIm = dateDebPrixIm;
 		this.dateFinPrixIm = dateFinPrixIm;
 		this.prixIm = prixIm;
 		this.immeuble = immeuble;
+		this.typeImmeuble = typeImmeuble;
 	}
+
+
 
 	/**
 	 * @return the idPrixIm
@@ -110,32 +122,27 @@ public class PrixImmeuble implements Serializable {
 		this.immeuble = immeuble;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(dateDebPrixIm, dateFinPrixIm, idPrixIm, immeuble, prixIm);
+
+
+	public TypeImmeuble getTypeImmeuble() {
+		return typeImmeuble;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		PrixImmeuble other = (PrixImmeuble) obj;
-		return Objects.equals(dateDebPrixIm, other.dateDebPrixIm) && Objects.equals(dateFinPrixIm, other.dateFinPrixIm)
-				&& Objects.equals(idPrixIm, other.idPrixIm) && Objects.equals(immeuble, other.immeuble)
-				&& Objects.equals(prixIm, other.prixIm);
+
+
+	public void setTypeImmeuble(TypeImmeuble typeImmeuble) {
+		this.typeImmeuble = typeImmeuble;
 	}
+
+
 
 	@Override
 	public String toString() {
 		return "PrixImmeuble [idPrixIm=" + idPrixIm + ", dateDebPrixIm=" + dateDebPrixIm + ", dateFinPrixIm="
-				+ dateFinPrixIm + ", prixIm=" + prixIm + ", immeuble=" + immeuble + "]";
+				+ dateFinPrixIm + ", prixIm=" + prixIm + ", immeuble=" + immeuble + ", typeImmeuble=" + typeImmeuble
+				+ "]";
 	}
+
+	
 	
 }

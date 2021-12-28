@@ -27,6 +27,12 @@ public class ImmeubleService {
 		return null;
 	}
 	
+	public List<Immeuble> saveAll(List<Immeuble> immeubles) {
+		
+			return this.repo.saveAll(immeubles);
+		
+	}
+	
 	public Immeuble edit(String id, Immeuble immeuble) {
 		
 		Immeuble entiter = this.repo.getOne(id);
@@ -41,9 +47,14 @@ public class ImmeubleService {
 			entiter.setSiteMarcher(immeuble.getSiteMarcher());
 			entiter.setStuctResp(immeuble.getStuctResp());
 			entiter.setSuperficie(immeuble.getSuperficie());
-			entiter.setValUnit(immeuble.isValUnit());
-			entiter.setSuperficie(immeuble.getSuperficie());
-			entiter.setSuperficie(immeuble.getSuperficie());
+			entiter.setActiviter(immeuble.getActiviter());
+			entiter.setBatie(immeuble.isBatie());
+			entiter.setDimensions(immeuble.getDimensions());
+			entiter.setForme(immeuble.getForme());
+			entiter.setIlot(immeuble.getIlot());
+			entiter.setNbrFace(immeuble.getNbrFace());
+			entiter.setNbrPlace(immeuble.getNbrPlace());
+			entiter.setParcelle(immeuble.getParcelle());
 			
 			return this.repo.save(entiter);
 		}

@@ -12,16 +12,35 @@ public class TypeImmeuble implements Serializable {
 	@Id
 	private String codeTypIm;
 	private String libTypIm;
+	private boolean valUnit;
+	private boolean valSuperfi;
+	private boolean valFace;
+	private boolean valPlace;
+	private double periodiciterJrs;
+	private String nomUnePeriode;
 
 	public TypeImmeuble() {
 		super();
 	}
 
-	public TypeImmeuble(String codeTypIm, String libTypIm) {
+
+	
+
+	public TypeImmeuble(String codeTypIm, String libTypIm, boolean valUnit, boolean valSuperfi, boolean valFace,
+			boolean valPlace, double periodiciterJrs, String nomUnePeriode) {
 		super();
 		this.codeTypIm = codeTypIm;
 		this.libTypIm = libTypIm;
+		this.valUnit = valUnit;
+		this.valSuperfi = valSuperfi;
+		this.valFace = valFace;
+		this.valPlace = valPlace;
+		this.periodiciterJrs = periodiciterJrs;
+		this.nomUnePeriode = nomUnePeriode;
 	}
+
+
+
 
 	public String getCodeTypIm() {
 		return codeTypIm;
@@ -39,40 +58,98 @@ public class TypeImmeuble implements Serializable {
 		this.libTypIm = libTypIm;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((codeTypIm == null) ? 0 : codeTypIm.hashCode());
-		result = prime * result + ((libTypIm == null) ? 0 : libTypIm.hashCode());
-		return result;
+
+
+
+	public boolean isValUnit() {
+		return valUnit;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		TypeImmeuble other = (TypeImmeuble) obj;
-		if (codeTypIm == null) {
-			if (other.codeTypIm != null)
-				return false;
-		} else if (!codeTypIm.equals(other.codeTypIm))
-			return false;
-		if (libTypIm == null) {
-			if (other.libTypIm != null)
-				return false;
-		} else if (!libTypIm.equals(other.libTypIm))
-			return false;
-		return true;
+
+
+
+	public void setValUnit(boolean valUnit) {
+		this.valUnit = valUnit;
 	}
+
+
+
+
+	public boolean isValSuperfi() {
+		return valSuperfi;
+	}
+
+
+
+
+	public void setValSuperfi(boolean valSuperfi) {
+		this.valSuperfi = valSuperfi;
+	}
+
+
+
+
+	public boolean isValFace() {
+		return valFace;
+	}
+
+
+
+
+	public void setValFace(boolean valFace) {
+		this.valFace = valFace;
+	}
+
+
+
+
+	public boolean isValPlace() {
+		return valPlace;
+	}
+
+
+
+
+	public void setValPlace(boolean valPlace) {
+		this.valPlace = valPlace;
+	}
+
+
+
+
+	public double getPeriodiciterJrs() {
+		return periodiciterJrs;
+	}
+
+
+
+
+	public void setPeriodiciterJrs(double periodiciterJrs) {
+		this.periodiciterJrs = periodiciterJrs;
+	}
+
+
+
+
+	public String getNomUnePeriode() {
+		return nomUnePeriode;
+	}
+
+
+
+
+	public void setNomUnePeriode(String nomUnePeriode) {
+		this.nomUnePeriode = nomUnePeriode;
+	}
+
 
 	@Override
 	public String toString() {
-		return "TypeImmeuble [codeTypIm=" + codeTypIm + ", libTypIm=" + libTypIm + "]";
+		return "TypeImmeuble [codeTypIm=" + codeTypIm + ", libTypIm=" + libTypIm + ", valUnit=" + valUnit
+				+ ", valSuperfi=" + valSuperfi + ", valFace=" + valFace + ", valPlace=" + valPlace
+				+ ", periodiciterJrs=" + periodiciterJrs + ", nomUnePeriode=" + nomUnePeriode + "]";
 	}
+	
+	
 
 }

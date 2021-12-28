@@ -22,6 +22,7 @@ public class Locataire implements Serializable {
 	private String telLocataire;
 	private String ifuLocataire;
 	private String personneAContacter;
+	private String numContibuable;
 	
 	public Locataire() {
 		super();
@@ -36,18 +37,23 @@ public class Locataire implements Serializable {
 	 * @param ifuLocataire
 	 * @param personneAContacter
 	 */
-	public Locataire( String identiteLocataire, String adresseLocataire, String telLocataire,
-			String ifuLocataire, String personneAContacter) {
+	
+
+	public Long getIdLocataire() {
+		return idLocataire;
+	}
+	public Locataire(Long idLocataire, String identiteLocataire, String adresseLocataire, String telLocataire,
+			String ifuLocataire, String personneAContacter, String numContibuable) {
+		super();
+		this.idLocataire = idLocataire;
 		this.identiteLocataire = identiteLocataire;
 		this.adresseLocataire = adresseLocataire;
 		this.telLocataire = telLocataire;
 		this.ifuLocataire = ifuLocataire;
 		this.personneAContacter = personneAContacter;
+		this.numContibuable = numContibuable;
 	}
 
-	public Long getIdLocataire() {
-		return idLocataire;
-	}
 	public void setIdLocataire(Long idLocataire) {
 		this.idLocataire = idLocataire;
 	}
@@ -84,37 +90,22 @@ public class Locataire implements Serializable {
 		this.ifuLocataire = ifuLocataire;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(adresseLocataire, idLocataire, identiteLocataire, ifuLocataire, personneAContacter,
-				telLocataire);
+	public String getNumContibuable() {
+		return numContibuable;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		Locataire other = (Locataire) obj;
-		return Objects.equals(adresseLocataire, other.adresseLocataire)
-				&& Objects.equals(idLocataire, other.idLocataire)
-				&& Objects.equals(identiteLocataire, other.identiteLocataire)
-				&& Objects.equals(ifuLocataire, other.ifuLocataire)
-				&& Objects.equals(personneAContacter, other.personneAContacter)
-				&& Objects.equals(telLocataire, other.telLocataire);
+	public void setNumContibuable(String numContibuable) {
+		this.numContibuable = numContibuable;
 	}
 
 	@Override
 	public String toString() {
 		return "Locataire [idLocataire=" + idLocataire + ", identiteLocataire=" + identiteLocataire
 				+ ", adresseLocataire=" + adresseLocataire + ", telLocataire=" + telLocataire + ", ifuLocataire="
-				+ ifuLocataire + ", personneAContacter=" + personneAContacter + "]";
+				+ ifuLocataire + ", personneAContacter=" + personneAContacter + ", numContibuable=" + numContibuable
+				+ "]";
 	}
+
+	
 
 }

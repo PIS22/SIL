@@ -35,6 +35,12 @@ public class ContratService {
 		return null;
 	}
 	
+	public List<Contrat> saveAll(List<Contrat> contrats) {
+		
+			return this.repo.saveAll(contrats);
+		
+	}
+	
 	public Contrat edit(String id, Contrat contrat) {
 		
 		Contrat entiter = this.repo.getOne(id);

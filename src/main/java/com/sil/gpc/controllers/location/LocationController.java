@@ -88,6 +88,11 @@ public class LocationController {
 	public Contrat createContrat(@RequestBody Contrat contrat) {
 		return this.contratService.save(contrat);
 	}
+	
+	@PostMapping(path = "contrat/list2")
+	public List<Contrat> createListContrat(@RequestBody List<Contrat> contrats) {
+		return this.contratService.saveAll(contrats);
+	}
 
 	@PutMapping(path = "contrat/byCodCon/{id}")
 	public Contrat updateContrat(@PathVariable(name = "id") String id, @RequestBody Contrat contrat) {
@@ -207,6 +212,12 @@ public class LocationController {
 
 		return this.typeImmeubleService.save(tym);
 	}
+	
+	@PostMapping(path = "typeimmeuble/list2")
+	public List<TypeImmeuble> createListTypeImmeuble(@RequestBody List<TypeImmeuble> typeImmeubles) {
+
+		return this.typeImmeubleService.saveAll(typeImmeubles);
+	}
 
 	@PutMapping(path = "typeimmeuble/byCodImm/{id}")
 	public TypeImmeuble updateTypeImmeuble(@PathVariable(name = "id") String codeTym, @RequestBody TypeImmeuble tym) {
@@ -261,6 +272,12 @@ public class LocationController {
 
 		return this.immeubleService.save(immeuble);
 	}
+	
+	@PostMapping(path = "immeuble/list2")
+	public List<Immeuble> createListImmeuble(@RequestBody List<Immeuble> immeubles) {
+
+		return this.immeubleService.saveAll(immeubles);
+	}
 
 	@PutMapping(path = "immeuble/byCodImm/{id}")
 	public Immeuble updateImmeuble(@PathVariable(name = "id") String id, @RequestBody Immeuble immeuble) {
@@ -303,6 +320,12 @@ public class LocationController {
 
 		return this.prixImmeubleService.save(priImm);
 	}
+	
+	@PostMapping(path = "priximmeuble/list2")
+	public List<PrixImmeuble> createListPrixImmeuble(@RequestBody List<PrixImmeuble> prixImmeubles) {
+
+		return this.prixImmeubleService.saveAll(prixImmeubles);
+	}
 
 	@PutMapping(path = "priximmeuble/byCodImm/{id}")
 	public PrixImmeuble updatePrixImmeuble(@PathVariable(name = "id") Long id, @RequestBody PrixImmeuble priImm) {
@@ -344,6 +367,12 @@ public class LocationController {
 	public Locataire createLocataire(@RequestBody Locataire loc) {
 
 		return this.locataireService.save(loc);
+	}
+	
+	@PostMapping(path = "locataire/list2")
+	public List<Locataire> createListLocataire(@RequestBody List<Locataire> locataires) {
+
+		return this.locataireService.saveAll(locataires);
 	}
 
 	@PutMapping(path = "locataire/byCodLoc/{id}")

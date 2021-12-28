@@ -23,6 +23,10 @@ public class LocataireService {
 		return repos.save(loc);
 	}
 	
+	public List<Locataire> saveAll(List<Locataire> locataires){
+		return repos.saveAll(locataires);
+	}
+	
 	public Locataire edit(Locataire loc, Long id){
 		Locataire cible=repos.getOne(id);
 		if(cible!=null) {

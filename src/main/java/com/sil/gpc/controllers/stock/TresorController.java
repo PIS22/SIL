@@ -1,8 +1,14 @@
 package com.sil.gpc.controllers.stock;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.sil.gpc.domains.*;
+import com.sil.gpc.encapsuleurs.EncapCommande;
+import com.sil.gpc.encapsuleurs.EncapReception;
+import com.sil.gpc.repositories.StockerRepository;
+import com.sil.gpc.services.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,21 +18,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.sil.gpc.domains.Commande;
-import com.sil.gpc.domains.DemandeApprovisionnement;
-import com.sil.gpc.domains.LigneCommande;
-import com.sil.gpc.domains.LigneDemandeAppro;
-import com.sil.gpc.domains.LigneReception;
-import com.sil.gpc.domains.Reception;
-import com.sil.gpc.domains.TresCom;
-import com.sil.gpc.services.CommandeService;
-import com.sil.gpc.services.DemandeApproService;
-import com.sil.gpc.services.LigneCommandeService;
-import com.sil.gpc.services.LigneDemandeApproService;
-import com.sil.gpc.services.LigneReceptionService;
-import com.sil.gpc.services.ReceptionService;
-import com.sil.gpc.services.TresComService;
 
 @CrossOrigin
 @RestController
@@ -40,11 +31,14 @@ public class TresorController {
 	private final LigneReceptionService ligneReceptionService;
 	private final DemandeApproService demandeApproService;
 	private final LigneDemandeApproService ligneDemandeApproService;
+	private  final StockerService stockerService;
+	private  final StockerRepository stockerRepository;
 	
 	public TresorController(TresComService tresComService, CommandeService commandeService,
 			LigneCommandeService ligneCommandeService, ReceptionService receptionService,
 			LigneReceptionService ligneReceptionService, DemandeApproService demandeApproService,
-			LigneDemandeApproService ligneDemandeApproService) {
+			LigneDemandeApproService ligneDemandeApproService, StockerService stockerService,
+			StockerRepository stockerRepository) {
 		super();
 		this.tresComService = tresComService;
 		this.commandeService = commandeService;
@@ -53,6 +47,8 @@ public class TresorController {
 		this.ligneReceptionService = ligneReceptionService;
 		this.demandeApproService = demandeApproService;
 		this.ligneDemandeApproService = ligneDemandeApproService;
+		this.stockerService = stockerService;
+		this.stockerRepository = stockerRepository;
 	}
 	
 	/*###########################################################
@@ -110,9 +106,34 @@ public class TresorController {
 	
 	@PostMapping(path = "commande/list")
 	public Commande createCommande( @RequestBody Commande commande) {
-		
+
 		return this.commandeService.save(commande);
 	}
+
+
+	// Commende en block avec ligneCommande
+	//Léonel
+
+	@PostMapping(path = "commande/list2")
+	public EncapCommande createEncapCommande(@RequestBody EncapCommande encapCommande){
+
+		List<LigneCommande> lignes =encapCommande.getLigneCommandes();
+
+		Commande element = this.commandeService.save(encapCommande.getCommande());
+
+		for (int i = 0; i < lignes.size(); i++) {
+			LigneCommande lig = lignes.get(i);
+			lig.setNumCommande(element);
+
+			lignes.set(i, lig);
+		}
+
+		lignes = this.ligneCommandeService.saveAll(lignes);
+
+		return new EncapCommande(element, lignes);
+
+	}
+
 	
 	@PutMapping(path = "commande/byCodCom/{id}")
 	public Commande updateCommande(@PathVariable(name = "id") String id, @RequestBody Commande commande) {
@@ -187,18 +208,217 @@ public class TresorController {
 		
 		return this.receptionService.save(reception);
 	}
+
+	//Léonel
+
+	@PostMapping(path = "reception/list2")
+	public EncapReception createEncapReception(@RequestBody EncapReception encapReception){
+
+		List<LigneReception> lignes =encapReception.getLigneReceptions();
+
+		Reception element = this.receptionService.save(encapReception.getReception());
+
+		for (int i = 0; i < lignes.size(); i++) {
+			LigneReception lig = lignes.get(i);
+			lig.setReception(element);
+
+			lignes.set(i, lig);
+		}
+
+		//lignes = this.ligneReceptionService.saveAll(lignes);
+		//parcourir afin d'ajuster le stock
+
+		for (int j = 0 ; j < lignes.size(); j++){
+			ligneReceptionService.save(lignes.get(j));
+			stockerService.updateOrAddStockByArticleAndMagasin(lignes.get(j).getLigneCommande().getArticle().getCodeArticle(),"CT", (long) lignes.get(j).getQuantiteLigneReception());
+
+		}
+
+		return new EncapReception(element, lignes);
+
+	}
 	
 	@PutMapping(path = "reception/byCodRec/{id}")
 	public Reception updateReception(@PathVariable(name = "id") String id, @RequestBody Reception reception) {
 		
 		return this.receptionService.edit(id, reception);
 	}
+
+	@PutMapping(path = "reception/byCodRec2/{id}")
+	public Boolean updateEncapRecaption(@PathVariable(name = "id") String id, @RequestBody EncapReception encapReception) {
+
+		List<LigneReception> oldLignesReceptions = new ArrayList<>();
+
+		List<LigneReception> newLignesReceptions = new ArrayList<>();
+
+		LigneReception  deletedLignesReceptions = new LigneReception();
+
+	    LigneReception	savedLignesReceptions = new  LigneReception();
+
+
+		for(int i = 0; i < this.ligneReceptionService.findAll().size(); i++) {
+			if(this.ligneReceptionService.findAll().get(i).getReception().getNumReception().equalsIgnoreCase(id)) {
+				oldLignesReceptions.add(this.ligneReceptionService.findAll().get(i));
+			}
+		}
+
+		newLignesReceptions.addAll(encapReception.getLigneReceptions());
+
+		for (int a = 0 ; a < newLignesReceptions.size(); a++){
+
+			//System.out.println("new "+newLignesReceptions.get(a).getLigneCommande().getArticle().getCodeArticle());
+
+			boolean existInReceptionOrNotExist = false;
+
+			for ( int b = 0 ; b < oldLignesReceptions.size(); b++){
+
+				//System.out.println("old "+oldLignesReceptions.get(b).getLigneCommande().getArticle().getCodeArticle());
+
+				if (oldLignesReceptions.get(b).getLigneCommande().getArticle().getCodeArticle().equals(newLignesReceptions.get(a).getLigneCommande().getArticle().getCodeArticle())){
+
+					//Recuperer le stock pour savoir si c'est une modification ou un ajout
+					Optional<Stocker> stockerLine = stockerRepository.findByArticle_CodeArticleAndMagasin_CodeMagasin(newLignesReceptions.get(a).getLigneCommande().getArticle().getCodeArticle(), "CT");
+					//System.out.println("true oui");
+					// Cas ou la quantité receptionnée pour la ligne est supérieur à la quantité à receptionnée
+					if (oldLignesReceptions.get(b).getQuantiteLigneReception() > newLignesReceptions.get(a).getQuantiteLigneReception()){
+						//System.out.println("true 1");
+						if (stockerLine.isPresent()){
+
+							stockerService.updateStockByArticleAndMagasin(newLignesReceptions.get(a).getLigneCommande().getArticle().getCodeArticle(), "CT", (long) (oldLignesReceptions.get(b).getQuantiteLigneReception() -  newLignesReceptions.get(a).getQuantiteLigneReception()));
+
+						}
+						if (!stockerLine.isPresent()){
+
+							stockerService.updateStockByArticleAndMagasin(newLignesReceptions.get(a).getLigneCommande().getArticle().getCodeArticle(), "CT", (long) (newLignesReceptions.get(a).getQuantiteLigneReception()));
+
+						}
+
+						ligneReceptionService.edit(newLignesReceptions.get(a), newLignesReceptions.get(a).getIdLigneReception());
+						existInReceptionOrNotExist = true;
+					}
+ 						// Cas ou la quantité receptionnée pour la ligne est inférieur à la quantité à receptionnée
+					else if (oldLignesReceptions.get(b).getQuantiteLigneReception() < newLignesReceptions.get(a).getQuantiteLigneReception()){
+						//System.out.println("true 2");
+						if (stockerLine.isPresent()){
+
+							stockerService.updateOrAddStockByArticleAndMagasin(newLignesReceptions.get(a).getLigneCommande().getArticle().getCodeArticle(), "CT", (long) (newLignesReceptions.get(a).getQuantiteLigneReception() - oldLignesReceptions.get(b).getQuantiteLigneReception() ));
+
+						}
+
+						if (!stockerLine.isPresent()){
+
+							stockerService.updateOrAddStockByArticleAndMagasin(newLignesReceptions.get(a).getLigneCommande().getArticle().getCodeArticle(), "CT", (long) (newLignesReceptions.get(a).getQuantiteLigneReception()));
+						}
+
+						ligneReceptionService.edit(newLignesReceptions.get(a), newLignesReceptions.get(a).getIdLigneReception());
+						existInReceptionOrNotExist = true;
+					}
+					//Cas ou la quantité receptionnée ets égale à la quantité à receptionner lors de la modification
+					else  if(oldLignesReceptions.get(b).getQuantiteLigneReception() == newLignesReceptions.get(a).getQuantiteLigneReception()){
+
+						existInReceptionOrNotExist = true;
+					}
+
+
+
+				}
+
+
+			}
+			// Après avoir faire le parcours de tous la liste des anciennes lignes receptions il ne retrouve le nouveau element
+			//alors il faut une insertion  du ce nouveau ligne reception et un réajustement du stock en augmentation au caveau Trésor
+			if (existInReceptionOrNotExist == false){
+				//savedLignesReceptions.add(newLignesReceptions.get(a));
+			    savedLignesReceptions = newLignesReceptions.get(a);
+				savedLignesReceptions.setReception(receptionService.findById(id).get());
+				ligneReceptionService.save(savedLignesReceptions);
+				stockerService.updateOrAddStockByArticleAndMagasin(savedLignesReceptions.getLigneCommande().getArticle().getCodeArticle(), "CT", (long) savedLignesReceptions.getQuantiteLigneReception());
+
+			}
+		}
+
+
+		// Cas ou une ligne reception était receptionnée et n'est plus à réceptionner lors de la modification
+		// Rechercher une ancienne ligne receptionnée dans la liste des nouvelles lignes à receptionner dans la liste
+		if (oldLignesReceptions.size() > newLignesReceptions.size()){
+
+			for (int l = 0 ; l < oldLignesReceptions.size(); l++){
+
+				boolean oldOneLinesReceptionNotExistOnNewLinesReceptionList = false;
+
+				for (int m = 0 ; m < newLignesReceptions.size(); m++){
+
+					if (oldLignesReceptions.get(l).getLigneCommande().getArticle().getCodeArticle().equals(newLignesReceptions.get(m).getLigneCommande().getArticle().getCodeArticle()) ){
+
+						oldOneLinesReceptionNotExistOnNewLinesReceptionList = true;
+
+					}
+
+				}
+
+				if (oldOneLinesReceptionNotExistOnNewLinesReceptionList == false){
+
+					deletedLignesReceptions = oldLignesReceptions.get(l);
+					//setReception(receptionService.findById(id).get());
+					stockerService.updateStockByArticleAndMagasin(deletedLignesReceptions.getLigneCommande().getArticle().getCodeArticle(), "CT", (long) deletedLignesReceptions.getQuantiteLigneReception());
+					ligneReceptionService.delete(deletedLignesReceptions.getIdLigneReception());
+				}
+
+			}
+
+		}
+
+		receptionService.edit(id, encapReception.getReception());
+
+
+		return true;
+	}
+
+	//Annulation de reception
+	@PutMapping(path = "reception/annulation/{id}")
+	public Reception annulerReception(@PathVariable(name = "id") String id, @RequestBody Reception reception) {
+
+		List<LigneReception> oldLignesReceptions = new ArrayList<>();
+
+		for(int i = 0; i < this.ligneReceptionService.findAll().size(); i++) {
+			if(this.ligneReceptionService.findAll().get(i).getReception().getNumReception().equalsIgnoreCase(id)) {
+				oldLignesReceptions.add(this.ligneReceptionService.findAll().get(i));
+			}
+		}
+		for (int i = 0; i < oldLignesReceptions.size(); i++){
+			stockerService.updateStockByArticleAndMagasin(oldLignesReceptions.get(i).getLigneCommande().getArticle().getCodeArticle(), "CT", (long) oldLignesReceptions.get(i).getQuantiteLigneReception());
+		}
+
+		return this.receptionService.edit(id, reception);
+	}
+
+
 	
 	@DeleteMapping(path = "reception/byCodRec/{id}")
 	public Boolean deleteReception(@PathVariable(name = "id") String id) {
 		
 		return this.receptionService.delete(id);
-	}	
+	}
+
+	//Léo Delete Reception
+	@DeleteMapping(path = "reception/delete/{id}")
+	public Boolean deletedReception(@PathVariable(name = "id") String id) {
+
+		List<LigneReception> oldLignesReceptions = new ArrayList<>();
+
+		for(int i = 0; i < this.ligneReceptionService.findAll().size(); i++) {
+			if(this.ligneReceptionService.findAll().get(i).getReception().getNumReception().equalsIgnoreCase(id)) {
+				oldLignesReceptions.add(this.ligneReceptionService.findAll().get(i));
+			}
+		}
+
+		for (int i = 0; i < oldLignesReceptions.size(); i++){
+			ligneReceptionService.delete(oldLignesReceptions.get(i).getIdLigneReception());
+		}
+
+
+		return this.receptionService.delete(id);
+	}
 	
 	
 	

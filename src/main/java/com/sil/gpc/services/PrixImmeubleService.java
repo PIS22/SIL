@@ -27,16 +27,21 @@ public class PrixImmeubleService {
         return   this.prixImmeubleRepository.save(prixIm);
     }
     
+    public List<PrixImmeuble> saveAll(List<PrixImmeuble> prixImmeubles) {
+        return   this.prixImmeubleRepository.saveAll(prixImmeubles);
+    }
+    
     // Editer 
     public PrixImmeuble edit(Long idPrixImmeuble, PrixImmeuble prixIm) {
        	
     	PrixImmeuble pimod = this.prixImmeubleRepository.getOne(idPrixImmeuble);
    		if(pimod != null) {
-   			pimod.setIdPrixIm(prixIm.getIdPrixIm());
    			pimod.setDateDebPrixIm(prixIm.getDateDebPrixIm());
    			pimod.setDateFinPrixIm(prixIm.getDateFinPrixIm());
    			pimod.setPrixIm(prixIm.getPrixIm());
-   			pimod.setImmeuble(prixIm.getImmeuble());			
+   			pimod.setImmeuble(prixIm.getImmeuble());
+   			pimod.setTypeImmeuble(prixIm.getTypeImmeuble());
+   			
    			return this.prixImmeubleRepository.save(pimod);
        }
    		return null;

@@ -12,6 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.ColumnDefault;
+import org.springframework.boot.context.properties.bind.DefaultValue;
+
 @SuppressWarnings("serial")
 @Entity
 public class Echeance implements Serializable {
@@ -24,6 +27,16 @@ public class Echeance implements Serializable {
 	private Date dateEcheance;
 	private boolean payeEcheance;
 	private double prix;
+	@ColumnDefault(value = "1")
+	private double superficie;
+	@ColumnDefault(value = "1")
+	private double nbrPlace;
+	@ColumnDefault(value = "1")
+	private double nbrFace;
+	private Date datPaiement;
+	private Date datDebPeri;
+	private Date datFinPeri;
+	private String typPaiement;
 	@ManyToOne(targetEntity = Contrat.class,fetch = FetchType.EAGER)
 	@JoinColumn(name = "numContrat",referencedColumnName = "numContrat", nullable = false)
 	private Contrat contrat;
@@ -38,16 +51,30 @@ public class Echeance implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Echeance(String moisEcheance, int annee, Date dateEcheance, boolean payeEcheance, double prix,
-			Contrat contrat, OpCaisse opCaisse) {
+	
+
+	public Echeance(Long idEcheance, String moisEcheance, int annee, Date dateEcheance, boolean payeEcheance,
+			double prix, double superficie, double nbrPlace, double nbrFace, Date datPaiement, Date datDebPeri,
+			Date datFinPeri, String typPaiement, Contrat contrat, OpCaisse opCaisse) {
+		super();
+		this.idEcheance = idEcheance;
 		this.moisEcheance = moisEcheance;
 		this.annee = annee;
 		this.dateEcheance = dateEcheance;
 		this.payeEcheance = payeEcheance;
 		this.prix = prix;
+		this.superficie = superficie;
+		this.nbrPlace = nbrPlace;
+		this.nbrFace = nbrFace;
+		this.datPaiement = datPaiement;
+		this.datDebPeri = datDebPeri;
+		this.datFinPeri = datFinPeri;
+		this.typPaiement = typPaiement;
 		this.contrat = contrat;
 		this.opCaisse = opCaisse;
 	}
+
+
 
 	public String getMoisEcheance() {
 		return moisEcheance;
@@ -55,6 +82,26 @@ public class Echeance implements Serializable {
 
 	public void setMoisEcheance(String moisEcheance) {
 		this.moisEcheance = moisEcheance;
+	}
+
+	public void setIdEcheance(Long idEcheance) {
+		this.idEcheance = idEcheance;
+	}
+
+	public Date getDatPaiement() {
+		return datPaiement;
+	}
+
+	public void setDatPaiement(Date datPaiement) {
+		this.datPaiement = datPaiement;
+	}
+
+	public String getTypPaiement() {
+		return typPaiement;
+	}
+
+	public void setTypPaiement(String typPaiement) {
+		this.typPaiement = typPaiement;
 	}
 
 	public int getAnnee() {
@@ -139,35 +186,54 @@ public class Echeance implements Serializable {
 		return idEcheance;
 	}
 
+	public double getSuperficie() {
+		return superficie;
+	}
+
+	public void setSuperficie(double superficie) {
+		this.superficie = superficie;
+	}
+
+	public double getNbrPlace() {
+		return nbrPlace;
+	}
+
+	public void setNbrPlace(double nbrPlace) {
+		this.nbrPlace = nbrPlace;
+	}
+
+	public double getNbrFace() {
+		return nbrFace;
+	}
+
+	public void setNbrFace(double nbrFace) {
+		this.nbrFace = nbrFace;
+	}
+
+	public Date getDatDebPeri() {
+		return datDebPeri;
+	}
+
+	public void setDatDebPeri(Date datDebPeri) {
+		this.datDebPeri = datDebPeri;
+	}
+
+	public Date getDatFinPeri() {
+		return datFinPeri;
+	}
+
+	public void setDatFinPeri(Date datFinPeri) {
+		this.datFinPeri = datFinPeri;
+	}
+
 	@Override
 	public String toString() {
 		return "Echeance [idEcheance=" + idEcheance + ", moisEcheance=" + moisEcheance + ", annee=" + annee
-				+ ", dateEcheance=" + dateEcheance + ", payeEcheance=" + payeEcheance + ", prix=" + prix + ", contrat="
-				+ contrat + ", opCaisse=" + opCaisse + "]";
+				+ ", dateEcheance=" + dateEcheance + ", payeEcheance=" + payeEcheance + ", prix=" + prix
+				+ ", superficie=" + superficie + ", nbrPlace=" + nbrPlace + ", nbrFace=" + nbrFace + ", datPaiement="
+				+ datPaiement + ", datDebPeri=" + datDebPeri + ", datFinPeri=" + datFinPeri + ", typPaiement="
+				+ typPaiement + ", contrat=" + contrat + ", opCaisse=" + opCaisse + "]";
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(annee, contrat, dateEcheance, idEcheance, moisEcheance, opCaisse, payeEcheance, prix);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		Echeance other = (Echeance) obj;
-		return annee == other.annee && Objects.equals(contrat, other.contrat)
-				&& Objects.equals(dateEcheance, other.dateEcheance) && Objects.equals(idEcheance, other.idEcheance)
-				&& Objects.equals(moisEcheance, other.moisEcheance) && Objects.equals(opCaisse, other.opCaisse)
-				&& payeEcheance == other.payeEcheance
-				&& Double.doubleToLongBits(prix) == Double.doubleToLongBits(other.prix);
-	}
 
 }

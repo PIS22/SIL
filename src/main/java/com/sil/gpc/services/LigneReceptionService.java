@@ -59,4 +59,10 @@ public class LigneReceptionService {
 		repos.deleteById(id);
 		return repos.existsById(id);
 	}
+
+	//Léo
+	public List<LigneReception> saveAll (List<LigneReception> ligneReceptions) {
+
+		return this.repos.saveAll(ligneReceptions);
+	}
 }

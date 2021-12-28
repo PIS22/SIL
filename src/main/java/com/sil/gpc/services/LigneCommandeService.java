@@ -94,5 +94,11 @@ public class LigneCommandeService {
 		
 		return this.repo.findByArticle(article);
 	}
+
+	//Léo
+	public List<LigneCommande> saveAll (List<LigneCommande> ligneCommandes) {
+
+		return this.repo.saveAll(ligneCommandes);
+	}
 	
 }

@@ -26,6 +26,11 @@ public class TypeImmeubleService {
 		return null;
     }
     
+    public List<TypeImmeuble> saveAll(List<TypeImmeuble> typeImmeubles) {
+        
+		return this.typeImmeubleRepository.saveAll(typeImmeubles);
+    }
+    
    // editer
     public TypeImmeuble edit(String codeTypIm, TypeImmeuble TypI) {
     	
@@ -33,6 +38,12 @@ public class TypeImmeubleService {
 		if(typImmod != null) {
 			typImmod.setCodeTypIm(TypI.getCodeTypIm());
 			typImmod.setLibTypIm(TypI.getLibTypIm());
+			typImmod.setNomUnePeriode(TypI.getNomUnePeriode());
+			typImmod.setPeriodiciterJrs(TypI.getPeriodiciterJrs());
+			typImmod.setValUnit(TypI.isValUnit());
+			typImmod.setValFace(TypI.isValFace());
+			typImmod.setValPlace(TypI.isValPlace());
+			typImmod.setValSuperfi(TypI.isValSuperfi());
 			
 			return this.typeImmeubleRepository.save(typImmod);
     }

@@ -16,11 +16,19 @@ public class Immeuble implements Serializable{
 	private String codeIm;
 	private String libIm;
 	private String localisationIm;
+	private String ilot;
+	private String parcelle;
 	private boolean etatIm;
+	private boolean batie;
 	private double superficie;
-	private boolean valUnit;
+	private double nbrFace;
+	private double nbrPlace;
 	private String stuctResp;
+	private String activiter;
+	private String forme;
 	private String autre;
+	private String dimensions;
+	
 	//Liaison avec Quartier
 	@ManyToOne(fetch = FetchType.EAGER,targetEntity = Arrondissement.class)
 	@JoinColumn(name="codeArrondi", referencedColumnName = "codeArrondi", nullable = true)
@@ -38,48 +46,45 @@ public class Immeuble implements Serializable{
 		
 	//Liaison  avec Site
 			@ManyToOne(fetch = FetchType.EAGER,targetEntity = SiteMarcher.class)
-			@JoinColumn(name="codeSite", referencedColumnName = "codeSite", nullable = false)
+			@JoinColumn(name="codeSite", referencedColumnName = "codeSite", nullable = true)
 			private SiteMarcher siteMarcher;
 			
 	
-	/**
-			 * 
-			 */
+	
 			public Immeuble() {
 				super();
 				// TODO Auto-generated constructor stub
 			}
 
-	/**
-			 * @param codeIm
-			 * @param libIm
-			 * @param localisationIm
-			 * @param etatIm
-			 * @param superficie
-			 * @param valUnit
-			 * @param stuctResp
-			 * @param autre
-			 * @param arrondissement
-			 * @param quartier
-			 * @param typeImmeuble
-			 * @param siteMarcher
-			 */
-			public Immeuble(String codeIm, String libIm, String localisationIm, boolean etatIm, double superficie,
-					boolean valUnit, String stuctResp, String autre, Arrondissement arrondissement, Quartier quartier,
-					TypeImmeuble typeImmeuble, SiteMarcher siteMarcher) {
-				this.codeIm = codeIm;
-				this.libIm = libIm;
-				this.localisationIm = localisationIm;
-				this.etatIm = etatIm;
-				this.superficie = superficie;
-				this.valUnit = valUnit;
-				this.stuctResp = stuctResp;
-				this.autre = autre;
-				this.arrondissement = arrondissement;
-				this.quartier = quartier;
-				this.typeImmeuble = typeImmeuble;
-				this.siteMarcher = siteMarcher;
-			}
+	
+
+	public Immeuble(String codeIm, String libIm, String localisationIm, String ilot, String parcelle, boolean etatIm,
+			boolean batie, double superficie, double nbrFace, double nbrPlace, String stuctResp, String activiter,
+			String forme, String autre, String dimensions, Arrondissement arrondissement, Quartier quartier,
+			TypeImmeuble typeImmeuble, SiteMarcher siteMarcher) {
+		super();
+		this.codeIm = codeIm;
+		this.libIm = libIm;
+		this.localisationIm = localisationIm;
+		this.ilot = ilot;
+		this.parcelle = parcelle;
+		this.etatIm = etatIm;
+		this.batie = batie;
+		this.superficie = superficie;
+		this.nbrFace = nbrFace;
+		this.nbrPlace = nbrPlace;
+		this.stuctResp = stuctResp;
+		this.activiter = activiter;
+		this.forme = forme;
+		this.autre = autre;
+		this.dimensions = dimensions;
+		this.arrondissement = arrondissement;
+		this.quartier = quartier;
+		this.typeImmeuble = typeImmeuble;
+		this.siteMarcher = siteMarcher;
+	}
+
+
 
 	/**
 	 * @return the codeIm
@@ -151,14 +156,6 @@ public class Immeuble implements Serializable{
 		this.superficie = superficie;
 	}
 
-
-	public boolean isValUnit() {
-		return valUnit;
-	}
-
-	public void setValUnit(boolean valUnit) {
-		this.valUnit = valUnit;
-	}
 
 	/**
 	 * @return the stuctResp
@@ -244,98 +241,115 @@ public class Immeuble implements Serializable{
 		this.siteMarcher = siteMarcher;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((arrondissement == null) ? 0 : arrondissement.hashCode());
-		result = prime * result + ((autre == null) ? 0 : autre.hashCode());
-		result = prime * result + ((codeIm == null) ? 0 : codeIm.hashCode());
-		result = prime * result + (etatIm ? 1231 : 1237);
-		result = prime * result + ((libIm == null) ? 0 : libIm.hashCode());
-		result = prime * result + ((localisationIm == null) ? 0 : localisationIm.hashCode());
-		result = prime * result + ((quartier == null) ? 0 : quartier.hashCode());
-		result = prime * result + ((siteMarcher == null) ? 0 : siteMarcher.hashCode());
-		result = prime * result + ((stuctResp == null) ? 0 : stuctResp.hashCode());
-		long temp;
-		temp = Double.doubleToLongBits(superficie);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + ((typeImmeuble == null) ? 0 : typeImmeuble.hashCode());
-		result = prime * result + (valUnit ? 1231 : 1237);
-		return result;
+
+
+	public String getIlot() {
+		return ilot;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Immeuble other = (Immeuble) obj;
-		if (arrondissement == null) {
-			if (other.arrondissement != null)
-				return false;
-		} else if (!arrondissement.equals(other.arrondissement))
-			return false;
-		if (autre == null) {
-			if (other.autre != null)
-				return false;
-		} else if (!autre.equals(other.autre))
-			return false;
-		if (codeIm == null) {
-			if (other.codeIm != null)
-				return false;
-		} else if (!codeIm.equals(other.codeIm))
-			return false;
-		if (etatIm != other.etatIm)
-			return false;
-		if (libIm == null) {
-			if (other.libIm != null)
-				return false;
-		} else if (!libIm.equals(other.libIm))
-			return false;
-		if (localisationIm == null) {
-			if (other.localisationIm != null)
-				return false;
-		} else if (!localisationIm.equals(other.localisationIm))
-			return false;
-		if (quartier == null) {
-			if (other.quartier != null)
-				return false;
-		} else if (!quartier.equals(other.quartier))
-			return false;
-		if (siteMarcher == null) {
-			if (other.siteMarcher != null)
-				return false;
-		} else if (!siteMarcher.equals(other.siteMarcher))
-			return false;
-		if (stuctResp == null) {
-			if (other.stuctResp != null)
-				return false;
-		} else if (!stuctResp.equals(other.stuctResp))
-			return false;
-		if (Double.doubleToLongBits(superficie) != Double.doubleToLongBits(other.superficie))
-			return false;
-		if (typeImmeuble == null) {
-			if (other.typeImmeuble != null)
-				return false;
-		} else if (!typeImmeuble.equals(other.typeImmeuble))
-			return false;
-		if (valUnit != other.valUnit)
-			return false;
-		return true;
+
+
+	public void setIlot(String ilot) {
+		this.ilot = ilot;
 	}
+
+
+
+	public String getParcelle() {
+		return parcelle;
+	}
+
+
+
+	public void setParcelle(String parcelle) {
+		this.parcelle = parcelle;
+	}
+
+
+
+	public boolean isBatie() {
+		return batie;
+	}
+
+
+
+	public void setBatie(boolean batie) {
+		this.batie = batie;
+	}
+
+
+
+	public double getNbrFace() {
+		return nbrFace;
+	}
+
+
+
+	public void setNbrFace(double nbrFace) {
+		this.nbrFace = nbrFace;
+	}
+
+
+
+	public double getNbrPlace() {
+		return nbrPlace;
+	}
+
+
+
+	public void setNbrPlace(double nbrPlace) {
+		this.nbrPlace = nbrPlace;
+	}
+
+
+
+	public String getActiviter() {
+		return activiter;
+	}
+
+
+
+	public void setActiviter(String activiter) {
+		this.activiter = activiter;
+	}
+
+
+
+	public String getForme() {
+		return forme;
+	}
+
+
+
+	public void setForme(String forme) {
+		this.forme = forme;
+	}
+
+
+
+	public String getDimensions() {
+		return dimensions;
+	}
+
+
+
+	public void setDimensions(String dimensions) {
+		this.dimensions = dimensions;
+	}
+
+
 
 	@Override
 	public String toString() {
-		return "Immeuble [codeIm=" + codeIm + ", libIm=" + libIm + ", localisationIm=" + localisationIm + ", etatIm="
-				+ etatIm + ", superficie=" + superficie + ", valUnit=" + valUnit + ", stuctResp=" + stuctResp
-				+ ", autre=" + autre + ", arrondissement=" + arrondissement + ", quartier=" + quartier
-				+ ", typeImmeuble=" + typeImmeuble + ", siteMarcher=" + siteMarcher + "]";
+		return "Immeuble [codeIm=" + codeIm + ", libIm=" + libIm + ", localisationIm=" + localisationIm + ", ilot="
+				+ ilot + ", parcelle=" + parcelle + ", etatIm=" + etatIm + ", batie=" + batie + ", superficie="
+				+ superficie + ", nbrFace=" + nbrFace + ", nbrPlace=" + nbrPlace + ", stuctResp=" + stuctResp
+				+ ", activiter=" + activiter + ", forme=" + forme + ", autre=" + autre + ", dimensions=" + dimensions
+				+ ", arrondissement=" + arrondissement + ", quartier=" + quartier + ", typeImmeuble=" + typeImmeuble
+				+ ", siteMarcher=" + siteMarcher + "]";
 	}
 
+	
 
 
 }

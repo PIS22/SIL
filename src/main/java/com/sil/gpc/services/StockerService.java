@@ -113,14 +113,14 @@ public class StockerService {
 		return stockerRepository.ligneStocker(a.getCodeArticle(), cMag);
 	}
 
-	//Léo
+	//Léo dimunution du stocker ou crétion si sa n'existe pas
 	public Boolean updateStockByArticleAndMagasin(String codeArticle,  String numMagasin, Long quantiterStocker){
 
       boolean check_Operation = false;
 
 		Optional<Stocker> stockerLine = stockerRepository.findByArticle_CodeArticleAndMagasin_CodeMagasin(codeArticle, numMagasin);
 		if(stockerLine.isPresent()){
-			stockerLine.get().setQuantiterStocker(stockerLine.get().getQuantiterStocker() + quantiterStocker*(-1));
+			stockerLine.get().setQuantiterStocker(stockerLine.get().getQuantiterStocker() - quantiterStocker);
 			edit(stockerLine.get().getIdStocker(), stockerLine.get());
 			check_Operation = true;
 		}
@@ -128,6 +128,29 @@ public class StockerService {
 		if (!stockerLine.isPresent()){
 
 			save(new Stocker(null,quantiterStocker*(-1),Long.valueOf(0),
+					Long.valueOf(0),Long.valueOf(0),articleRepository.findById(codeArticle).get(),magasinRepository.findById(numMagasin).get()));
+			check_Operation = true;
+
+		}
+		return  check_Operation;
+
+	}
+
+	// Léo augmentation du stocker ou création
+	public Boolean updateOrAddStockByArticleAndMagasin(String codeArticle,  String numMagasin, Long quantiterStocker ){
+
+		boolean check_Operation = false;
+
+		Optional<Stocker> stockerLine = stockerRepository.findByArticle_CodeArticleAndMagasin_CodeMagasin(codeArticle, numMagasin);
+		if(stockerLine.isPresent()){
+			stockerLine.get().setQuantiterStocker(stockerLine.get().getQuantiterStocker() + quantiterStocker);
+			edit(stockerLine.get().getIdStocker(), stockerLine.get());
+			check_Operation = true;
+		}
+
+		if (!stockerLine.isPresent()){
+
+			save(new Stocker(null,quantiterStocker,Long.valueOf(0),
 					Long.valueOf(0),Long.valueOf(0),articleRepository.findById(codeArticle).get(),magasinRepository.findById(numMagasin).get()));
 			check_Operation = true;
 

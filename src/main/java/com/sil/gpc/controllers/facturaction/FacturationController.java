@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.sil.gpc.domains.*;
+import com.sil.gpc.services.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,28 +19,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.sil.gpc.domains.Affecter;
-import com.sil.gpc.domains.Caisse;
-import com.sil.gpc.domains.LigneOpCaisse;
-import com.sil.gpc.domains.LigneReversement;
-import com.sil.gpc.domains.ModePaiement;
-import com.sil.gpc.domains.OpCaisse;
-import com.sil.gpc.domains.OpLocBlock;
-import com.sil.gpc.domains.OpPrestBlock;
-import com.sil.gpc.domains.Reversement;
-import com.sil.gpc.domains.TypeRecette;
-import com.sil.gpc.services.AffecterService;
-import com.sil.gpc.services.ArrondissementService;
-import com.sil.gpc.services.ArticleService;
-import com.sil.gpc.services.CaisseService;
-import com.sil.gpc.services.LigneOpCaisseService;
-import com.sil.gpc.services.LigneReversementService;
-import com.sil.gpc.services.ModePaiementService;
-import com.sil.gpc.services.OpCaisseService;
-import com.sil.gpc.services.ReversementService;
-import com.sil.gpc.services.TypeRecetteService;
-import com.sil.gpc.services.UtilisateurService;
 
 import  com.sil.gpc.repositories.OpCaisseRepository;
 import  com.sil.gpc.repositories.LigneOpCaisseRepository;
@@ -66,13 +46,17 @@ public class FacturationController {
 
 	private  final OpCaisseRepository opCaisseRepository;
 	private  final LigneOpCaisseRepository ligneOpCaisseRepository;
+	private  final StockerService stockerService;
+	private  final  CorrespondantService correspondantService;
+	private  final  GererService gererService;
 
 	public FacturationController(CaisseService caisseService, AffecterService affecterService,
 			LigneOpCaisseService ligneOpCaisseService, LigneReversementService ligneReversementService,
 			ModePaiementService modePaiementService, OpCaisseService opCaisseService,
 			ReversementService reversementService, TypeRecetteService typeRecetteService,
 			ArrondissementService arrondissementService, UtilisateurService utilisateurService,
-			ArticleService articleService, OpCaisseRepository opCaisseRepository , LigneOpCaisseRepository ligneOpCaisseRepository) {
+			ArticleService articleService, OpCaisseRepository opCaisseRepository , LigneOpCaisseRepository ligneOpCaisseRepository,
+	         StockerService stockerService, CorrespondantService correspondantService, GererService gererService) {
 		super();
 		this.caisseService = caisseService;
 		this.affecterService = affecterService;
@@ -88,6 +72,9 @@ public class FacturationController {
 
 		this.opCaisseRepository = opCaisseRepository;
 		this.ligneOpCaisseRepository = ligneOpCaisseRepository;
+		this.stockerService = stockerService;
+		this.correspondantService = correspondantService;
+		this.gererService = gererService;
 
 	}
 
@@ -447,11 +434,59 @@ public class FacturationController {
 	}
 
 	@PutMapping(path = "ligneOpCaisse/byCodLigOpCai/{id}")
-	public LigneOpCaisse updateLigneOpCaisse(@PathVariable(name = "id") Long id,
-			@RequestBody LigneOpCaisse ligneOpCaisse) {
+	public LigneOpCaisse updateLigneOpCaisse(@PathVariable(name = "id") Long id, @RequestBody LigneOpCaisse ligneOpCaisse) {
 
 		return this.ligneOpCaisseService.edit(ligneOpCaisse, id);
 	}
+
+	//Léonel
+	//Validation de livraison par un livreur (Correspondant interne)
+	@GetMapping(path = "ligneOpCaisse/livraison/{id}/{idUser}")
+	public LigneOpCaisse updateLigneOpCaisseAndLivre(@PathVariable(name = "id") Long id, @PathVariable(name = "idUser") Long idUser) {
+
+		Optional<LigneOpCaisse> ligneOpCaisseALivre = Optional.of(ligneOpCaisseRepository.findById(id).get());
+		Optional<Correspondant> CorrespondantLivreur = correspondantService.finCorrespondantByUserId(idUser);
+		//Magsin du correspondant
+		Optional <Magasin> magasinCorrespondant = Optional.ofNullable(gererService.findMagasinByNumMagasinier(CorrespondantLivreur.get().getMagasinier().getNumMAgasinier()));
+		LigneOpCaisse ligneOpCaisse = ligneOpCaisseALivre.get();
+		//Optional<Magasin> magasinLivreur
+
+		if (ligneOpCaisseALivre.isPresent() && magasinCorrespondant.isPresent()){
+
+			stockerService.updateStockByArticleAndMagasin(ligneOpCaisse.getArticle().getCodeArticle(), magasinCorrespondant.get().getCodeMagasin(), (long) ligneOpCaisseALivre.get().getQteLigneOperCaisse());
+		}
+
+		ligneOpCaisse.setLivre(true);
+		ligneOpCaisse.setMagasin(magasinCorrespondant.get());
+
+
+
+		return this.ligneOpCaisseService.edit(ligneOpCaisse, id);
+
+
+
+	}
+
+	//Léonel
+	//Magasin by userId
+	@GetMapping(path = "magasin/{idUser}")
+	public  Magasin findMagasinByUserId(@PathVariable(name = "idUser") Long idUser){
+
+		Optional<Correspondant> CorrespondantLivreur = correspondantService.finCorrespondantByUserId(idUser);
+		//Magsin du correspondant
+		Optional <Magasin> magasinCorrespondant = Optional.ofNullable(gererService.findMagasinByNumMagasinier(CorrespondantLivreur.get().getMagasinier().getNumMAgasinier()));
+
+		if (magasinCorrespondant.isPresent()){
+
+			return  magasinCorrespondant.get();
+		}
+		else {
+			return  null;
+		}
+
+
+	}
+
 
 	@DeleteMapping(path = "ligneOpCaisse/byCodLigOpCai/{id}")
 	public Boolean deleteLigneOpCaisse(@PathVariable(name = "id") Long id) {

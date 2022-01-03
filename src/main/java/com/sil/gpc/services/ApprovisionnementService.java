@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
+import com.sil.gpc.domains.Reception;
 import org.springframework.stereotype.Service;
 
 import com.sil.gpc.domains.Approvisionnement;
@@ -21,7 +22,7 @@ public class ApprovisionnementService {
 	}
 	
 	public Approvisionnement save(Approvisionnement approvisionnement) {
-approvisionnement.setValideAppro(true);	
+ approvisionnement.setValideAppro(true);
 		
 		Integer val = 1, nbrMaxCaract = 6;
 		String code = "BA-";
@@ -39,10 +40,11 @@ approvisionnement.setValideAppro(true);
 			code+="0";
 		}
 		
-		approvisionnement.setNumAppro(code+val);
-		approvisionnement.setValideAppro(true);
-		
-		if(repo.existsById(approvisionnement.getNumAppro())==false) return this.repo.save(approvisionnement) ;
+		approvisionnement.setNumAppro(code + val);
+
+
+		if(repo.existsById(approvisionnement.getNumAppro()) == false)
+			return this.repo.save(approvisionnement) ;
 		
 		return null;
 		
@@ -101,6 +103,12 @@ approvisionnement.setValideAppro(true);
 	public List<Approvisionnement> findByExercice(Exercice exercice){
 		
 		return this.repo.findByExercice(exercice);
+	}
+
+
+	// Léonel
+	public Optional<Approvisionnement> findById(String numApprovisionnement) {
+		return this.repo.findById(numApprovisionnement);
 	}
 	
 }

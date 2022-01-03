@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
+import com.sil.gpc.domains.LigneReception;
 import org.springframework.stereotype.Service;
 
 import com.sil.gpc.domains.DemandeApprovisionnement;
@@ -90,6 +91,11 @@ public class DemandeApproService {
 	public List<DemandeApprovisionnement> findByExercice(Exercice exercice){
 		
 		return this.repo.findByExercice(exercice);
+	}
+
+	//Léo
+	public Optional<DemandeApprovisionnement> findById(String id) {
+		return repo.findById(id);
 	}
 	
 }

@@ -76,5 +76,12 @@ public class LigneDemandeApproService {
 		
 		return this.repo.findByAppro(appro);
 	}
-	
+
+	//Léo
+	public List<LigneDemandeAppro> saveAll (List<LigneDemandeAppro> ligneDemandeAppros) {
+
+		return this.repo.saveAll(ligneDemandeAppros);
+	}
+
+
 }

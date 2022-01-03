@@ -3,6 +3,7 @@ package com.sil.gpc.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.sil.gpc.domains.LigneReception;
 import org.springframework.stereotype.Service;
 
 import com.sil.gpc.domains.Approvisionnement;
@@ -38,6 +39,11 @@ public class LigneApproService {
 		}
 		
 		return null;
+	}
+
+	//Léonel
+	public List<LigneAppro> findAll() {
+		return repo.findAll();
 	}
 	
 	public boolean delete(Long id) {

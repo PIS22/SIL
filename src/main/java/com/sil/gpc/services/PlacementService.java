@@ -53,6 +53,21 @@ public class PlacementService {
 			placem.setDatePlacement(p.getDatePlacement());
 			placem.setCorrespondant(p.getCorrespondant());
 			placem.setExercice(p.getExercice());
+			//placem.setValidepl(p.isValidepl());
+			//System.out.println("Validité "+p.isValidepl());
+			placem.setRegisseur(p.getRegisseur());
+			return repos.save(placem);
+		} else
+			return null;
+	}
+
+	//Léonel
+	public Placement annulEdit(Placement p, String np) {
+		Placement placem = repos.getOne(np);
+		if (placem != null) {
+			placem.setDatePlacement(p.getDatePlacement());
+			placem.setCorrespondant(p.getCorrespondant());
+			placem.setExercice(p.getExercice());
 			placem.setValidepl(p.isValidepl());
 			placem.setRegisseur(p.getRegisseur());
 			return repos.save(placem);

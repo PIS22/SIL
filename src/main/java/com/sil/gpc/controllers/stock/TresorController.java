@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import com.sil.gpc.domains.*;
 import com.sil.gpc.encapsuleurs.EncapCommande;
+import com.sil.gpc.encapsuleurs.EncapDemandeApprovisionnement;
 import com.sil.gpc.encapsuleurs.EncapReception;
 import com.sil.gpc.repositories.StockerRepository;
 import com.sil.gpc.services.*;
@@ -111,7 +112,7 @@ public class TresorController {
 	}
 
 
-	// Commende en block avec ligneCommande
+	// Commande avec encapsulation
 	//Léonel
 
 	@PostMapping(path = "commande/list2")
@@ -140,10 +141,135 @@ public class TresorController {
 		
 		return this.commandeService.edit(id, commande);
 	}
-	
+
+	//Modification de la commande
+	//Léonel
+	@PutMapping(path = "commande/update/{id}")
+	public Boolean updateEncapCommande(@PathVariable(name = "id") String id, @RequestBody EncapCommande encapCommande) {
+
+		List<LigneCommande> oldLignesCommande  = new ArrayList<>();
+
+		List<LigneCommande> newLignesCommande  = new ArrayList<>();
+
+		LigneCommande  deletedLignesCommande  = new LigneCommande();
+
+		LigneCommande	savedLignesCommande  = new LigneCommande();
+
+
+		for(int i = 0; i < this.ligneCommandeService.getAll().size(); i++) {
+			if(this.ligneCommandeService.getAll().get(i).getNumCommande().getNumCommande().equalsIgnoreCase(id)) {
+				oldLignesCommande.add(this.ligneCommandeService.getAll().get(i));
+			}
+		}
+
+		newLignesCommande.addAll(encapCommande.getLigneCommandes());
+
+		for (int a = 0 ; a < newLignesCommande.size(); a++){
+
+			//System.out.println("new "+newLignesReceptions.get(a).getLigneCommande().getArticle().getCodeArticle());
+
+			boolean existInReceptionOrNotExist = false;
+
+			for ( int b = 0 ; b < oldLignesCommande.size(); b++){
+
+				//System.out.println("old "+oldLignesReceptions.get(b).getLigneCommande().getArticle().getCodeArticle());
+
+				if (oldLignesCommande.get(b).getArticle().getCodeArticle().equals(newLignesCommande.get(a).getArticle().getCodeArticle())){
+
+
+
+					// Cas ou la quantité receptionnée pour la ligne est supérieur à la quantité à receptionnée
+					if (oldLignesCommande.get(b).getQteLigneCommande()> newLignesCommande.get(a).getQteLigneCommande()){
+
+						ligneCommandeService.edit(newLignesCommande.get(a).getIdLigneCommande(), newLignesCommande.get(a));
+						existInReceptionOrNotExist = true;
+					}
+					// Cas ou la quantité receptionnée pour la ligne est inférieur à la quantité à receptionnée
+					else if (oldLignesCommande.get(b).getQteLigneCommande() < newLignesCommande.get(a).getQteLigneCommande()){
+
+
+						ligneCommandeService.edit(newLignesCommande.get(a).getIdLigneCommande(), newLignesCommande.get(a));
+						existInReceptionOrNotExist = true;
+					}
+					//Cas ou la quantité receptionnée ets égale à la quantité à receptionner lors de la modification
+					else  if(oldLignesCommande.get(b).getQteLigneCommande() == newLignesCommande.get(a).getQteLigneCommande()){
+
+						existInReceptionOrNotExist = true;
+					}
+
+
+
+				}
+
+
+			}
+			// Après avoir faire le parcours de tous la liste des anciennes lignes receptions il ne retrouve le nouveau element
+			//alors il faut une insertion  du ce nouveau ligne reception et un réajustement du stock en augmentation au caveau Trésor
+			if (existInReceptionOrNotExist == false){
+				savedLignesCommande = newLignesCommande.get(a);
+				savedLignesCommande.setNumCommande(commandeService.getById(id));
+				ligneCommandeService.save(savedLignesCommande);
+			}
+		}
+
+
+		// Cas ou une ligne reception était receptionnée et n'est plus à réceptionner lors de la modification
+		// Rechercher une ancienne ligne receptionnée dans la liste des nouvelles lignes à receptionner dans la liste
+		if (oldLignesCommande.size() > newLignesCommande.size()){
+
+			for (int l = 0 ; l < oldLignesCommande.size(); l++){
+
+				boolean oldOneLinesReceptionNotExistOnNewLinesReceptionList = false;
+
+				for (int m = 0 ; m < newLignesCommande.size(); m++){
+
+					if (oldLignesCommande.get(l).getArticle().getCodeArticle().equals(newLignesCommande.get(m).getArticle().getCodeArticle()) ){
+
+						oldOneLinesReceptionNotExistOnNewLinesReceptionList = true;
+
+					}
+
+				}
+
+				if (oldOneLinesReceptionNotExistOnNewLinesReceptionList == false){
+
+					deletedLignesCommande = oldLignesCommande.get(l);
+					ligneCommandeService.delete(deletedLignesCommande.getIdLigneCommande());
+				}
+
+			}
+
+		}
+
+		commandeService.edit(id, encapCommande.getCommande());
+
+
+		return true;
+	}
+
 	@DeleteMapping(path = "commande/byCodCom/{id}")
 	public Boolean deleteCommande(@PathVariable(name = "id") String id) {
 		
+		return this.commandeService.delete(id);
+	}
+
+	//Léo Delete Commande
+	@DeleteMapping(path = "commande/delete/{id}")
+	public Boolean deletedCommande(@PathVariable(name = "id") String id) {
+
+		List<LigneCommande> oldLignesLigneLigneCommandes = new ArrayList<>();
+
+		for(int i = 0; i < this.ligneCommandeService.getAll().size(); i++) {
+			if(this.ligneCommandeService.getAll().get(i).getNumCommande().getNumCommande().equalsIgnoreCase(id)) {
+				oldLignesLigneLigneCommandes.add(this.ligneCommandeService.getAll().get(i));
+			}
+		}
+
+		for (int i = 0; i < oldLignesLigneLigneCommandes.size(); i++){
+			ligneCommandeService.delete(oldLignesLigneLigneCommandes.get(i).getIdLigneCommande());
+		}
+
+
 		return this.commandeService.delete(id);
 	}
 	
@@ -359,7 +485,6 @@ public class TresorController {
 				if (oldOneLinesReceptionNotExistOnNewLinesReceptionList == false){
 
 					deletedLignesReceptions = oldLignesReceptions.get(l);
-					//setReception(receptionService.findById(id).get());
 					stockerService.updateStockByArticleAndMagasin(deletedLignesReceptions.getLigneCommande().getArticle().getCodeArticle(), "CT", (long) deletedLignesReceptions.getQuantiteLigneReception());
 					ligneReceptionService.delete(deletedLignesReceptions.getIdLigneReception());
 				}
@@ -481,16 +606,166 @@ public class TresorController {
 		
 		return this.demandeApproService.save(demandeApprovisionnement);
 	}
-	
+
+
+	//Léonel
+
+	@PostMapping(path = "demandeAppro/list2")
+	public EncapDemandeApprovisionnement createEncapDemandeApprovisionnement(@RequestBody EncapDemandeApprovisionnement encapDemandeApprovisionnement){
+
+		List<LigneDemandeAppro> lignes = encapDemandeApprovisionnement.getLigneDemandeAppros();
+
+
+		DemandeApprovisionnement element = this.demandeApproService.save(encapDemandeApprovisionnement.getDemandeApprovisionnement());
+
+		for (int i = 0; i < lignes.size(); i++) {
+			LigneDemandeAppro lig = lignes.get(i);
+			lig.setAppro(element);
+
+			lignes.set(i, lig);
+		}
+
+		lignes = this.ligneDemandeApproService.saveAll(lignes);
+
+		return new EncapDemandeApprovisionnement(element, lignes);
+
+	}
+
+
 	@PutMapping(path = "demandeAppro/byCodDemApp/{id}")
 	public DemandeApprovisionnement updateDemandeAppro(@PathVariable(name = "id") String id, @RequestBody DemandeApprovisionnement demandeApprovisionnement) {
 		
 		return this.demandeApproService.edit(id, demandeApprovisionnement);
 	}
-	
+
+	//Léonel
+	@PutMapping(path = "demandeAppro/update/{id}")
+	public Boolean updateEncapDemandeApprovisionnement(@PathVariable(name = "id") String id, @RequestBody EncapDemandeApprovisionnement encapDemandeApprovisionnement) {
+
+		List<LigneDemandeAppro> oldLignesDemandeAppro = new ArrayList<>();
+
+		List<LigneDemandeAppro> newLignesDemandeAppro = new ArrayList<>();
+
+		LigneDemandeAppro  deletedLignesDemandeAppro = new LigneDemandeAppro();
+
+		LigneDemandeAppro	savedLignesDemandeAppro = new LigneDemandeAppro();
+
+
+		for(int i = 0; i < this.ligneDemandeApproService.getAll().size(); i++) {
+			if(this.ligneDemandeApproService.getAll().get(i).getAppro().getNumDA().equalsIgnoreCase(id)) {
+				oldLignesDemandeAppro.add(this.ligneDemandeApproService.getAll().get(i));
+			}
+		}
+
+		newLignesDemandeAppro.addAll(encapDemandeApprovisionnement.getLigneDemandeAppros());
+
+		for (int a = 0 ; a < newLignesDemandeAppro.size(); a++){
+
+			//System.out.println("new "+newLignesReceptions.get(a).getLigneCommande().getArticle().getCodeArticle());
+
+			boolean existInReceptionOrNotExist = false;
+
+			for ( int b = 0 ; b < oldLignesDemandeAppro.size(); b++){
+
+				//System.out.println("old "+oldLignesReceptions.get(b).getLigneCommande().getArticle().getCodeArticle());
+
+				if (oldLignesDemandeAppro.get(b).getArticle().getCodeArticle().equals(newLignesDemandeAppro.get(a).getArticle().getCodeArticle())){
+
+
+
+					// Cas ou la quantité receptionnée pour la ligne est supérieur à la quantité à receptionnée
+					if (oldLignesDemandeAppro.get(b).getQuantiteDemandee()> newLignesDemandeAppro.get(a).getQuantiteDemandee()){
+
+						ligneDemandeApproService.edit(newLignesDemandeAppro.get(a).getIdLigneDA(), newLignesDemandeAppro.get(a));
+						existInReceptionOrNotExist = true;
+					}
+					// Cas ou la quantité receptionnée pour la ligne est inférieur à la quantité à receptionnée
+					else if (oldLignesDemandeAppro.get(b).getQuantiteDemandee() < newLignesDemandeAppro.get(a).getQuantiteDemandee()){
+
+
+						ligneDemandeApproService.edit(newLignesDemandeAppro.get(a).getIdLigneDA(), newLignesDemandeAppro.get(a));
+						existInReceptionOrNotExist = true;
+					}
+					//Cas ou la quantité receptionnée ets égale à la quantité à receptionner lors de la modification
+					else  if(oldLignesDemandeAppro.get(b).getQuantiteDemandee() == newLignesDemandeAppro.get(a).getQuantiteDemandee()){
+
+						existInReceptionOrNotExist = true;
+					}
+
+
+
+				}
+
+
+			}
+			// Après avoir faire le parcours de tous la liste des anciennes lignes receptions il ne retrouve le nouveau element
+			//alors il faut une insertion  du ce nouveau ligne reception et un réajustement du stock en augmentation au caveau Trésor
+			if (existInReceptionOrNotExist == false){
+				savedLignesDemandeAppro = newLignesDemandeAppro.get(a);
+				savedLignesDemandeAppro.setAppro(demandeApproService.findById(id).get());
+				ligneDemandeApproService.save(savedLignesDemandeAppro);
+			}
+		}
+
+
+		// Cas ou une ligne reception était receptionnée et n'est plus à réceptionner lors de la modification
+		// Rechercher une ancienne ligne receptionnée dans la liste des nouvelles lignes à receptionner dans la liste
+		if (oldLignesDemandeAppro.size() > newLignesDemandeAppro.size()){
+
+			for (int l = 0 ; l < oldLignesDemandeAppro.size(); l++){
+
+				boolean oldOneLinesReceptionNotExistOnNewLinesReceptionList = false;
+
+				for (int m = 0 ; m < newLignesDemandeAppro.size(); m++){
+
+					if (oldLignesDemandeAppro.get(l).getArticle().getCodeArticle().equals(newLignesDemandeAppro.get(m).getArticle().getCodeArticle()) ){
+
+						oldOneLinesReceptionNotExistOnNewLinesReceptionList = true;
+
+					}
+
+				}
+
+				if (oldOneLinesReceptionNotExistOnNewLinesReceptionList == false){
+
+					deletedLignesDemandeAppro = oldLignesDemandeAppro.get(l);
+					ligneDemandeApproService.delete(deletedLignesDemandeAppro.getIdLigneDA());
+				}
+
+			}
+
+		}
+
+		demandeApproService.edit(id, encapDemandeApprovisionnement.getDemandeApprovisionnement());
+
+
+		return true;
+	}
+
+
 	@DeleteMapping(path = "demandeAppro/byCodDemApp/{id}")
 	public Boolean deleteDemandeAppro(@PathVariable(name = "id") String id) {
 		
+		return this.demandeApproService.delete(id);
+	}
+
+	//Léo Delete Demande Approvisionnement
+	@DeleteMapping(path = "demandeAppro/delete/{id}")
+	public Boolean deletedDemandeApprovisionnement(@PathVariable(name = "id") String id) {
+
+		List<LigneDemandeAppro> oldLignesLigneDemandeAppros = new ArrayList<>();
+
+		for(int i = 0; i < this.ligneDemandeApproService.getAll().size(); i++) {
+			if(this.ligneDemandeApproService.getAll().get(i).getAppro().getNumDA().equalsIgnoreCase(id)) {
+				oldLignesLigneDemandeAppros.add(this.ligneDemandeApproService.getAll().get(i));
+			}
+		}
+
+		for (int i = 0; i < oldLignesLigneDemandeAppros.size(); i++){
+			ligneDemandeApproService.delete(oldLignesLigneDemandeAppros.get(i).getIdLigneDA());
+		}
+
+
 		return this.demandeApproService.delete(id);
 	}
 	
@@ -530,7 +805,8 @@ public class TresorController {
 		
 		return this.ligneDemandeApproService.delete(id);
 	}
-	
+
+
 	
 	
 	

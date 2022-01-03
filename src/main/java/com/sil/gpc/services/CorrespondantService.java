@@ -92,5 +92,12 @@ public class CorrespondantService {
 
 		return  repo.findAllByImputableCorresIsTrue();
 	}
+
+	//Find Correspondant by Iduser
+	//Léo
+	public Optional <Correspondant> finCorrespondantByUserId(Long userId){
+
+		return  repo.findByUtilisateur_IdUtilisateur(userId);
+	}
 	
 }

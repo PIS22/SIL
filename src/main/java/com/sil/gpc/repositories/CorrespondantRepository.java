@@ -1,6 +1,7 @@
 package com.sil.gpc.repositories;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -25,5 +26,8 @@ public interface CorrespondantRepository extends JpaRepository<Correspondant, St
 
 	//Léo
 	List<Correspondant> findAllByImputableCorresIsTrue();
+
+	//Léo
+	Optional<Correspondant> findByUtilisateur_IdUtilisateur(Long IdUser);
 	
 }

@@ -60,7 +60,7 @@ public class AffecterService {
 	}
 
 	public List<Affecter> getUserCaisseActu(Long id) {
-		return this.repos.userCaisseActu(id);
+		return this.repos.findByUtilisateur_IdUtilisateur(id);
 	}
 
 	public List<Affecter> findByUtilisateur(Utilisateur utilisateur) {

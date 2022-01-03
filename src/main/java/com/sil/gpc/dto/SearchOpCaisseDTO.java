@@ -5,6 +5,7 @@ import java.time.LocalDate;
 public class SearchOpCaisseDTO {
     private LocalDate startDate;
     private  LocalDate endDate;
+    private  String codeCaisse;
 
     public LocalDate getStartDate() {
         return startDate;
@@ -20,5 +21,13 @@ public class SearchOpCaisseDTO {
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+    }
+
+    public String getCodeCaisse() {
+        return codeCaisse;
+    }
+
+    public void setCodeCaisse(String codeCaisse) {
+        this.codeCaisse = codeCaisse;
     }
 }

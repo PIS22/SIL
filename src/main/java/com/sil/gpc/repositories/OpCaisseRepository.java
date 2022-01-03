@@ -45,7 +45,8 @@ public interface OpCaisseRepository extends JpaRepository<OpCaisse, String> {
 
 	//Léo
 	//Liste des opCaisse valides du jour
-	@Query(value = "SELECT * FROM op_caisse WHERE valide_op_caisse = true AND date_op_caisse >= :startDate AND date_op_caisse <= :endDate", nativeQuery = true)
-	List<OpCaisse> getAllOpCaisseOfDay(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+	//Ajuster par caisse
+	@Query(value = "SELECT * FROM op_caisse WHERE valide_op_caisse = true AND date_op_caisse >= :startDate AND date_op_caisse <= :endDate AND code_caisse = :code", nativeQuery = true)
+	List<OpCaisse> getAllOpCaisseOfDay(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate, @Param("code") String code);
 
 }

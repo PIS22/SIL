@@ -211,7 +211,7 @@ public class FacturationController {
 		return this.affecterService.findByDateFinAffecter(valeur);
 	}
 
-	@GetMapping(path = "affecter/uc/actu/usId={id}")
+	@GetMapping(path = "affecter/uc/actu/{id}")
 	public List<Affecter> getCaisseActuByUser(@PathVariable(name = "id") Long id) {
 
 		return this.affecterService.getUserCaisseActu(id);
@@ -651,9 +651,11 @@ public class FacturationController {
 		LocalDateTime start = LocalDateTime.of(LocalDate.from(searchOpCaisseDTO.getStartDate()), LocalTime.of(0, 0, 0));
 		LocalDateTime end = LocalDateTime.of(LocalDate.from(searchOpCaisseDTO.getEndDate()), LocalTime.of(23, 59, 59));
 
-		List<OpCaisse> opCaisseOfDayList = opCaisseRepository.getAllOpCaisseOfDay(start, end);
+		List<OpCaisse> opCaisseOfDayList = opCaisseRepository.getAllOpCaisseOfDay(start, end,  searchOpCaisseDTO.getCodeCaisse());
 
 		return opCaisseOfDayList;
+
+
 	}
 
 	//Léonel essaie 2
@@ -662,6 +664,7 @@ public class FacturationController {
 
 		//LocalDateTime start = LocalDateTime.of(LocalDate.from(searchOpCaisseDTO.getStartDate()), LocalTime.of(0, 0, 0));
 		//LocalDateTime end = LocalDateTime.of(LocalDate.from(searchOpCaisseDTO.getEndDate()), LocalTime.of(23, 59, 59));
+
 
 		List<LigneOpCaisse> LinesOpCaisseByPeriodeList = ligneOpCaisseRepository.getAllLinesOpCaisseBetweenTwoPeriodeAndCaisse(searchLinesOpCaisseDTO.getStartDateTime(),searchLinesOpCaisseDTO.getEndDateTime(),searchLinesOpCaisseDTO.getCodeCaisse());
 

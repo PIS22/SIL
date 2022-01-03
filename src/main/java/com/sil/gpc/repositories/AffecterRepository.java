@@ -22,7 +22,10 @@ public interface AffecterRepository extends JpaRepository<Affecter, Long> {
 
 	public List<Affecter> findByDateFinAffecter(Date dateFinAffecter);
 
-	@Query(value = "SELECT a.* FROM affecter a \r\n"
-			+ "where a.id_utilisateur=?  and a.date_fin_affecter isNull", nativeQuery = true)
-	List<Affecter> userCaisseActu(Long id);
+	@Query(value = "SELECT code_caisse, a.libe_caisse" +
+			" FROM affecter  \r\n"
+			+ "where id_utilisateur=?  and date_fin_affecter isNull", nativeQuery = true)
+	List<Caisse> userCaisseActu(Long id);
+
+	List<Affecter>findByUtilisateur_IdUtilisateur(Long idUser);
 }
